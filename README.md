@@ -9,3 +9,7 @@ sudo reboot
 sudo dnf install -y ansible
 ansible --version
 ```
+Then install the essentials: zsh, oh-my-zsh, their plugins:
+```sh
+ansible-playbook -K install-essentials.yaml
+```

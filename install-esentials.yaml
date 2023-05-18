@@ -52,3 +52,5 @@
     become: true
     become_user: "{{ lookup('ansible.builtin.env', 'USER') }}"
     shell: sed -i 's/plugins=(git/plugins=(git zsh-autosuggestions zsh-syntax-highlighting/' ~/.zshrc
+  - name: Use Vi command line typing style
+    shell: bindkey -v
