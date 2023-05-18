@@ -1,0 +1,23 @@
+- hosts: localhost
+  vars:
+    - non_root_user: "{{ lookup('ansible.builtin.env', 'USER') }}"
+    - home_dr: "{{ lookup('ansible.builtin.env', 'HOME') }}"
+  vars_prompt:
+    - name: real_zsh_dotfiles
+      prompt: Do you want real dotfiles for zsh (otherwise you can set up your simlinks)?
+      private: false
+      default: "false"
+  tasks:
+  - name: Remove zsh dotfiles
+    ansible.builtin.include_tasks:
+      file: tasks/remove-zsh-dotfiles-fedora.yaml
+      apply:
+        tags:
+          - remove_zsh_dotfile
+    when: {{ real_zsh_dotfiles }} is "true"
+  - name: Install zsh
+    ansible.builtin.include_tasks:
+      file: tasks/install-zsh-fedora.yaml
+      apply:
+        tags:
+          - install_zsh
