@@ -1,0 +1,11 @@
+- hosts: localhost
+- name: Install zsh
+  ansible.builtin.import_playbook: tasks/fedora/install-zsh.yaml
+  vars:
+    non_root_user: "{{ lookup('ansible.builtin.env', 'USER') }}"
+  when: ansible_facts['os_family'] == "RedHat"
+- name: Install SDK manager ASDF
+  ansible.builtin.import_playbook: tasks/fedora/install-sdk-manager-and-lts-node.yaml
+  vars:
+    non_root_user: "{{ lookup('ansible.builtin.env', 'USER') }}"
+  when: ansible_facts['os_family'] == "RedHat"

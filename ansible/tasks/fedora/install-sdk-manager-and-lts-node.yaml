@@ -1,0 +1,26 @@
+- hosts: localhost
+  vars:
+    - non_root_user: "{{ lookup('ansible.builtin.env', 'USER') }}"
+  vars_prompt:
+    - name: "install_nodejs_asdf_plugin"
+      prompt: "Do you want to NodeJS ASDF plugin and LTS NodeJS (yes/no)?"
+      private: no
+  tasks:
+  - name: Install SDK manager ASDF
+    become: true
+    become_user: "{{ non_root_user }}"
+    ansible.builtin.git:
+      repo: https://github.com/asdf-vm/asdf.git
+      dest: ~/.asdf
+  - name: Add NodeJs plugin to ASDF
+    block:
+    - name: Add NodeJs plugin to ASDF
+      shell: asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
+    rescue:
+      - name: Pay attention to ASDF
+        ansible.builtin.debug:
+          msg: 'I caught an error, do manual stuff to fix it if needed, :-)'
+    when: install_nodejs_asdf_plugin | bool
+  - name: Install LTS NodeJs version globally
+    shell: asdf global nodejs lts
+    when: install_nodejs_asdf_plugin | bool

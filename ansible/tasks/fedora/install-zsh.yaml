@@ -1,0 +1,40 @@
+- hosts: localhost
+  vars:
+    - non_root_user: "{{ lookup('ansible.builtin.env', 'USER') }}"
+  tasks:
+  - name: Install zsh shell with oh-my-zsh
+    block:
+    - name: Install zsh
+      become: true
+      dnf:
+        state: present
+        name: zsh
+    - name: Change shell
+      become: true
+      shell: echo $(which zsh) | lchsh $(USER) # or use `chsh` instead of `lchsha`
+    - name: Install oh-my-zsh
+      become: true
+      become_user: "{{ non_root_user }}"
+      shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+      register: ohmuzsh_install_res
+    rescue:
+    - name: Uninstall zsh and oh-my-zsh
+      include_tasks: uninstall-zsh.yaml
+      vars:
+        user: "{{ non_root_user }}"
+    - name: Rescue uninstall message
+      debug:
+        msg: "zsh and oh-my-zsh are supposed to be uninstalled, restart the play!"
+    - meta: end_host
+  - name: Install autosuggestion plugin for zsh
+    become: true
+    become_user: "{{ non_root_user }}"
+    ansible.builtin.git:
+      repo: "https://github.com/zsh-users/zsh-autosuggestions"
+      dest: "~/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+  - name: Install syntax highlighting for zsh
+    become: true
+    become_user: "{{ non_root_user }}"
+    ansible.builtin.git:
+      repo: "https://github.com/zsh-users/zsh-syntax-highlighting.git"
+      dest: "~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
