@@ -1,0 +1,21 @@
+- name: Install Prerequsits like Stow, git, Alacritty
+  hosts: localhost
+  become: true
+  tasks:
+  - name: Install xclip
+    dnf:
+      state: present
+      name: xclip
+  - name: Install git
+    dnf:
+      state: present
+      name: git
+  - name: Install stow
+    dnf:
+      state: present
+      name: stow
+  - name: Install Alacritty
+    dnf:
+      state: present
+      name: stow
+  

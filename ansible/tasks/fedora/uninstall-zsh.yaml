@@ -27,7 +27,7 @@
       state: absent
     with_items:
       - "~/.zshrc.pre-oh-my-zsh"
-      - "~/.zshrc.pre-oh-my-zsh*"
+      - ~/.zshrc.pre-oh-my-zsh.*
       - "~/.zshrc"
-      - "~/.zshrc.*"
+      - ~/.zshrc.*
 

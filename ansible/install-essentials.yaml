@@ -1,4 +1,9 @@
 - hosts: localhost
+- name: Install Prerequisits
+  ansible.builtin.import_playbook: tasks/fedora/install-prereq.yaml
+  vars:
+    non_root_user: "{{ lookup('ansible.builtin.env', 'USER') }}"
+  when: ansible_facts['os_family'] == "RedHat"
 - name: Install zsh
   ansible.builtin.import_playbook: tasks/fedora/install-zsh.yaml
   vars:
