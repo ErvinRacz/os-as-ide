@@ -50,3 +50,12 @@
     dnf:
       state: present
       name: tmux
+  - name: Clone fzf
+    become: true
+    become_user: "{{ non_root_user }}"
+    ansible.builtin.git:
+      repo: "https://github.com/junegunn/fzf.git
+      dest: "~/.fzf"
+      depth: 1
+  - name: Install fzf
+    shell: echo "n n n" | sh ~/.fzf/install
