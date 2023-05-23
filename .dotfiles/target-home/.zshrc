@@ -102,10 +102,11 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# vi mode
+
+# key bindings
 bindkey -v
+bindkey -s ^f "tmux-sessionizer.sh\n"
 
-bindkey -s ^f "tmux-sessionizer\n"
-
+export PATH=$HOME/.local/bin:$PATH
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

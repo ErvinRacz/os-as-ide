@@ -3,6 +3,3 @@
   tasks:
   - name:
     shell: stow -d "{{ playbook_dir }}"/../../../.dotfiles/target-home/ -t ~/ .
-  - name:
-    become: true
-    shell: stow -d "{{ playbook_dir }}"/../../../.dotfiles/target-bin/ -t /usr/local/bin/ .
