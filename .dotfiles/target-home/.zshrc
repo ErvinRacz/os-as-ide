@@ -105,5 +105,7 @@ source $ZSH/oh-my-zsh.sh
 # vi mode
 bindkey -v
 
+bindkey -s ^f "tmux-sessionizer\n"
+
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
