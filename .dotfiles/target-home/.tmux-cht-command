@@ -1,4 +1,6 @@
-ed
+sort
+uniq
+sed
 awk
 tr
 cp

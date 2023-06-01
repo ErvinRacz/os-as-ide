@@ -13,3 +13,17 @@ Then install the essentials: zsh, oh-my-zsh, their plugins:
 ```sh
 ansible-playbook -K install-essentials.yaml
 ```
+
+## Vimium browser plugin
+https://github.com/philc/vimium/wiki
+
+My setup:
+```
+map <c-o> goBack
+map <c-i> goForward
+unmap b
+unmap B
+unmap <c-B>
+unmap <c-b>
+unmap <c-p>
+```

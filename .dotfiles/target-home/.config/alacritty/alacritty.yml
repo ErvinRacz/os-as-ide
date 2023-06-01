@@ -1,3 +1,11 @@
+shell:
+  program: /bin/zsh
+  args:
+    - -l
+    - -c
+    - -i
+    - "source ~/.zshrc; tmux attach || tmux"
+
 window:
   padding:
     x: 5
@@ -10,7 +18,7 @@ window:
   #     - transparent: Title bar, transparent background and title bar buttons
   #     - buttonless: Title bar, transparent background, but no title bar buttons
   decorations: none
-  opacity: 0.92
+  opacity: 0.96
   startup_mode: Maximized
 
   # Allow terminal applications to change Alacritty's window title.

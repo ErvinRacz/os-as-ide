@@ -17,5 +17,9 @@
   - name: Install Alacritty
     dnf:
       state: present
-      name: stow
+      name: alacritty
+  - name: Install neovim
+    dnf:
+      state: present
+      name: neovim
   
