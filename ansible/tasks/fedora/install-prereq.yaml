@@ -28,6 +28,10 @@
     dnf:
       state: present
       name: gcc
+  - name: Install libstdc++
+    dnf:
+      state: present
+      name: libstdc++
   - name: Install neovim
     dnf:
       state: present
