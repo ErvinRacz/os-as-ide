@@ -24,14 +24,10 @@
     dnf:
       state: present
       name: ripgrep
-  - name: Install gcc
-    dnf:
-      state: present
-      name: gcc
-  - name: Install libstdc++
-    dnf:
-      state: present
-      name: libstdc++
+  - name: Install Development Tools
+    dnf: name={{ item }} state=present update_cache=yes
+    with_items:
+      - g++
   - name: Install neovim
     dnf:
       state: present
