@@ -13,8 +13,23 @@ return require('packer').startup(function(use)
 		requires = { {'nvim-lua/plenary.nvim'} }
 	}
 
-	use({ 'rose-pine/neovim', as = 'rose-pine' })
-	vim.cmd('colorscheme rose-pine')
+	use({
+		"rose-pine/neovim",
+		as = "rose-pine",
+		config = function()
+			require("rose-pine").setup({
+				-- dark_variant = 'moon',
+				bold_vert_split = true,
+				disable_float_background = true,
+				disable_background = true,
+				groups =  {
+					punctuation = 'muted',
+				}
+			})
+			vim.cmd([[ colorscheme rose-pine ]])
+		end,
+	})
 
 	use('nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'})
+	use('mbbill/undotree')
 end)
