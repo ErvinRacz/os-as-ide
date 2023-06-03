@@ -1,5 +1,20 @@
 vim.g.mapleader = " "
-vim.keymap.set("n", "<leader>`", vim.cmd.Ex)
+
+-- Toggle file explorer and restore previous buffer
+local explorer_open = false
+
+function ToggleExplorer()
+    if explorer_open then
+        vim.cmd('Rex')
+        explorer_open = false
+    else
+        vim.cmd('Ex')
+        explorer_open = true
+    end
+end
+
+vim.keymap.set('n', '<leader>`', '<cmd>lua ToggleExplorer()<CR>', { silent = true })
+-- vim.keymap.set("n", "<leader>`", vim.cmd.Ex)
 
 -- makes possible to move blocks in visual mode
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")

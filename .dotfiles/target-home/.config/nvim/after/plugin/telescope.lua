@@ -1,4 +1,31 @@
 local builtin = require('telescope.builtin')
+
+
+function OpenInTmuxWindow(prompt_bufnr)
+    local selection = require("telescope.actions.state").get_selected_entry()
+    local path = selection.path
+    require("telescope.actions").close(prompt_bufnr)
+
+    -- Run the tmux command to open a new window and open the file
+    vim.fn.system(string.format("tmux new-window 'nvim %s'", path))
+end
+
+
+require('telescope').setup{
+  defaults = {
+    -- Default configuration for telescope goes here:
+    -- config_key = value,
+    mappings = {
+      i = {
+          ["<cr>"] = OpenInTmuxWindow
+      },
+      n = {
+          ["<cr>"] = OpenInTmuxWindow
+      }
+    }
+  },
+}
+
 vim.keymap.set('n', '<leader>n', builtin.find_files, {})
 vim.keymap.set('n', '<C-n>', builtin.git_files, {})
 vim.keymap.set('n', '<C-f>', builtin.live_grep, {})
