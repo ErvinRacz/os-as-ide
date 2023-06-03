@@ -1,4 +1,5 @@
 local builtin = require('telescope.builtin')
+local actions = require('telescope.actions')
 
 
 function OpenInTmuxWindow(prompt_bufnr)
@@ -17,10 +18,10 @@ require('telescope').setup{
     -- config_key = value,
     mappings = {
       i = {
-          ["<cr>"] = OpenInTmuxWindow
+        ["<C-w>"] = OpenInTmuxWindow,
       },
       n = {
-          ["<cr>"] = OpenInTmuxWindow
+        ["<C-w>"] = OpenInTmuxWindow,
       }
     }
   },
