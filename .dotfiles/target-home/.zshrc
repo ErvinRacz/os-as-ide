@@ -106,8 +106,6 @@ source $ZSH/oh-my-zsh.sh
 # https://www.leonerd.org.uk/hacks/fixterms/ & https://en.wikipedia.org/wiki/List_of_Unicode_characters
 bindkey -v
 
-bindkey -r '^I'
-
 alias :q='exit'
 
 export PATH=$HOME/.local/bin:$PATH
