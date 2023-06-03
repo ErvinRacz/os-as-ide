@@ -1,6 +1,6 @@
 require("core")
 
-function update_tmux_window_name()
+function UpdateTmuxWindowName()
     -- local file_path = vim.fn.expand('%:p')
     -- local root_path = vim.fn.getcwd()
     -- local relative_path = vim.fn.fnamemodify(file_path, ':~:.')
@@ -12,6 +12,6 @@ end
 vim.api.nvim_exec([[
     augroup TmuxWindowName
         autocmd!
-        autocmd BufEnter * lua update_tmux_window_name()
+        autocmd BufEnter * lua UpdateTmuxWindowName()
     augroup END
 ]], true)
