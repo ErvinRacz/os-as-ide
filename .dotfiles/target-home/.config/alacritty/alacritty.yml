@@ -6,7 +6,6 @@ shell:
     - -i
     - "source ~/.zshrc; tmux attach || tmux"
 
-
 colors:
   primary:
     background: '0x000000'
