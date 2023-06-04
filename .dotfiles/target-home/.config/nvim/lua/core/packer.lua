@@ -22,6 +22,7 @@ return require('packer').startup(function(use)
         requires = { 'nvim-tree/nvim-web-devicons', opt = true }
     }
 	use('nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'})
+    use('szw/vim-maximizer') -- nice split window toggler
 	use('mbbill/undotree')
     use('tpope/vim-fugitive')
 

@@ -48,5 +48,4 @@ vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 
 
 -- maximize and minimize splits
--- vim.keymap.set("n", "<C-W>M", "<C-W>=")
--- vim.keymap.set("n", "<C-W>m", "<C-W>|<C-W>_")
+vim.keymap.set("n", "<C-W>m", "<cmd>:MaximizerToggle<CR>")
