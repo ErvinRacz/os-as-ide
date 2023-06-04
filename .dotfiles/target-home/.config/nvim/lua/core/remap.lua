@@ -33,14 +33,13 @@ vim.keymap.set("x", "<leader>p", [["_dP]])
 -- vim.keymap.set({"n", "v"}, "<leader>y", [["+y]])
 -- vim.keymap.set("n", "<leader>Y", [["+Y]])
 
--- do nothing on capital Q
+-- do nothing on capital Q or on C-z
 vim.keymap.set("n", "Q", "<nop>")
+vim.keymap.set("n", "<C-z>", "<nop>")
 
 -- for renaming current word
 vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
 
--- vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
--- vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
 vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
 vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 
