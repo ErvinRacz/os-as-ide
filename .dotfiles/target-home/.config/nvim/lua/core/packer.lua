@@ -13,26 +13,45 @@ return require('packer').startup(function(use)
 		requires = { {'nvim-lua/plenary.nvim'} }
 	}
 
-	use({
-		"rose-pine/neovim",
-		as = "rose-pine",
-		config = function()
-			require("rose-pine").setup({
-				-- dark_variant = 'moon',
-				bold_vert_split = true,
-				disable_float_background = true,
-				disable_background = true,
-				groups =  {
-					punctuation = 'muted',
-				}
-			})
-			vim.cmd([[ colorscheme rose-pine ]])
-		end,
-	})
+    -- todo:
+    -- call s:h("diffAdded", { "fg": s:green })
+    -- call s:h("diffRemoved", { "fg": s:red })
 
+    use {
+        'nvim-lualine/lualine.nvim',
+        requires = { 'nvim-tree/nvim-web-devicons', opt = true }
+    }
 	use('nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'})
 	use('mbbill/undotree')
-	use('tpope/vim-fugitive')
+    use('tpope/vim-fugitive')
+
+    use {
+        'lewis6991/gitsigns.nvim',
+        config = function()
+            require('gitsigns').setup()
+        end
+    }
+
+ 	use({
+ 		"rose-pine/neovim",
+ 		as = "rose-pine",
+ 		config = function()
+ 			require("rose-pine").setup({
+ 				-- dark_variant = 'moon',
+ 				bold_vert_split = true,
+ 				disable_float_background = true,
+ 				disable_background = true,
+ 				groups =  {
+ 					punctuation = 'muted',
+                    error = "love",
+                    hint = "iris",
+                    info = "foam",
+                    warn = "orange",
+ 				}
+ 			})
+ 			vim.cmd([[ colorscheme rose-pine ]])
+ 		end,
+ 	})
 
  	use {
  		'VonHeikemen/lsp-zero.nvim',
@@ -46,8 +65,7 @@ return require('packer').startup(function(use)
  					pcall(vim.cmd, 'MasonUpdate')
  				end,
  			},
- 			{'williamboman/mason-lspconfig.nvim'}, -- Optional
- 
+			{'williamboman/mason-lspconfig.nvim'}, -- Optional
  			-- Autocompletion
  			{'hrsh7th/nvim-cmp'},     -- Required
  			{'hrsh7th/cmp-nvim-lsp'}, -- Required

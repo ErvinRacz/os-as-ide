@@ -22,6 +22,7 @@ lsp.ensure_installed({
 -- lsp.setup_nvim_cmp({
 --   mapping = cmp_mappings
 -- })
+--
 
 lsp.on_attach(function(client, bufnr)
   local opts = {buffer = bufnr, remap = false}

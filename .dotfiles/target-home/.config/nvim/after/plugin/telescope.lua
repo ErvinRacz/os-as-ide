@@ -12,19 +12,26 @@ function OpenInTmuxWindow(prompt_bufnr)
 end
 
 
-require('telescope').setup{
-  defaults = {
-    -- Default configuration for telescope goes here:
-    -- config_key = value,
-    mappings = {
-      i = {
-        ["<C-w>"] = OpenInTmuxWindow,
-      },
-      n = {
-        ["<C-w>"] = OpenInTmuxWindow,
-      }
-    }
-  },
+require('telescope').setup {
+    defaults = {
+        vimgrep_arguments = {
+            'rg',
+            '--line-number',
+            '--column',
+            '--smart-case',
+            '--hidden',
+        },
+        -- Default configuration for telescope goes here:
+        -- config_key = value,
+        mappings = {
+            i = {
+                ["<C-w>"] = OpenInTmuxWindow,
+            },
+            n = {
+                ["<C-w>"] = OpenInTmuxWindow,
+            }
+        }
+    },
 }
 
 vim.keymap.set('n', '<leader>n', builtin.find_files, {})
