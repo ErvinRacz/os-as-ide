@@ -34,4 +34,9 @@ vim.opt.isfname:append("@-@")
 
 vim.opt.updatetime = 50
 
+
+vim.opt.winheight = 12
+vim.opt.winwidth = 12
+vim.opt.winminheight = 4
+vim.opt.winminwidth = 4
 -- vim.opt.colorcolumn = "90"
