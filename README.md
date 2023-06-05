@@ -29,5 +29,5 @@ unmap <c-p>
 ```
 
 TODO:
-- Bind LSP keycombinations like refactoring
+- Bind LSP keycombinations like refactoring 
 - use :GcLog -S text for looking for something in log
