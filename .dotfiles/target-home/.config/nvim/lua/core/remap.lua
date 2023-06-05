@@ -27,8 +27,7 @@ vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
 
 -- greatest remap ever which makes pasting greate again
-vim.keymap.set("x", "<leader>p", [["_dP]])
-
+-- vim.keymap.set("x", "<leader>p", [["_dP]])
 -- next greatest remap ever : asbjornHaland
 -- vim.keymap.set({"n", "v"}, "<leader>y", [["+y]])
 -- vim.keymap.set("n", "<leader>Y", [["+Y]])
@@ -38,7 +37,7 @@ vim.keymap.set("n", "Q", "<nop>")
 vim.keymap.set("n", "<C-z>", "<nop>")
 
 -- for renaming current word
-vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
+vim.keymap.set("n", "<C-a-l>", vim.lsp.buf.format)
 
 vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
 vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
@@ -46,6 +45,6 @@ vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 
-
 -- maximize and minimize splits
 vim.keymap.set("n", "<C-W>m", "<cmd>:MaximizerToggle<CR>")
+
