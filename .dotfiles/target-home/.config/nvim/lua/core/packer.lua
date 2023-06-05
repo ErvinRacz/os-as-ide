@@ -23,6 +23,7 @@ return require('packer').startup(function(use)
     }
     use('nvim-treesitter/nvim-treesitter', { run = ':TSUpdate' })
     use('windwp/nvim-autopairs')
+    use('windwp/nvim-ts-autotag')
     use('szw/vim-maximizer') -- nice split window toggler
     use('mbbill/undotree')
     use('tpope/vim-fugitive')
