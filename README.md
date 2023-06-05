@@ -29,6 +29,8 @@ unmap <c-p>
 ```
 
 TODO:
-- Bind LSP keycombinations like refactoring, find how to insert quotes and other things in pairs as in Jetbrains IDEs
+- Bind LSP keycombinations like refactoring
 - use :GcLog -S text for looking for something in log
-- ctrl+alt+L formating or format on save
+- implement language correction
+- highlight diffs in git fugitive
+- make colored bar narrower

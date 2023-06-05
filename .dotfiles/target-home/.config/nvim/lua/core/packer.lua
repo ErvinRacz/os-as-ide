@@ -16,6 +16,7 @@ return require('packer').startup(function(use)
     -- todo:
     -- call s:h("diffAdded", { "fg": s:green })
     -- call s:h("diffRemoved", { "fg": s:red })
+    use { "shortcuts/no-neck-pain.nvim", tag = "*" }
 
     use {
         'nvim-lualine/lualine.nvim',
@@ -40,16 +41,28 @@ return require('packer').startup(function(use)
         as = "rose-pine",
         config = function()
             require("rose-pine").setup({
-                -- dark_variant = 'moon',
-                bold_vert_split = true,
-                disable_float_background = true,
+                variant = "main",
+                bold_vert_split = false,
+                dim_nc_background = false,
                 disable_background = true,
+                disable_float_background = true,
                 groups = {
                     punctuation = 'muted',
                     error = "love",
                     hint = "iris",
                     info = "foam",
                     warn = "orange",
+                },
+                highlight_groups = {
+                    -- helpful: https://github.com/rose-pine/neovim/issues/70
+                    NormalFloat = { bg = "None" },
+                    FloatBorder = { bg = "None" },
+                    TelescopeBorder = { bg = "None" },
+                    TelescopeNormal = { bg = "None" },
+                    TelescopePromptNormal = { bg = "None" },
+                    TelescopeResultsNormal = { fg = "subtle", bg = "None" },
+                    DiffAdded = { fg = "pine" },
+                    DiffRemoved = { fg = "rose" }
                 }
             })
             vim.cmd([[ colorscheme rose-pine ]])
@@ -63,7 +76,7 @@ return require('packer').startup(function(use)
             -- LSP Support
             { 'neovim/nvim-lspconfig' }, -- Required
             {
-                               -- Optional
+                -- Optional
                 'williamboman/mason.nvim',
                 run = function()
                     pcall(vim.cmd, 'MasonUpdate')
@@ -71,9 +84,9 @@ return require('packer').startup(function(use)
             },
             { 'williamboman/mason-lspconfig.nvim' }, -- Optional
             -- Autocompletion
-            { 'hrsh7th/nvim-cmp' },       -- Required
-            { 'hrsh7th/cmp-nvim-lsp' },   -- Required
-            { 'L3MON4D3/LuaSnip' },       -- Required
+            { 'hrsh7th/nvim-cmp' },                  -- Required
+            { 'hrsh7th/cmp-nvim-lsp' },              -- Required
+            { 'L3MON4D3/LuaSnip' },                  -- Required
         }
     }
 end)
