@@ -35,6 +35,8 @@ vim.keymap.set("n", "N", "Nzzzv")
 vim.keymap.set("n", "Q", "<nop>")
 vim.keymap.set("n", "<C-z>", "<nop>")
 
+vim.keymap.set("n", "<C-q>", "<S-k>")
+
 -- for renaming current word
 vim.keymap.set("n", "<C-a-l>", vim.lsp.buf.format)
 
