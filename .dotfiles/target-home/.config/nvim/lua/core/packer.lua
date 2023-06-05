@@ -51,7 +51,7 @@ return require('packer').startup(function(use)
                     error = "love",
                     hint = "iris",
                     info = "foam",
-                    warn = "orange",
+                    warn = "iris",
                 },
                 highlight_groups = {
                     -- helpful: https://github.com/rose-pine/neovim/issues/70

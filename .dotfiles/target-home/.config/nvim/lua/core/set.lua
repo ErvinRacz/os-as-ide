@@ -9,9 +9,9 @@ vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 
--- ignorecase tells Vim to use case-insensitive search by default.
+-- ignore case tells Vim to use case-insensitive search by default.
 vim.opt.ignorecase = true
--- smartcase tells Vim that if any of the search characters are uppercase, treat the search as case-sensitive.
+-- smart case tells Vim that if any of the search characters are uppercase, treat the search as case-sensitive.
 vim.opt.smartcase = true
 
 vim.opt.smartindent = true
