@@ -40,5 +40,5 @@ vim.opt.winwidth = 12
 vim.opt.winminheight = 4
 vim.opt.winminwidth = 4
 
-vim.opt.colorcolumn = "80"
+-- vim.opt.colorcolumn = "80"
 vim.opt.fillchars = { eob = ' ' }

@@ -14,7 +14,6 @@ function ToggleExplorer()
 end
 
 vim.keymap.set('n', '<leader>`', '<cmd>lua ToggleExplorer()<CR>', { silent = true })
--- vim.keymap.set("n", "<leader>`", vim.cmd.Ex)
 
 -- makes possible to move blocks in visual mode
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
