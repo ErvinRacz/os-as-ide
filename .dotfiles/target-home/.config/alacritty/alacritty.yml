@@ -12,8 +12,8 @@ colors:
 
 window:
   padding:
-    x: 5
-    y: 5
+    x: 2
+    y: 2
 
   # Values for `decorations`:
   #     - full: Borders and title bar
@@ -71,7 +71,7 @@ font:
     family: JetBrains Mono
     style: Bold Italic
   # Point size
-  size: 11
+  size: 10
 
 # If `true`, bold text is drawn using the bright color variants.
 draw_bold_text_with_bright_colors: true
