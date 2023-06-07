@@ -21,7 +21,6 @@ lsp.ensure_installed({
     'tailwindcss',
     'html',
     'cssls',
-    'bashls',
 })
 
 local cmp = require('cmp')

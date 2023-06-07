@@ -1,38 +1,33 @@
 - name: Install Prerequsits like Stow, git, Alacritty
   hosts: localhost
-  become: true
+  # become: true
   vars:
     - non_root_user: "{{ lookup('ansible.builtin.env', 'USER') }}"
   tasks:
-  - name: Install xclip
-    dnf:
-      state: present
-      name: xclip
   - name: Install git
-    dnf:
+    homebrew:
       state: present
       name: git
   - name: Install stow
-    dnf:
+    homebrew:
       state: present
       name: stow
   - name: Install ripgrep
-    dnf:
+    homebrew:
       state: present
       name: ripgrep
-  - name: Install Development Tools
-    dnf: name={{ item }} state=present update_cache=yes
-    with_items:
-      - g++
+  # - name: Install Development Tools
+  #   homebrew:
+  #     state: present
+  #     name: g++
   - name: Install neovim
-    dnf:
+    homebrew:
       state: present
       name: neovim
   - name: Install neovim package manager 
-    become: true
-    become_user: "{{ non_root_user }}"
+    # become: true
+    # become_user: "{{ non_root_user }}"
     ansible.builtin.git:
       repo: "https://github.com/wbthomason/packer.nvim"
       dest: "~/.local/share/nvim/site/pack/packer/start/packer.nvim"
       depth: 1
-

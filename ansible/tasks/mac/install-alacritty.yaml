@@ -1,0 +1,30 @@
+- name: Install Alacritty
+  hosts: localhost
+  # become: true
+  tasks:
+  - name: Install
+    block:
+    # - name: Install the terminal
+    #   homebrew:
+    #     state: present
+    #     name: alacritty
+    - name: Create folder for the fonts
+      become: true
+      file:
+        path: /Library/Fonts/JetBrainsMono-2.304/
+        state: directory
+      # Install from https://www.jetbrains.com/lp/mono/#how-to-install
+    - name: Install Jetbrains fonts
+      become: true
+      ansible.builtin.unarchive:
+        src: https://download.jetbrains.com/fonts/JetBrainsMono-2.304.zip
+        dest: /Library/Fonts/JetBrainsMono-2.304
+        remote_src: yes
+    rescue:
+    - name:
+      file:
+        path: /Library/Fonts/JetBrainsMono-2.304/
+        state: absent
+  - name: Font cache
+    shell: fc-cache -f -v
+

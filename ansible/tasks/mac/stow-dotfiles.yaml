@@ -1,0 +1,5 @@
+- name: Stow dotfiles
+  hosts: localhost
+  tasks:
+  - name:
+    shell: stow -d "{{ playbook_dir }}"/../../../.dotfiles/target-home/ -t ~/ .
