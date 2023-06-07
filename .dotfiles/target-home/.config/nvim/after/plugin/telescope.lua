@@ -27,6 +27,11 @@ end
 
 require('telescope').setup {
     defaults = {
+        layout_strategy = "vertical",
+        layout_config = {
+            vertical = { width = 0.8, height = 0.98 },
+            preview_height = 0.62
+        },
         vimgrep_arguments = {
             'rg',
             '--line-number',
