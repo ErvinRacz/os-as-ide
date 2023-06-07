@@ -38,25 +38,14 @@ require('telescope').setup {
         mappings = {
             i = {
                 ["<C-w>"] = OpenInTmuxWindow,
-<<<<<<< HEAD
-                ["<tab>"] = actions.toggle_selection + actions.move_selection_next,
-                ["<s-tab>"] = actions.toggle_selection + actions.move_selection_previous,
-=======
                 ["<tab>"] = actions.toggle_selection + actions.move_selection_previous,
->>>>>>> eb286f4 (provide quickfix utilities)
                 ["<cr>"] = SendToQuickFixList
             },
             n = {
                 ["<C-w>"] = OpenInTmuxWindow,
-<<<<<<< HEAD
-                ["<tab>"] = actions.toggle_selection + actions.move_selection_next,
-                ["<s-tab>"] = actions.toggle_selection + actions.move_selection_previous,
-                ["<cr>"] = SendToQuickFixList            }
-=======
                 ["<tab>"] = actions.toggle_selection + actions.move_selection_previous,
                 ["<cr>"] = SendToQuickFixList
             }
->>>>>>> eb286f4 (provide quickfix utilities)
         }
     },
 }
