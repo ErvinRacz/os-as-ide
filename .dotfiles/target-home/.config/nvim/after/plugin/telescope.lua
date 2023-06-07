@@ -1,5 +1,5 @@
 local builtin = require('telescope.builtin')
-local actions = require('telescope.actions')
+local previewers = require('telescope.previewers')
 
 
 function OpenInTmuxWindow(prompt_bufnr)
