@@ -1,16 +1,28 @@
 local builtin = require('telescope.builtin')
-local previewers = require('telescope.previewers')
-
+local actions = require("telescope.actions")
 
 function OpenInTmuxWindow(prompt_bufnr)
     local selection = require("telescope.actions.state").get_selected_entry()
     local path = selection.path
-    require("telescope.actions").close(prompt_bufnr)
+    actions.actions.close(prompt_bufnr)
 
     -- Run the tmux command to open a new window and open the file
     vim.fn.system(string.format("tmux new-window 'nvim %s'", path))
 end
 
+function SendToQuickFixList(prompt_bufnr)
+    local picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
+    local num_selections = table.getn(picker:get_multi_selection())
+
+    if num_selections > 1 then
+        -- actions.file_edit throws - context of picker seems to change
+        --actions.file_edit(prompt_bufnr)
+        actions.send_selected_to_qflist(prompt_bufnr)
+        actions.open_qflist()
+    else
+        actions.file_edit(prompt_bufnr)
+    end
+end
 
 require('telescope').setup {
     defaults = {
@@ -26,10 +38,15 @@ require('telescope').setup {
         mappings = {
             i = {
                 ["<C-w>"] = OpenInTmuxWindow,
+                ["<tab>"] = actions.toggle_selection + actions.move_selection_next,
+                ["<s-tab>"] = actions.toggle_selection + actions.move_selection_previous,
+                ["<cr>"] = SendToQuickFixList
             },
             n = {
                 ["<C-w>"] = OpenInTmuxWindow,
-            }
+                ["<tab>"] = actions.toggle_selection + actions.move_selection_next,
+                ["<s-tab>"] = actions.toggle_selection + actions.move_selection_previous,
+                ["<cr>"] = SendToQuickFixList            }
         }
     },
 }
@@ -38,5 +55,3 @@ vim.keymap.set('n', '<C-n>', builtin.git_files, {})
 vim.keymap.set('n', '<leader>n', builtin.find_files, {})
 vim.keymap.set('n', '<C-f>', builtin.live_grep, {})
 vim.keymap.set('n', '<leader>f', builtin.grep_string, { silent = true, noremap = true })
--- vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
--- vim.keymap.set('n', '<leader>fh', builtin.help_tags, {}) 
