@@ -18,7 +18,8 @@ function SendToQuickFixList(prompt_bufnr)
         -- actions.file_edit throws - context of picker seems to change
         --actions.file_edit(prompt_bufnr)
         actions.send_selected_to_qflist(prompt_bufnr)
-        actions.open_qflist()
+        -- actions.open_qflist() / becaouse it would open the qflist to the right
+        vim.cmd([[botright copen]])
     else
         actions.file_edit(prompt_bufnr)
     end
