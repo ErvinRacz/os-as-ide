@@ -26,12 +26,18 @@ Stow .dotfiles
 sudo rm -rf ~/.zshrc
 stow -d "{{ playbook_dir }}"/.dotfiles/target-home/ -t ~/ .
 ```
+## MacOs Alt-Tab plugin
+https://alt-tab-macos.netlify.app/
 
 ## Vimium browser plugin
 https://github.com/philc/vimium/wiki
 
 My setup:
 ```
+# In case of Mac
+# map <c-t> createTab
+# map <c-w> removeTab
+
 map <c-o> goBack
 map <c-i> goForward
 unmap b
