@@ -22,7 +22,7 @@ window:
   #     - transparent: Title bar, transparent background and title bar buttons
   #     - buttonless: Title bar, transparent background, but no title bar buttons
   decorations: none
-  opacity: 0.88
+  opacity: 0.8
   startup_mode: Maximized
 
   # Allow terminal applications to change Alacritty's window title.
