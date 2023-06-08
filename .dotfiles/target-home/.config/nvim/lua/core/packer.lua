@@ -23,8 +23,29 @@ return require('packer').startup(function(use)
         requires = { 'nvim-tree/nvim-web-devicons', opt = true }
     }
     use('nvim-treesitter/nvim-treesitter', { run = ':TSUpdate' })
-    use('windwp/nvim-autopairs')
-    use('windwp/nvim-ts-autotag')
+    use('windwp/nvim-autopairs')                       -- to auto insert closinng pairs
+    use('windwp/nvim-ts-autotag')                      -- to rename html tags
+    use('JoosepAlviste/nvim-ts-context-commentstring') -- special line commenter for JSX, TSX
+    use {
+        'numToStr/Comment.nvim',
+        config = function()
+            require('Comment').setup({
+                toggler = {
+                    ---Line-comment toggle keymap
+                    line = '<c-_>',
+                    ---Block-comment toggle keymap
+                    block = '<c-\\>',
+                },
+                opleader = {
+                    ---Line-comment toggle keymap
+                    line = '<c-_>',
+                    ---Block-comment toggle keymap
+                    block = '<c-\\>',
+                },
+                pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
+            })
+        end
+    }
     use('szw/vim-maximizer') -- nice split window toggler
     use('mbbill/undotree')
     use('tpope/vim-fugitive')
