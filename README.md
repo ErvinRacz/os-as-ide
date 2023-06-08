@@ -70,4 +70,5 @@ asdf global nodejs 18.x.y
 TODO:
 - Bind LSP keycombinations like refactoring 
 - use :GcLog -S text for looking for something in log
-- possible comment out plugin
+- https://sookocheff.com/post/vim/neovim-java-ide/
+- https://github.com/VonHeikemen/lsp-zero.nvim/blob/v2.x/doc/md/guides/setup-with-nvim-jdtls.md
