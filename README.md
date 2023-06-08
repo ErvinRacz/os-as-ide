@@ -47,6 +47,26 @@ unmap <c-b>
 unmap <c-p>
 ```
 
+## ASDF package manager
+
+### Java
+```shell
+asdf plugin-add java
+asdf list-all java
+asdf install java zulu-17.42.x
+asdf global java zulu-17.42.x
+. ~/.asdf/plugins/java/set-java-home.zsh
+```
+
+### NodeJs
+
+```shell
+asdf plugin-add nodejs
+asdf list-all nodejs
+asdf install nodejs 18.x.y
+asdf global nodejs 18.x.y
+```
+
 TODO:
 - Bind LSP keycombinations like refactoring 
 - use :GcLog -S text for looking for something in log
