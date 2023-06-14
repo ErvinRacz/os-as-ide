@@ -1,0 +1,131 @@
+shell:
+  program: /bin/zsh
+  args:
+    - -l
+    - -c
+    - -i
+    - "source ~/.zshrc; tmux attach || tmux"
+
+colors:
+  primary:
+    background: '0x000000'
+
+window:
+  padding:
+    x: 2
+    y: 2
+
+  # Values for `decorations`:
+  #     - full: Borders and title bar
+  #     - none: Neither borders nor title bar
+  # (macOS only):
+  #     - transparent: Title bar, transparent background and title bar buttons
+  #     - buttonless: Title bar, transparent background, but no title bar buttons
+  decorations: full
+  opacity: 0.9
+  startup_mode: Maximized
+
+  # Allow terminal applications to change Alacritty's window title.
+  dynamic_title: true
+
+  # Window class (Linux/BSD only):
+  class:
+    # Application instance name
+    instance: Alacritty
+    # General application class
+    general: Alacritty
+
+scrolling:
+  history: 10000
+  #multiplier: 3
+  # Scroll to the bottom when new text is written to the terminal.
+  #auto_scroll: false
+
+# Spaces per Tab (changes require restart)
+#
+# This setting defines the width of a tab in cells.
+#
+# Some applications, like Emacs, rely on knowing about the width of a tab.
+# To prevent unexpected behavior in these applications, it's also required to
+# change the `it` value in terminfo when altering this setting.
+#tabspaces: 8
+
+font:
+  normal:
+    # Default:
+    #   - (macOS) Menlo
+    #   - (Linux/BSD) monospace
+    #   - (Windows) Consolas
+    family: JetBrains Mono
+    style: Regular
+
+  bold:
+    family: JetBrains Mono
+    style: Bold
+
+  italic:
+    family: JetBrains Mono
+    style: Italic
+
+  bold_italic:
+    family: JetBrains Mono
+    style: Bold Italic
+  # Point size
+  size: 14
+
+# If `true`, bold text is drawn using the bright color variants.
+draw_bold_text_with_bright_colors: true
+
+cursor:
+  # Cursor style
+  style:
+    # Cursor shape
+    #
+    # Values for `shape`:
+    #   - ▇ Block
+    #   - _ Underline
+    #   - | Beam
+    shape: Beam
+
+    # Cursor blinking state
+    #
+    # Values for `blinking`:
+    #   - Never: Prevent the cursor from ever blinking
+    #   - Off: Disable blinking by default
+    #   - On: Enable blinking by default
+    #   - Always: Force the cursor to always blink
+    blinking: On
+  blink_interval:   190
+
+
+# The `chars` field writes the specified string to the terminal. This makes
+#    it possible to pass escape sequences. To find escape codes for bindings
+#    like `PageUp` (`"\x1b[5~"`), you can run the command `showkey -a` outside
+#    of tmux. Note that applications use terminfo to map escape sequences back
+#    to keys. It is therefore required to update the terminfo when changing an
+#    escape sequence.
+
+# Features not needed because of tmux
+key_bindings:
+  # scrollback
+  - { key: PageUp,   mods: Shift,         mode: ~Alt,        action: ReceiveChar }
+  - { key: PageDown, mods: Shift,         mode: ~Alt,        action: ReceiveChar }
+  - { key: Home,     mods: Shift,         mode: ~Alt,        action: ReceiveChar }
+  - { key: End,      mods: Shift,         mode: ~Alt,        action: ReceiveChar }
+  - { key: K,        mods: Command,       mode: ~Vi|~Search, action: ReceiveChar }
+  # searching
+  - { key: F,        mods: Control|Shift, mode: ~Search,     action: ReceiveChar }
+  - { key: F,        mods: Command,       mode: ~Search,     action: ReceiveChar }
+  - { key: B,        mods: Control|Shift, mode: ~Search,     action: ReceiveChar }
+  - { key: B,        mods: Command,       mode: ~Search,     action: ReceiveChar }
+  # for navigation
+  # - { key: Tab,      mods: Control|Shift,                    command: { program: "/usr/bin/tmux", args: ["previous-window"] }}
+  # - { key: Tab,      mods: Control,                          command: { program: "/usr/bin/tmux", args: ["next-window"] }}
+  - { key: Tab,  mods: Control,        chars: "\x1b[27;5;9~" }
+  - { key: Tab,  mods: Control|Shift,  chars: "\x1b[27;6;9~" }
+
+
+
+
+
+
