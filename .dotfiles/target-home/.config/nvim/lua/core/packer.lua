@@ -13,10 +13,7 @@ return require('packer').startup(function(use)
         requires = { { 'nvim-lua/plenary.nvim' } }
     }
 
-    -- todo:
-    -- call s:h("diffAdded", { "fg": s:green })
-    -- call s:h("diffRemoved", { "fg": s:red })
-    use { "shortcuts/no-neck-pain.nvim", tag = "*" }
+    -- use { "shortcuts/no-neck-pain.nvim", tag = "*" }
 
     use {
         'nvim-lualine/lualine.nvim',
