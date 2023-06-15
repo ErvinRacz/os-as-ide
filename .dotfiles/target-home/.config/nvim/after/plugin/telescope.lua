@@ -34,12 +34,10 @@ require('telescope').setup {
         -- config_key = value,
         mappings = {
             i = {
-                ["<c-t>"] = actions.select_tab,
                 ["<tab>"] = actions.toggle_selection + actions.move_selection_previous,
                 ["<cr>"] = sendtoquickfixlist
             },
             n = {
-                ["<c-t>"] = actions.select_tab,
                 ["<tab>"] = actions.toggle_selection + actions.move_selection_previous,
                 ["<cr>"] = sendtoquickfixlist
             }

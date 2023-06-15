@@ -105,6 +105,7 @@ source $ZSH/oh-my-zsh.sh
 # Take codes from:
 # https://www.leonerd.org.uk/hacks/fixterms/ & https://en.wikipedia.org/wiki/List_of_Unicode_characters
 bindkey -v
+bindkey -rp '^t'
 
 alias :q='exit'
 
