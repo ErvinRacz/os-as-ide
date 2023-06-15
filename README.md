@@ -25,10 +25,9 @@ Stow .dotfiles
 ```shell
 sudo rm -rf ~/.zshrc
 stow -d "{{ playbook_dir }}"/.dotfiles/target-home/ -t ~/ .
-
--- if MAC:
-rm -rf ~/.config/alacritty/alacritty.yml
-stow -d ~/Workspace/os-as-ide/.dotfiles/alacritty-mac/ -t ~/.config/alacritty alacritty/
+stow -d "{{ playbook_dir }}"/.dotfiles/alacritty-fedora/ -t ~/.config .
+-- OR if you are on MAC
+stow -d "{{ playbook_dir }}"/.dotfiles/alacritty-mac/ -t ~/.config .
 ```
 ## MacOs Alt-Tab plugin
 https://alt-tab-macos.netlify.app/
