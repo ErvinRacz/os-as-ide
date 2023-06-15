@@ -1,15 +1,6 @@
 local builtin = require('telescope.builtin')
 local actions = require("telescope.actions")
 
-function OpenInTmuxWindow(prompt_bufnr)
-    local selection = require("telescope.actions.state").get_selected_entry()
-    local path = selection.path
-    actions.actions.close(prompt_bufnr)
-
-    -- Run the tmux command to open a new window and open the file
-    vim.fn.system(string.format("tmux new-window 'nvim %s'", path))
-end
-
 function SendToQuickFixList(prompt_bufnr)
     local picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
     local num_selections = table.getn(picker:get_multi_selection())
@@ -39,18 +30,18 @@ require('telescope').setup {
             '--smart-case',
             '--hidden',
         },
-        -- Default configuration for telescope goes here:
+        -- default configuration for telescope goes here:
         -- config_key = value,
         mappings = {
             i = {
-                ["<C-w>"] = OpenInTmuxWindow,
+                ["<c-t>"] = actions.select_tab,
                 ["<tab>"] = actions.toggle_selection + actions.move_selection_previous,
-                ["<cr>"] = SendToQuickFixList
+                ["<cr>"] = sendtoquickfixlist
             },
             n = {
-                ["<C-w>"] = OpenInTmuxWindow,
+                ["<c-t>"] = actions.select_tab,
                 ["<tab>"] = actions.toggle_selection + actions.move_selection_previous,
-                ["<cr>"] = SendToQuickFixList
+                ["<cr>"] = sendtoquickfixlist
             }
         }
     },

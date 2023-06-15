@@ -107,6 +107,7 @@ cursor:
 
 # Features not needed because of tmux
 key_bindings:
+  - { key: T,        mods: Control,     action: ReceiveChar }
   # scrollback
   - { key: PageUp,   mods: Shift,         mode: ~Alt,        action: ReceiveChar }
   - { key: PageDown, mods: Shift,         mode: ~Alt,        action: ReceiveChar }
@@ -119,13 +120,5 @@ key_bindings:
   - { key: B,        mods: Control|Shift, mode: ~Search,     action: ReceiveChar }
   - { key: B,        mods: Command,       mode: ~Search,     action: ReceiveChar }
   # for navigation
-  # - { key: Tab,      mods: Control|Shift,                    command: { program: "/usr/bin/tmux", args: ["previous-window"] }}
-  # - { key: Tab,      mods: Control,                          command: { program: "/usr/bin/tmux", args: ["next-window"] }}
   - { key: Tab,  mods: Control,        chars: "\x1b[27;5;9~" }
   - { key: Tab,  mods: Control|Shift,  chars: "\x1b[27;6;9~" }
-
-
-
-
-
-

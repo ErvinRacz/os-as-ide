@@ -1,5 +1,31 @@
 vim.g.mapleader = " "
 
+-- Function to switch tabs forward
+function SwitchTabsForward()
+    local current_tab = vim.api.nvim_get_current_tabpage()
+    local last_tab = table.getn(vim.api.nvim_list_tabpages())
+
+    if current_tab == last_tab and os.getenv("TMUX") then
+        vim.fn.system("tmux select-window -n")
+    else
+        vim.cmd("tabnext")
+    end
+end
+
+-- Function to switch tabs backward
+function SwitchTabsBackward()
+    local current_tab = vim.api.nvim_get_current_tabpage()
+
+    if current_tab == 1 and os.getenv("TMUX") then
+        vim.fn.system("tmux select-window -p")
+    else
+        vim.cmd("tabprevious")
+    end
+end
+
+vim.keymap.set('n', '<C-Tab>', '<cmd>lua SwitchTabsForward()<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<C-S-Tab>', '<cmd>lua SwitchTabsBackward()<CR>', { noremap = true, silent = true })
+
 -- Toggle file explorer and restore previous buffer
 local explorer_open = false
 
@@ -37,7 +63,7 @@ vim.keymap.set("n", "<C-z>", "<nop>")
 
 vim.keymap.set("n", "<C-q>", "<S-k>")
 
--- for renaming current word
+-- for reformating current word
 vim.keymap.set("n", "<C-a-l>", vim.lsp.buf.format)
 
 
@@ -51,4 +77,3 @@ vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 
 -- maximize and minimize splits
 vim.keymap.set("n", "<C-W>m", "<cmd>:MaximizerToggle<CR>")
-
