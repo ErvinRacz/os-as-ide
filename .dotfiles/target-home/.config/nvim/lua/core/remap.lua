@@ -1,11 +1,20 @@
 vim.g.mapleader = " "
 
+function GetTmuxWindowCount()
+  local command = "tmux list-windows | wc -l"
+  local handle = io.popen(command)
+  local result = handle:read("*a")
+  handle:close()
+
+  return tonumber(result)
+end
+
 -- Function to switch tabs forward
 function SwitchTabsForward()
     local current_tab = vim.api.nvim_get_current_tabpage()
     local last_tab = table.getn(vim.api.nvim_list_tabpages())
 
-    if current_tab == last_tab and os.getenv("TMUX") then
+    if current_tab == last_tab and os.getenv("TMUX") and GetTmuxWindowCount() > 1 then
         vim.fn.system("tmux select-window -n")
     else
         vim.cmd("tabnext")
@@ -16,7 +25,7 @@ end
 function SwitchTabsBackward()
     local current_tab = vim.api.nvim_get_current_tabpage()
 
-    if current_tab == 1 and os.getenv("TMUX") then
+    if current_tab == 1 and os.getenv("TMUX") and GetTmuxWindowCount() > 1 then
         vim.fn.system("tmux select-window -p")
     else
         vim.cmd("tabprevious")
