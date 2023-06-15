@@ -32,7 +32,6 @@ function SwitchTabsBackward()
     end
 end
 
-
 function OpenNewTmuxWindow()
     vim.fn.system(string.format("tmux new-window -c '#{pane_current_path}'"))
 end

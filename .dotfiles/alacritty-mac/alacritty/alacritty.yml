@@ -10,7 +10,9 @@ colors:
   primary:
     background: '0x000000'
 
+
 window:
+  option_as_alt: Both
   padding:
     x: 2
     y: 2
