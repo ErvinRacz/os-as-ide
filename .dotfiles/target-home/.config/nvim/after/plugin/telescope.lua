@@ -3,7 +3,7 @@ local actions = require("telescope.actions")
 
 function SendToQuickFixList(prompt_bufnr)
     local picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
-    local num_selections = table.getn(picker:get_multi_selection())
+    local num_selections = #picker:get_multi_selection()
 
     if num_selections > 1 then
         -- actions.file_edit throws - context of picker seems to change
@@ -35,11 +35,11 @@ require('telescope').setup {
         mappings = {
             i = {
                 ["<tab>"] = actions.toggle_selection + actions.move_selection_previous,
-                ["<cr>"] = sendtoquickfixlist
+                ["<cr>"] = SendToQuickFixList
             },
             n = {
                 ["<tab>"] = actions.toggle_selection + actions.move_selection_previous,
-                ["<cr>"] = sendtoquickfixlist
+                ["<cr>"] = SendToQuickFixList
             }
         }
     },
