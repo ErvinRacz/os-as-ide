@@ -76,4 +76,3 @@ TODO:
 - https://sookocheff.com/post/vim/neovim-java-ide/
 - https://github.com/VonHeikemen/lsp-zero.nvim/blob/v2.x/doc/md/guides/setup-with-nvim-jdtls.md
 - Make the fzf work on Ctrl+f that is normally assigned to Ctrl+t by default
-- make strike-through being supported

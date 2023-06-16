@@ -1,4 +1,5 @@
 vim.keymap.set("n", "<C-k>", "<cmd>:tab G<CR>");
+vim.keymap.set("n", "<C-l>", ":tabedit % | GcLog -S ");
 
 local Core_Fugitive = vim.api.nvim_create_augroup("Core_Fugitive", {})
 
