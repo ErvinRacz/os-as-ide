@@ -48,8 +48,7 @@ lsp.ensure_installed({
     'tsserver',
     'eslint',
     'tailwindcss',
-    'html',
-    'cssls',
+    'prettier'
 })
 
 local cmp = require('cmp')
