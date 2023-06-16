@@ -47,7 +47,10 @@ lsp.preset('recommended')
 lsp.ensure_installed({
     'tsserver',
     'eslint',
-    'tailwindcss'
+    'tailwindcss',
+    'spectral-language-server',
+    'html',
+    'cssls'
 })
 
 local cmp = require('cmp')
