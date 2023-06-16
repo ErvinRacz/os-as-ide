@@ -1,18 +1,18 @@
 vim.g.mapleader = " "
 
 function GetTmuxWindowCount()
-  local command = "tmux list-windows | wc -l"
-  local handle = io.popen(command)
-  local result = handle:read("*a")
-  handle:close()
+    local command = "tmux list-windows | wc -l"
+    local handle = io.popen(command)
+    local result = handle:read("*a")
+    handle:close()
 
-  return tonumber(result)
+    return tonumber(result)
 end
 
 -- Function to switch tabs forward
 function SwitchTabsForward()
     local current_tab = vim.api.nvim_get_current_tabpage()
-    local last_tab = table.getn(vim.api.nvim_list_tabpages())
+    local last_tab = #vim.api.nvim_list_tabpages()
 
     if current_tab == last_tab and os.getenv("TMUX") and GetTmuxWindowCount() > 1 then
         vim.fn.system("tmux select-window -n")
@@ -92,6 +92,18 @@ vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 -- maximize and minimize splits
 vim.keymap.set("n", "<C-W>m", "<cmd>:MaximizerToggle<CR>")
 
+function CloseTabOrQuitAll(bang)
+    local tab_count = #vim.api.nvim_list_tabpages()
+    if tab_count > 1 then
+        vim.cmd(bang and "tabclose!" or "tabclose")
+    else
+        vim.cmd(bang and "qa!" or "qa")
+    end
+end
+
+vim.api.nvim_create_user_command("CloseTabOrQuitAll", function(opts)
+    CloseTabOrQuitAll(opts.bang)
+end, { bang = true })
 
 -- Use :tabclose on :qa and fix common typos
 vim.cmd([[
@@ -101,7 +113,7 @@ vim.cmd([[
     cnoreabbrev Q! q!
     cnoreabbrev Q1 q!
     cnoreabbrev q1 q!
-    cnoreabbrev Qa! qa!
+    cnoreabbrev Qa! CloseTabOrQuitAll!
     cnoreabbrev Qall! qall!
     cnoreabbrev Wa wa
     cnoreabbrev Wq wq
@@ -113,7 +125,7 @@ vim.cmd([[
     cnoreabbrev WQ1 wq!
     cnoreabbrev W w
     cnoreabbrev Q q
-    cnoreabbrev Qa tabclose
-    cnoreabbrev qa tabclose
+    cnoreabbrev Qa CloseTabOrQuitAll
+    cnoreabbrev qa CloseTabOrQuitAll
     cnoreabbrev Qall qall
 ]])

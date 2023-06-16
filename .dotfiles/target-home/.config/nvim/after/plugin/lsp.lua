@@ -47,7 +47,6 @@ lsp.preset('recommended')
 lsp.ensure_installed({
     'tsserver',
     'eslint',
-    'json',
     'tailwindcss',
     'html',
     'cssls',
