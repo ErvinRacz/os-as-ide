@@ -48,7 +48,7 @@ lsp.ensure_installed({
     'tsserver',
     'eslint',
     'tailwindcss',
-    'spectral-language-server',
+    'spectral',
     'html',
     'cssls'
 })
