@@ -82,4 +82,8 @@ lsp.on_attach(function(client, bufnr)
     vim.keymap.set("n", "<leader>r", function() vim.lsp.buf.rename() end, opts)
 end)
 
+-- We need to tell lsp-zero to ignore the LSP server jdtls. We want the plugin nvim-jdtls to have full control of the configuration for the server.
+-- We will use the function .skip_server_setup() to make sure lsp-zero doesn't initialize jdtls.
+lsp.skip_server_setup({'jdtls'})
+
 lsp.setup()

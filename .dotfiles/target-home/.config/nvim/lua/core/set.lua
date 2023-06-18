@@ -1,3 +1,15 @@
+-- reduce neovim's footprint
+-- The practical effect of this change means that all plugins I choose are native vimscript and Lua only. So far, I haven’t found this change too limiting but time will tell
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_node_provider = 0
+vim.g.loaded_python_provider = 0
+vim.g.loaded_python3_provider = 0
+-- to look for quality neovim plugins, take a look at this awesome collection: https://github.com/rockerBOO/awesome-neovim
+
+-- spell check
+vim.opt.spell = true
+
 -- for copy and pasting from OS clipboard
 vim.opt.clipboard:append("unnamedplus")
 

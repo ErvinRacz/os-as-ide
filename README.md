@@ -61,6 +61,11 @@ asdf global java zulu-17.42.x
 . ~/.asdf/plugins/java/set-java-home.zsh
 ```
 
+Made Neovim useful for Java based on the following guides:
+- https://github.com/mfussenegger/nvim-jdtls
+- https://sookocheff.com/post/vim/neovim-java-ide/
+- https://github.com/VonHeikemen/lsp-zero.nvim/blob/v2.x/doc/md/guides/setup-with-nvim-jdtls.md
+
 ### NodeJs
 
 ```shell
@@ -73,6 +78,4 @@ asdf global nodejs 18.x.y
 TODO:
 - Bind LSP keycombinations like refactoring 
 - use :GcLog -S text for looking for something in log
-- https://sookocheff.com/post/vim/neovim-java-ide/
-- https://github.com/VonHeikemen/lsp-zero.nvim/blob/v2.x/doc/md/guides/setup-with-nvim-jdtls.md
 - Make the fzf work on Ctrl+f that is normally assigned to Ctrl+t by default
