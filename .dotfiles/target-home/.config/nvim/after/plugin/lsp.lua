@@ -1,5 +1,4 @@
 local lsp = require('lsp-zero')
-local lspkind = require('lspkind')
 local lspconfig = require('lspconfig')
 
 lspconfig.lua_ls.setup {
@@ -55,6 +54,13 @@ lsp.ensure_installed({
 })
 
 local cmp = require('cmp')
+local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+
+cmp.event:on(
+  'confirm_done',
+  cmp_autopairs.on_confirm_done()
+)
+
 local cmp_select = { behavior = cmp.SelectBehavior.Select }
 local cmp_mappings = lsp.defaults.cmp_mappings({
     ['<C-k>'] = cmp.mapping.select_prev_item(cmp_select),
