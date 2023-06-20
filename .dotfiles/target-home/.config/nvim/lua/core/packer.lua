@@ -84,7 +84,11 @@ return require('packer').startup(function(use)
             vim.cmd([[ colorscheme rose-pine ]])
         end,
     })
-
+    use({
+        'weilbith/nvim-code-action-menu',
+        cmd = 'CodeActionMenu',
+    })
+    use('mfussenegger/nvim-jdtls')
     use {
         'VonHeikemen/lsp-zero.nvim',
         branch = 'v2.x',

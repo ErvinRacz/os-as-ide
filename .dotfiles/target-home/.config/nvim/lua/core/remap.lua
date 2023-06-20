@@ -73,6 +73,7 @@ vim.keymap.set("n", "N", "Nzzzv")
 
 -- do nothing on capital Q or on C-z
 vim.keymap.set("n", "Q", "<nop>")
+vim.keymap.set("n", "q:", "<cmd>q<CR>")
 vim.keymap.set("n", "<C-z>", "<nop>")
 
 vim.keymap.set("n", "<C-q>", "<S-k>")

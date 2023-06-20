@@ -1,9 +1,11 @@
-local home = os.getenv('HOME')
+-- TODO: remove all requires for jdtls
+
+local java_cmds = vim.api.nvim_create_augroup('java_cmds', { clear = true })
 local jdtls = require('jdtls')
 
 -- File types that signify a Java project's root directory. This will be
 -- used by eclipse to determine what constitutes a workspace
-local root_markers = {
+local root_files = {
     'gradlew',
     'build.gradle',
     'mvnw',
@@ -11,56 +13,154 @@ local root_markers = {
     '.git',
 }
 
-local root_dir = require('jdtls.setup').find_root(root_markers)
+local features = {
+    -- change this to `true` to enable codelens
+    codelens = false,
+
+    -- TODO: change this to true after installing the beloweae plugins
+    -- change this to `true` if you have `nvim-dap`,
+    -- `java-test` and `java-debug-adapter` installed
+    debugger = false,
+}
+
+local function enable_codelens(bufnr)
+    pcall(vim.lsp.codelens.refresh)
+
+    vim.api.nvim_create_autocmd('BufWritePost', {
+        buffer = bufnr,
+        group = java_cmds,
+        desc = 'refresh codelens',
+        callback = function()
+            pcall(vim.lsp.codelens.refresh)
+        end,
+    })
+end
+
+local function enable_debugger(bufnr)
+    jdtls.setup_dap({ hotcodereplace = 'auto' })
+    require('jdtls.dap').setup_dap_main_class_configs()
+
+    local opts = { buffer = bufnr }
+    vim.keymap.set('n', '<leader>df', "<cmd>lua require('jdtls').test_class()<cr>", opts)
+    vim.keymap.set('n', '<leader>dn', "<cmd>lua require('jdtls').test_nearest_method()<cr>", opts)
+end
 
 -- eclipse.jdt.ls stores project specific data within a folder. If you are working
 -- with multiple different projects, each project must use a dedicated data directory.
 -- This variable is used to configure eclipse to use the directory name of the
 -- current project found using the root_marker as the folder for project specific data.
-local workspace_folder = home .. "/.local/share/eclipse/" .. vim.fn.fnamemodify(root_dir, ":p:h:t")
 
--- Helper function for creating keymaps
-function nnoremap(rhs, lhs, bufopts, desc)
-    bufopts.desc = desc
-    vim.keymap.set("n", rhs, lhs, bufopts)
+local function get_jdtls_paths()
+    local path = {}
+
+    path.data_dir = vim.fn.stdpath('cache') .. '/nvim-jdtls'
+
+    local jdtls_install = require('mason-registry')
+        .get_package('jdtls')
+        :get_install_path()
+
+    print(jdtls_install)
+
+    path.java_agent = jdtls_install .. '/lombok.jar'
+    path.launcher_jar = vim.fn.glob(jdtls_install .. '/plugins/org.eclipse.equinox.launcher_*.jar')
+
+    if vim.fn.has('mac') == 1 then
+        path.platform_config = jdtls_install .. '/config_mac'
+    elseif vim.fn.has('unix') == 1 then
+        path.platform_config = jdtls_install .. '/config_linux'
+    elseif vim.fn.has('win32') == 1 then
+        path.platform_config = jdtls_install .. '/config_win'
+    end
+
+    path.bundles = {}
+
+    ---
+    -- Include java-test bundle if present
+    ---
+    local java_test_path = require('mason-registry')
+        .get_package('java-test')
+        :get_install_path()
+
+    local java_test_bundle = vim.split(
+        vim.fn.glob(java_test_path .. '/extension/server/*.jar'),
+        '\n'
+    )
+
+    if java_test_bundle[1] ~= '' then
+        vim.list_extend(path.bundles, java_test_bundle)
+    end
+
+    ---
+    -- Include java-debug-adapter bundle if present
+    ---
+    local java_debug_path = require('mason-registry')
+        .get_package('java-debug-adapter')
+        :get_install_path()
+
+    local java_debug_bundle = vim.split(
+        vim.fn.glob(java_debug_path .. '/extension/server/com.microsoft.java.debug.plugin-*.jar'),
+        '\n'
+    )
+
+    if java_debug_bundle[1] ~= '' then
+        vim.list_extend(path.bundles, java_debug_bundle)
+    end
+
+    ---
+    -- If you are developing in projects with different Java versions, you need
+    -- to tell eclipse.jdt.ls to use the location of the JDK for your Java version
+    -- See https://github.com/eclipse/eclipse.jdt.ls/wiki/Running-the-JAVA-LS-server-from-the-command-line#initialize-request
+    -- And search for `interface RuntimeOption`
+    -- The `name` is NOT arbitrary, but must match one of the elements from `enum ExecutionEnvironment` in the link above
+    ---
+    path.runtimes = {
+        {
+            name = 'JavaSE-17',
+            path = vim.fn.expand('~/.asdf/installs/java/zulu-17.42.19'),
+        },
+        -- {
+        --   name = 'JavaSE-19',
+        --   path = vim.fn.expand('~/.asdf/installs/java/zulu-17.42.19'),
+        -- },
+    }
+
+    return path
 end
 
--- The on_attach function is used to set key maps after the language server
--- attaches to the current buffer
-local on_attach = function(client, bufnr)
-    -- Regular Neovim LSP client keymappings
-    local bufopts = { noremap = true, silent = true, buffer = bufnr }
-    nnoremap('gD', vim.lsp.buf.declaration, bufopts, "Go to declaration")
-    nnoremap('gd', vim.lsp.buf.definition, bufopts, "Go to definition")
-    nnoremap('gi', vim.lsp.buf.implementation, bufopts, "Go to implementation")
-    nnoremap('K', vim.lsp.buf.hover, bufopts, "Hover text")
-    nnoremap('<C-k>', vim.lsp.buf.signature_help, bufopts, "Show signature")
-    nnoremap('<space>wa', vim.lsp.buf.add_workspace_folder, bufopts, "Add workspace folder")
-    nnoremap('<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts, "Remove workspace folder")
-    nnoremap('<space>wl', function()
-        print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-    end, bufopts, "List workspace folders")
-    nnoremap('<space>D', vim.lsp.buf.type_definition, bufopts, "Go to type definition")
-    nnoremap('<space>rn', vim.lsp.buf.rename, bufopts, "Rename")
-    nnoremap('<space>ca', vim.lsp.buf.code_action, bufopts, "Code actions")
-    vim.keymap.set('v', "<space>ca", "<ESC><CMD>lua vim.lsp.buf.range_code_action()<CR>",
-        { noremap = true, silent = true, buffer = bufnr, desc = "Code actions" })
-    nnoremap('<space>f', function() vim.lsp.buf.format { async = true } end, bufopts, "Format file")
+local path = get_jdtls_paths()
+local data_dir = path.data_dir .. '/' .. vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
 
-    -- Java extensions provided by jdtls
-    nnoremap("<C-o>", jdtls.organize_imports, bufopts, "Organize imports")
-    nnoremap("<space>ev", jdtls.extract_variable, bufopts, "Extract variable")
-    nnoremap("<space>ec", jdtls.extract_constant, bufopts, "Extract constant")
-    vim.keymap.set('v', "<space>em", [[<ESC><CMD>lua require('jdtls').extract_method(true)<CR>]],
-        { noremap = true, silent = true, buffer = bufnr, desc = "Extract method" })
+
+-- This function will be executed everytime jdtls
+-- gets attached to a file.
+-- Here we will create the keybindings.
+local function jdtls_on_attach(client, bufnr)
+    if features.debugger then
+        enable_debugger(bufnr)
+    end
+
+    if features.codelens then
+        enable_codelens(bufnr)
+    end
+
+    -- The following mappings are based on the suggested usage of nvim-jdtls
+    -- https://github.com/mfussenegger/nvim-jdtls#usage
+
+    local opts = { buffer = bufnr }
+    vim.keymap.set('n', '<a-o>', "<cmd>lua require('jdtls').organize_imports()<cr>", opts)
+    vim.keymap.set('n', 'crv', "<cmd>lua require('jdtls').extract_variable()<cr>", opts)
+    vim.keymap.set('x', 'crv', "<esc><cmd>lua require('jdtls').extract_variable(true)<cr>", opts)
+    vim.keymap.set('n', 'crc', "<cmd>lua require('jdtls').extract_constant()<cr>", opts)
+    vim.keymap.set('x', 'crc', "<esc><cmd>lua require('jdtls').extract_constant(true)<cr>", opts)
+    vim.keymap.set('x', 'crm', "<esc><Cmd>lua require('jdtls').extract_method(true)<cr>", opts)
 end
 
 local config = {
     flags = {
         debounce_text_changes = 80,
     },
-    on_attach = on_attach, -- We pass our on_attach keybindings to the configuration map
-    root_dir = root_dir, -- Set the root directory to our found root_marker
+    on_attach = jdtls_on_attach, -- We pass our on_attach keybindings to the configuration map
+    root_dir = jdtls.setup.find_root(root_files),   -- Set the root directory to our found root_marker
     -- Here you can configure eclipse.jdt.ls specific settings
     -- These are defined by the eclipse.jdt.ls project and will be passed to eclipse when starting.
     -- See https://github.com/eclipse/eclipse.jdt.ls/wiki/Running-the-JAVA-LS-server-from-the-command-line#initialize-request
@@ -89,12 +189,12 @@ local config = {
                     "java.util.Objects.requireNonNullElse",
                     "org.mockito.Mockito.*"
                 },
-                filteredTypes = {
-                    "com.sun.*",
-                    "io.micrometer.shaded.*",
-                    "java.awt.*",
-                    "jdk.*", "sun.*",
-                },
+                -- filteredTypes = {
+                --     "com.sun.*",
+                --     "io.micrometer.shaded.*",
+                --     "java.awt.*",
+                --     "jdk.*", "sun.*",
+                -- },
             },
             -- Specify any options for organizing imports
             sources = {
@@ -119,20 +219,7 @@ local config = {
             -- And search for `interface RuntimeOption`
             -- The `name` is NOT arbitrary, but must match one of the elements from `enum ExecutionEnvironment` in the link above
             configuration = {
-                runtimes = {
-                    {
-                        name = "JavaSE-17",
-                        path = home .. "/.asdf/installs/java/corretto-17.0.4.9.1",
-                    },
-                    {
-                        name = "JavaSE-11",
-                        path = home .. "/.asdf/installs/java/corretto-11.0.16.9.1",
-                    },
-                    {
-                        name = "JavaSE-1.8",
-                        path = home .. "/.asdf/installs/java/corretto-8.352.08.1"
-                    },
-                }
+                runtimes = path.runtimes
             }
         }
     },
@@ -142,29 +229,29 @@ local config = {
     -- See: https://github.com/eclipse/eclipse.jdt.ls#running-from-the-command-line
     -- for the full list of options
     cmd = {
-        home .. "/.asdf/installs/java/corretto-17.0.4.9.1/bin/java",
+        -- 💀
+        'java',
         '-Declipse.application=org.eclipse.jdt.ls.core.id1',
         '-Dosgi.bundles.defaultStartLevel=4',
         '-Declipse.product=org.eclipse.jdt.ls.core.product',
         '-Dlog.protocol=true',
         '-Dlog.level=ALL',
-        '-Xmx4g',
+        -- '-javaagent:' .. path.java_agent,
+        '-Xms1g',
         '--add-modules=ALL-SYSTEM',
-        '--add-opens', 'java.base/java.util=ALL-UNNAMED',
-        '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
-        -- If you use lombok, download the lombok jar and place it in ~/.local/share/eclipse
-        '-javaagent:' .. home .. '/.local/share/eclipse/lombok.jar',
-
-        -- The jar file is located where jdtls was installed. This will need to be updated
-        -- to the location where you installed jdtls
-        '-jar', vim.fn.glob('/opt/homebrew/Cellar/jdtls/1.18.0/libexec/plugins/org.eclipse.equinox.launcher_*.jar'),
-
-        -- The configuration for jdtls is also placed where jdtls was installed. This will
-        -- need to be updated depending on your environment
-        '-configuration', '/opt/homebrew/Cellar/jdtls/1.18.0/libexec/config_mac',
-
-        -- Use the workspace_folder defined above to store data for this project
-        '-data', workspace_folder,
+        '--add-opens',
+        'java.base/java.util=ALL-UNNAMED',
+        '--add-opens',
+        'java.base/java.lang=ALL-UNNAMED',
+        -- 💀
+        '-jar',
+        path.launcher_jar,
+        -- 💀
+        '-configuration',
+        path.platform_config,
+        -- 💀
+        '-data',
+        data_dir,
     },
 }
 
