@@ -1,5 +1,3 @@
--- TODO: remove all requires for jdtls
-
 local java_cmds = vim.api.nvim_create_augroup('java_cmds', { clear = true })
 local jdtls = require('jdtls')
 
@@ -58,8 +56,6 @@ local function get_jdtls_paths()
     local jdtls_install = require('mason-registry')
         .get_package('jdtls')
         :get_install_path()
-
-    print(jdtls_install)
 
     path.java_agent = jdtls_install .. '/lombok.jar'
     path.launcher_jar = vim.fn.glob(jdtls_install .. '/plugins/org.eclipse.equinox.launcher_*.jar')
@@ -236,7 +232,7 @@ local config = {
         '-Declipse.product=org.eclipse.jdt.ls.core.product',
         '-Dlog.protocol=true',
         '-Dlog.level=ALL',
-        -- '-javaagent:' .. path.java_agent,
+        '-javaagent:' .. path.java_agent,
         '-Xms1g',
         '--add-modules=ALL-SYSTEM',
         '--add-opens',

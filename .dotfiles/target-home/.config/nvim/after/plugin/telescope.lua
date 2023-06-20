@@ -45,7 +45,15 @@ require('telescope').setup {
     },
 }
 
-vim.keymap.set('n', '<C-n>', builtin.git_files, {})
+-- Function to execute the command and handle errors
+local function find_files()
+  local success, error_message = pcall(builtin.git_files)
+  if not success then
+      builtin.find_files()
+  end
+end
+
+vim.keymap.set('n', '<C-n>', find_files, {})
 vim.keymap.set('n', '<leader>n', builtin.find_files, {})
 vim.keymap.set('n', '<C-f>', builtin.live_grep, {})
 vim.keymap.set('n', '<leader>f', builtin.grep_string, { silent = true, noremap = true })
