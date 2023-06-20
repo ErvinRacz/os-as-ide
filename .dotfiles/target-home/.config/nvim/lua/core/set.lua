@@ -8,7 +8,7 @@ vim.g.loaded_python3_provider = 0
 -- to look for quality neovim plugins, take a look at this awesome collection: https://github.com/rockerBOO/awesome-neovim
 
 -- spell check
-vim.opt.spell = true
+-- vim.opt.spell = true
 
 -- for copy and pasting from OS clipboard
 vim.opt.clipboard:append("unnamedplus")
