@@ -1,5 +1,5 @@
 local lsp = require('lsp-zero')
-
+local lspkind = require('lspkind')
 local lspconfig = require('lspconfig')
 
 lspconfig.lua_ls.setup {
@@ -67,7 +67,7 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
 cmp_mappings['<S-Tab>'] = nil
 
 lsp.setup_nvim_cmp({
-    mapping = cmp_mappings
+    mapping = cmp_mappings,
 })
 
 lsp.on_attach(function(client, bufnr)
@@ -83,6 +83,6 @@ lsp.on_attach(function(client, bufnr)
     vim.keymap.set("n", "<leader>r", function() vim.lsp.buf.rename() end, opts)
 end)
 
-lsp.skip_server_setup({'jdtls'})
+lsp.skip_server_setup({ 'jdtls' })
 
 lsp.setup()

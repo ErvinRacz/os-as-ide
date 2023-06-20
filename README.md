@@ -79,3 +79,6 @@ TODO:
 - Bind LSP keycombinations like refactoring 
 - use :GcLog -S text for looking for something in log
 - Make the fzf work on Ctrl+f that is normally assigned to Ctrl+t by default
+- use grammarely
+- make 'C' work in java files
+- 

@@ -51,7 +51,7 @@ return require('packer').startup(function(use)
             require('gitsigns').setup()
         end
     }
-
+    use('onsails/lspkind.nvim')
     use({
         "rose-pine/neovim",
         as = "rose-pine",
@@ -83,10 +83,6 @@ return require('packer').startup(function(use)
             })
             vim.cmd([[ colorscheme rose-pine ]])
         end,
-    })
-    use({
-        'weilbith/nvim-code-action-menu',
-        cmd = 'CodeActionMenu',
     })
     use('mfussenegger/nvim-jdtls')
     use {
