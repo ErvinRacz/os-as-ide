@@ -42,7 +42,7 @@ require('telescope').setup {
                 ["<tab>"] = actions.toggle_selection + actions.move_selection_previous,
                 ["<cr>"] = SendToQuickFixList
             }
-        }
+        },
     },
 }
 
