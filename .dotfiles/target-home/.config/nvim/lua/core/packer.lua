@@ -12,7 +12,7 @@ return require('packer').startup(function(use)
         -- or                            , branch = '0.1.x',
         requires = { { 'nvim-lua/plenary.nvim' } }
     }
-
+    use { 'stevearc/dressing.nvim' }
     use {
         'nvim-lualine/lualine.nvim',
         requires = { 'nvim-tree/nvim-web-devicons', opt = true }
@@ -51,7 +51,6 @@ return require('packer').startup(function(use)
             require('gitsigns').setup()
         end
     }
-    use('onsails/lspkind.nvim')
     use({
         "rose-pine/neovim",
         as = "rose-pine",

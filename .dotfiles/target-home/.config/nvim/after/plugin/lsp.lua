@@ -54,11 +54,12 @@ lsp.ensure_installed({
 })
 
 local cmp = require('cmp')
-local cmp_autopairs = require('nvim-autopairs.completion.cmp')
 
+-- cmp_autopairs required for inserint a pair of paranthesis automatically when completing a function or method
+local cmp_autopairs = require('nvim-autopairs.completion.cmp')
 cmp.event:on(
-  'confirm_done',
-  cmp_autopairs.on_confirm_done()
+    'confirm_done',
+    cmp_autopairs.on_confirm_done()
 )
 
 local cmp_select = { behavior = cmp.SelectBehavior.Select }

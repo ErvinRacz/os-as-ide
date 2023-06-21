@@ -21,7 +21,6 @@ require('telescope').setup {
         layout_strategy = "vertical",
         layout_config = {
             vertical = { width = 0.8, height = 0.98 },
-            preview_height = 0.62
         },
         vimgrep_arguments = {
             'rg',
@@ -49,10 +48,10 @@ require('telescope').setup {
 
 -- Function to execute the command and handle errors
 local function find_files()
-  local success, error_message = pcall(builtin.git_files)
-  if not success then
-      builtin.find_files()
-  end
+    local success, error_message = pcall(builtin.git_files)
+    if not success then
+        builtin.find_files()
+    end
 end
 
 vim.keymap.set('n', '<C-n>', find_files, {})
