@@ -152,7 +152,7 @@ local function jdtls_on_attach(client, bufnr)
     vim.keymap.set('x', '<c-a-v>', "<esc><cmd>lua require('jdtls').extract_variable(true)<cr>", opts)
     vim.keymap.set('n', '<c-a-c>', "<cmd>lua require('jdtls').extract_constant()<cr>", opts)
     vim.keymap.set('x', '<c-a-c>', "<esc><cmd>lua require('jdtls').extract_constant(true)<cr>", opts)
-    vim.keymap.set('n', '<c-a-e>', "<cmd>lua require('jdtls').extract_method(true)<cr>", opts)
+    -- vim.keymap.set('n', '<c-a-e>', "<cmd>lua require('jdtls').extract_method(true)<cr>", opts)
 end
 
 local config = {
