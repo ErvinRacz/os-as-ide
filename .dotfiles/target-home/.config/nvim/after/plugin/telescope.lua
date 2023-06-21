@@ -16,33 +16,51 @@ function SendToQuickFixList(prompt_bufnr)
     end
 end
 
+local finders_config = {
+    layout_strategy = "vertical",
+    layout_config = {
+        vertical = { width = 0.8, height = 0.98 },
+        preview_height = 0.62
+    },
+    vimgrep_arguments = {
+        'rg',
+        '--line-number',
+        '--column',
+        '--smart-case',
+        '--hidden',
+    },
+    -- default configuration for telescope goes here:
+    -- config_key = value,
+    mappings = {
+        i = {
+            ["<tab>"] = actions.toggle_selection + actions.move_selection_previous,
+            ["<cr>"] = SendToQuickFixList
+        },
+        n = {
+            ["<tab>"] = actions.toggle_selection + actions.move_selection_previous,
+            ["<cr>"] = SendToQuickFixList
+        }
+    },
+}
+
 require('telescope').setup {
     defaults = {
-        layout_strategy = "vertical",
-        layout_config = {
-            vertical = { width = 0.8, height = 0.98 },
-        },
-        vimgrep_arguments = {
-            'rg',
-            '--line-number',
-            '--column',
-            '--smart-case',
-            '--hidden',
-        },
-        -- default configuration for telescope goes here:
-        -- config_key = value,
         mappings = {
             i = {
                 ["<c-k>"] = actions.move_selection_previous,
                 ["<c-j>"] = actions.move_selection_next,
-                ["<tab>"] = actions.toggle_selection + actions.move_selection_previous,
-                ["<cr>"] = SendToQuickFixList
             },
             n = {
-                ["<tab>"] = actions.toggle_selection + actions.move_selection_previous,
-                ["<cr>"] = SendToQuickFixList
+                ["<c-k>"] = actions.move_selection_previous,
+                ["<c-j>"] = actions.move_selection_next,
             }
         },
+    },
+    pickers = {
+        find_files = finders_config,
+        git_files = finders_config,
+        live_grep = finders_config,
+        grep_string = finders_config
     },
 }
 
