@@ -15,10 +15,10 @@ return require('packer').startup(function(use)
         }
     }
     use { 'stevearc/dressing.nvim' }
-    use {
-        'nvim-lualine/lualine.nvim',
-        requires = { 'nvim-tree/nvim-web-devicons', opt = true }
-    }
+    -- use {
+    --     'nvim-lualine/lualine.nvim',
+    --     requires = { 'nvim-tree/nvim-web-devicons', opt = true }
+    -- }
     use('nvim-treesitter/nvim-treesitter', { run = ':TSUpdate' })
     use('windwp/nvim-autopairs')                       -- to auto insert closinng pairs
     use('windwp/nvim-ts-autotag')                      -- to rename html tags

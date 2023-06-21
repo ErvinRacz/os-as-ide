@@ -4,11 +4,15 @@ local jdtls = require('jdtls')
 -- File types that signify a Java project's root directory. This will be
 -- used by eclipse to determine what constitutes a workspace
 local root_files = {
-    'gradlew',
-    'build.gradle',
-    'mvnw',
-    'pom.xml',
-    '.git',
+    -- Single-module projects
+    {
+        'build.xml',           -- Ant
+        'pom.xml',             -- Maven
+        'settings.gradle',     -- Gradle
+        'settings.gradle.kts', -- Gradle
+    },
+    -- Multi-module projects
+    { 'build.gradle', 'build.gradle.kts' },
 }
 
 local features = {
@@ -144,11 +148,11 @@ local function jdtls_on_attach(client, bufnr)
 
     local opts = { buffer = bufnr }
     vim.keymap.set('n', '<a-o>', "<cmd>lua require('jdtls').organize_imports()<cr>", opts)
-    vim.keymap.set('n', 'crv', "<cmd>lua require('jdtls').extract_variable()<cr>", opts)
-    vim.keymap.set('x', 'crv', "<esc><cmd>lua require('jdtls').extract_variable(true)<cr>", opts)
-    vim.keymap.set('n', 'crc', "<cmd>lua require('jdtls').extract_constant()<cr>", opts)
-    vim.keymap.set('x', 'crc', "<esc><cmd>lua require('jdtls').extract_constant(true)<cr>", opts)
-    vim.keymap.set('x', 'crm', "<esc><Cmd>lua require('jdtls').extract_method(true)<cr>", opts)
+    vim.keymap.set('n', '<c-a-v>', "<cmd>lua require('jdtls').extract_variable()<cr>", opts)
+    vim.keymap.set('x', '<c-a-v>', "<esc><cmd>lua require('jdtls').extract_variable(true)<cr>", opts)
+    vim.keymap.set('n', '<c-a-c>', "<cmd>lua require('jdtls').extract_constant()<cr>", opts)
+    vim.keymap.set('x', '<c-a-c>', "<esc><cmd>lua require('jdtls').extract_constant(true)<cr>", opts)
+    vim.keymap.set('n', '<c-a-e>', "<cmd>lua require('jdtls').extract_method(true)<cr>", opts)
 end
 
 local config = {
@@ -156,7 +160,8 @@ local config = {
         debounce_text_changes = 80,
     },
     on_attach = jdtls_on_attach, -- We pass our on_attach keybindings to the configuration map
-    root_dir = jdtls.setup.find_root(root_files),   -- Set the root directory to our found root_marker
+    root_dir = jdtls.setup.find_root(root_files),
+    single_file_support = true,
     -- Here you can configure eclipse.jdt.ls specific settings
     -- These are defined by the eclipse.jdt.ls project and will be passed to eclipse when starting.
     -- See https://github.com/eclipse/eclipse.jdt.ls/wiki/Running-the-JAVA-LS-server-from-the-command-line#initialize-request
