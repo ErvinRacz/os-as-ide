@@ -93,6 +93,12 @@ vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 -- maximize and minimize splits
 vim.keymap.set("n", "<C-W>m", "<cmd>:MaximizerToggle<CR>")
 
+--#region Copilot
+vim.g.copilot_no_tab_map = true
+vim.api.nvim_set_keymap('i', '<ESC>[27;13;9;13~', ':echo "Control+Enter was pressed"<CR>', { silent = true })
+vim.api.nvim_set_keymap("i", "<C-cr>", 'copilot#Accept("<CR>")', { expr = true, silent = true })
+--#endregion
+
 function CloseTabOrQuitAll(bang)
     local tab_count = #vim.api.nvim_list_tabpages()
     if tab_count > 1 then

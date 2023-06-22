@@ -15,7 +15,9 @@ vim.opt.clipboard:append("unnamedplus")
 
 vim.opt.nu = true
 vim.opt.relativenumber = true
-vim.opt.cul = true
+
+-- highlighted cursor line
+vim.opt.cul = false
 
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
@@ -55,3 +57,4 @@ vim.opt.winminwidth = 4
 
 -- vim.opt.colorcolumn = "80"
 vim.opt.fillchars = { eob = ' ' }
+

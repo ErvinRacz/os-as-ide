@@ -41,14 +41,14 @@ scrolling:
   # Scroll to the bottom when new text is written to the terminal.
   #auto_scroll: false
 
-# Spaces per Tab (changes require restart)
-#
-# This setting defines the width of a tab in cells.
-#
-# Some applications, like Emacs, rely on knowing about the width of a tab.
-# To prevent unexpected behavior in these applications, it's also required to
-# change the `it` value in terminfo when altering this setting.
-#tabspaces: 8
+  # Spaces per Tab (changes require restart)
+  #
+  # This setting defines the width of a tab in cells.
+  #
+  # Some applications, like Emacs, rely on knowing about the width of a tab.
+  # To prevent unexpected behavior in these applications, it's also required to
+  # change the `it` value in terminfo when altering this setting.
+  #tabspaces: 8
 
 font:
   normal:
@@ -95,8 +95,7 @@ cursor:
     #   - On: Enable blinking by default
     #   - Always: Force the cursor to always blink
     blinking: On
-  blink_interval:   190
-
+  blink_interval: 190
 
 # The `chars` field writes the specified string to the terminal. This makes
 #    it possible to pass escape sequences. To find escape codes for bindings
@@ -107,18 +106,63 @@ cursor:
 
 # Features not needed because of tmux
 key_bindings:
-  - { key: T,        mods: Control,     action: ReceiveChar }
+  - { key: T, mods: Control, action: ReceiveChar }
   # scrollback
-  - { key: PageUp,   mods: Shift,         mode: ~Alt,        action: ReceiveChar }
-  - { key: PageDown, mods: Shift,         mode: ~Alt,        action: ReceiveChar }
-  - { key: Home,     mods: Shift,         mode: ~Alt,        action: ReceiveChar }
-  - { key: End,      mods: Shift,         mode: ~Alt,        action: ReceiveChar }
-  - { key: K,        mods: Command,       mode: ~Vi|~Search, action: ReceiveChar }
+  - {
+      key: PageUp,
+      mods: Shift,
+      mode: ~Alt,
+      action: ReceiveChar
+    }
+  - {
+      key: PageDown,
+      mods: Shift,
+      mode: ~Alt,
+      action: ReceiveChar
+    }
+  - {
+      key: Home,
+      mods: Shift,
+      mode: ~Alt,
+      action: ReceiveChar
+    }
+  - {
+      key: End,
+      mods: Shift,
+      mode: ~Alt,
+      action: ReceiveChar
+    }
+  - {
+      key: K,
+      mods: Command,
+      mode: ~Vi|~Search,
+      action: ReceiveChar
+    }
   # searching
-  - { key: F,        mods: Control|Shift, mode: ~Search,     action: ReceiveChar }
-  - { key: F,        mods: Command,       mode: ~Search,     action: ReceiveChar }
-  - { key: B,        mods: Control|Shift, mode: ~Search,     action: ReceiveChar }
-  - { key: B,        mods: Command,       mode: ~Search,     action: ReceiveChar }
+  - {
+      key: F,
+      mods: Control|Shift,
+      mode: ~Search,
+      action: ReceiveChar
+    }
+  - {
+      key: F,
+      mods: Command,
+      mode: ~Search,
+      action: ReceiveChar
+    }
+  - {
+      key: B,
+      mods: Control|Shift,
+      mode: ~Search,
+      action: ReceiveChar
+    }
+  - {
+      key: B,
+      mods: Command,
+      mode: ~Search,
+      action: ReceiveChar
+    }
   # for navigation
-  - { key: Tab,  mods: Control,        chars: "\x1b[27;5;9~" }
-  - { key: Tab,  mods: Control|Shift,  chars: "\x1b[27;6;9~" }
+  - { key: Tab, mods: Control, chars: "\e[27;5;9~" }
+  - { key: Tab, mods: Control|Shift, chars: "\e[27;6;9~" }

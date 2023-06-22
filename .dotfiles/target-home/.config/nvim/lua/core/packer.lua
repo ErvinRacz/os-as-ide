@@ -16,8 +16,8 @@ return require('packer').startup(function(use)
     }
     use { 'stevearc/dressing.nvim' }
     use('nvim-treesitter/nvim-treesitter', { run = ':TSUpdate' })
-    use('windwp/nvim-autopairs') -- to auto insert closinng pairs
-    use('windwp/nvim-ts-autotag') -- to rename html tags
+    use('windwp/nvim-autopairs')                       -- to auto insert closinng pairs
+    use('windwp/nvim-ts-autotag')                      -- to rename html tags
     use('JoosepAlviste/nvim-ts-context-commentstring') -- special line commenter for JSX, TSX
     use {
         'numToStr/Comment.nvim',
@@ -75,13 +75,12 @@ return require('packer').startup(function(use)
                     TelescopePromptNormal = { bg = "None" },
                     TelescopeResultsNormal = { fg = "subtle", bg = "None" },
                     DiffAdded = { fg = "pine" },
-                    DiffRemoved = { fg = "rose" }
+                    DiffRemoved = { fg = "rose" },
                 }
             })
             vim.cmd([[ colorscheme rose-pine ]])
         end,
     })
-    use('github/copilot.vim')
     use('mfussenegger/nvim-jdtls')
     use {
         'VonHeikemen/lsp-zero.nvim',
@@ -98,8 +97,8 @@ return require('packer').startup(function(use)
             },
             { 'williamboman/mason-lspconfig.nvim' }, -- Optional
             -- Autocompletion
-            { 'hrsh7th/nvim-cmp' }, -- Required
-            { 'hrsh7th/cmp-nvim-lsp' }, -- Required
+            { 'hrsh7th/nvim-cmp' },                  -- Required
+            { 'hrsh7th/cmp-nvim-lsp' },              -- Required
             { 'hrsh7th/cmp-nvim-lsp-signature-help' },
             { 'hrsh7th/cmp-vsnip' },
             { 'hrsh7th/vim-vsnip' },
@@ -107,4 +106,5 @@ return require('packer').startup(function(use)
             { 'L3MON4D3/LuaSnip' }, -- Required
         }
     }
+    use('github/copilot.vim')
 end)
