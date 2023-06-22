@@ -83,6 +83,7 @@ TODO:
 - make 'C' work in java files
 - inspiration: https://github.com/soofaloofa/dotfiles/blob/master/.config/nvim/lua/plugins/init.lua
 - make dap use telescope
+- make remote docs in java be fetched
 
 ## Troubleshooting
 ### Debug LSP

@@ -6,7 +6,7 @@ vim.cmd [[packadd packer.nvim]]
 return require('packer').startup(function(use)
     -- Packer can manage itself
     use 'wbthomason/packer.nvim'
-
+    use('nvim-tree/nvim-web-devicons')
     use {
         'nvim-telescope/telescope.nvim', tag = '0.1.2',
         -- or                            , branch = '0.1.x',
@@ -15,13 +15,9 @@ return require('packer').startup(function(use)
         }
     }
     use { 'stevearc/dressing.nvim' }
-    -- use {
-    --     'nvim-lualine/lualine.nvim',
-    --     requires = { 'nvim-tree/nvim-web-devicons', opt = true }
-    -- }
     use('nvim-treesitter/nvim-treesitter', { run = ':TSUpdate' })
-    use('windwp/nvim-autopairs')                       -- to auto insert closinng pairs
-    use('windwp/nvim-ts-autotag')                      -- to rename html tags
+    use('windwp/nvim-autopairs') -- to auto insert closinng pairs
+    use('windwp/nvim-ts-autotag') -- to rename html tags
     use('JoosepAlviste/nvim-ts-context-commentstring') -- special line commenter for JSX, TSX
     use {
         'numToStr/Comment.nvim',
@@ -101,9 +97,13 @@ return require('packer').startup(function(use)
             },
             { 'williamboman/mason-lspconfig.nvim' }, -- Optional
             -- Autocompletion
-            { 'hrsh7th/nvim-cmp' },                  -- Required
-            { 'hrsh7th/cmp-nvim-lsp' },              -- Required
-            { 'L3MON4D3/LuaSnip' },                  -- Required
+            { 'hrsh7th/nvim-cmp' }, -- Required
+            { 'hrsh7th/cmp-nvim-lsp' }, -- Required
+            { 'hrsh7th/cmp-nvim-lsp-signature-help' },
+            { 'hrsh7th/cmp-vsnip' },
+            { 'hrsh7th/vim-vsnip' },
+            { 'onsails/lspkind.nvim' },
+            { 'L3MON4D3/LuaSnip' }, -- Required
         }
     }
 end)

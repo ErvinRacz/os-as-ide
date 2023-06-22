@@ -10,13 +10,13 @@
         name: alacritty
     - name: Create folder for the fonts
       file:
-        path: /usr/share/fonts/JetBrainsMono-2.304/
+        path: /usr/share/fonts/JetBrainsNerdMono/
         state: directory
       # Install from https://www.jetbrains.com/lp/mono/#how-to-install
     - name: Install Jetbrains fonts
       ansible.builtin.unarchive:
-        src: https://download.jetbrains.com/fonts/JetBrainsMono-2.304.zip
-        dest: /usr/share/fonts/JetBrainsMono-2.304
+        src: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/JetBrainsMono.zip
+        dest: /usr/share/fonts/JetBrainsNerdMono
         remote_src: yes
     rescue:
     - name:
