@@ -83,3 +83,8 @@ TODO:
 - make 'C' work in java files
 - inspiration: https://github.com/soofaloofa/dotfiles/blob/master/.config/nvim/lua/plugins/init.lua
 - make dap use telescope
+
+## Troubleshooting
+### Debug LSP
+- Check the log files. Use :LspLoga or :JdtShowLogs or open the log file manually. :lua print(vim.fn.stdpath('cache')) lists the path, there should be a lsp.log. You may have to increase the log level. See :help vim.lsp.set_log_level().
+- Remove Java Project Cache with :JdtWipeDataAndRestart

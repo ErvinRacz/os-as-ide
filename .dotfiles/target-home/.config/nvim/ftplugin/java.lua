@@ -6,9 +6,9 @@ local jdtls = require('jdtls')
 local root_files = {
     -- Single-module projects
     {
-        'build.xml',           -- Ant
-        'pom.xml',             -- Maven
-        'settings.gradle',     -- Gradle
+        'build.xml', -- Ant
+        'pom.xml', -- Maven
+        'settings.gradle', -- Gradle
         'settings.gradle.kts', -- Gradle
     },
     -- Multi-module projects
@@ -118,6 +118,10 @@ local function get_jdtls_paths()
             name = 'JavaSE-17',
             path = vim.fn.expand('~/.asdf/installs/java/zulu-17.42.19'),
         },
+        {
+            name = 'JavaSE-11',
+            path = vim.fn.expand('~/.asdf/installs/java/zulu-11.64.19'),
+        }
         -- {
         --   name = 'JavaSE-19',
         --   path = vim.fn.expand('~/.asdf/installs/java/zulu-17.42.19'),
