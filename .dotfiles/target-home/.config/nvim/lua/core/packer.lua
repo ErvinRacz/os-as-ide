@@ -81,6 +81,7 @@ return require('packer').startup(function(use)
             vim.cmd([[ colorscheme rose-pine ]])
         end,
     })
+    use('github/copilot.vim')
     use('mfussenegger/nvim-jdtls')
     use {
         'VonHeikemen/lsp-zero.nvim',
