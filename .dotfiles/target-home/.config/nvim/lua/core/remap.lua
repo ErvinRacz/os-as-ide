@@ -99,6 +99,12 @@ vim.api.nvim_set_keymap('i', '<C-Tab>', 'copilot#Accept("<CR>")', { expr = true,
 -- map <C-Enter> aka <C-F11> from alacritty which is <F35> in neovim to accept copilot suggestion
 vim.api.nvim_set_keymap("i", "<a-9>", 'copilot#Accept("<Tab>")', { expr = true, silent = true })
 vim.api.nvim_set_keymap("i", "<C-l>", '<Plug>(copilot-next)', { silent = true })
+
+vim.api.nvim_create_user_command("Cop", function(opts)
+    vim.cmd("Copilot panel")
+end, {})
+
+vim.keymap.set("n", "<leader>cp", "<cmd>Cop<CR>", { silent = true })
 --#endregion
 
 function CloseTabOrQuitAll(bang)

@@ -29,6 +29,12 @@ lspconfig.lua_ls.setup {
     },
 }
 
+lspconfig.tsserver.setup({
+    on_attach = function(client, bufnr)
+        lsp.default_keymaps({ buffer = bufnr })
+    end
+})
+
 -- Custom file types
 vim.filetype.add({
     extension = {
@@ -64,6 +70,7 @@ cmp.event:on(
 )
 
 local cmp_select = { behavior = cmp.SelectBehavior.Select }
+-- vim.api.nvim_set_keymap("i", "<C-l>", '<Plug>(copilot-next)', { silent = true })
 local cmp_mappings = lsp.defaults.cmp_mappings({
     ['<C-k>'] = cmp.mapping.select_prev_item(cmp_select),
     ['<C-j>'] = cmp.mapping.select_next_item(cmp_select),
@@ -75,7 +82,10 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
         behavior = cmp.ConfirmBehavior.Replace,
         select = true
     }),
-    ["<C-Space>"] = cmp.mapping.complete(),
+    ["<C-Space>"] = function(args)
+        cmp.mapping.complete()
+        vim.call("<Plug>(copilot-suggest)")
+    end,
 })
 
 cmp_mappings['<S-Tab>'] = nil
