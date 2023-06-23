@@ -166,3 +166,5 @@ key_bindings:
   # for navigation
   - { key: Tab, mods: Control, chars: "\e[27;5;9~" }
   - { key: Tab, mods: Control|Shift, chars: "\e[27;6;9~" }
+  # use Alt + 9 as a Ctrl + Enter combination
+  - { key: Return, mods: Control, chars: "\x1b9" }

@@ -95,8 +95,10 @@ vim.keymap.set("n", "<C-W>m", "<cmd>:MaximizerToggle<CR>")
 
 --#region Copilot
 vim.g.copilot_no_tab_map = true
-vim.api.nvim_set_keymap('i', '<ESC>[27;13;9;13~', ':echo "Control+Enter was pressed"<CR>', { silent = true })
-vim.api.nvim_set_keymap("i", "<C-l>", 'copilot#Accept("<CR>")', { expr = true, silent = true })
+vim.api.nvim_set_keymap('i', '<C-Tab>', 'copilot#Accept("<CR>")', { expr = true, silent = true })
+-- map <C-Enter> aka <C-F11> from alacritty which is <F35> in neovim to accept copilot suggestion
+vim.api.nvim_set_keymap("i", "<a-9>", 'copilot#Accept("<Tab>")', { expr = true, silent = true })
+vim.api.nvim_set_keymap("i", "<C-l>", '<Plug>(copilot-next)', { silent = true })
 --#endregion
 
 function CloseTabOrQuitAll(bang)
