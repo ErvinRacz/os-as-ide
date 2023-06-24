@@ -2,6 +2,42 @@ local lsp = require('lsp-zero')
 local lspconfig = require('lspconfig')
 local lspkind = require('lspkind')
 
+-- Custom file types
+vim.filetype.add({
+    extension = {
+        eslintrc = "json",
+        mdx = "markdown",
+        prettierrc = "json",
+        mjml = "html",
+    },
+    pattern = {
+        [".*%.env.*"] = "sh",
+    },
+})
+
+lsp.preset('recommended')
+
+lsp.ensure_installed({
+    'lua_ls',
+    'tsserver',
+    'eslint',
+    'tailwindcss',
+    'spectral',
+    'html',
+    'cssls',
+    'jdtls'
+})
+
+local lsp_flags = {
+    -- This is the default in Nvim 0.7+
+    debounce_text_changes = 150,
+}
+
+-- bash, requires bash-language-server
+lspconfig.bashls.setup {
+    flags = lsp_flags,
+}
+
 lspconfig.lua_ls.setup {
     settings = {
         Lua = {
@@ -29,36 +65,40 @@ lspconfig.lua_ls.setup {
     },
 }
 
-lspconfig.tsserver.setup({
-    on_attach = function(client, bufnr)
-        lsp.default_keymaps({ buffer = bufnr })
-    end
-})
+lspconfig.tsserver.setup({})
 
--- Custom file types
-vim.filetype.add({
-    extension = {
-        eslintrc = "json",
-        mdx = "markdown",
-        prettierrc = "json",
-        mjml = "html",
-    },
-    pattern = {
-        [".*%.env.*"] = "sh",
-    },
-})
+-- css, html
+-- requires vscode-langservers-extracted npm package
+--Enable (broadcasting) snippet capability for completion
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+lspconfig.cssls.setup {
+    capabilities = capabilities,
+    flags = lsp_flags,
+}
+lspconfig.html.setup {
+    capabilities = capabilities,
+    flags = lsp_flags,
+}
+-- json
+lspconfig.jsonls.setup {
+    capabilities = capabilities,
+    flags = lsp_flags,
+}
+-- css+
+lspconfig.tailwindcss.setup {
+    flags = lsp_flags,
+}
+-- java
+lspconfig.jdtls.setup {
+    flags = lsp_flags,
+}
 
-lsp.preset('recommended')
-
-lsp.ensure_installed({
-    'tsserver',
-    'eslint',
-    'tailwindcss',
-    'spectral',
-    'html',
-    'cssls',
-    'jdtls'
-})
+-- rust, requires rust_analyzer
+-- lspconfig.rust_analyzer.setup {
+-- 	on_attach = on_attach,
+-- 	flags = lsp_flags,
+-- }
 
 local cmp = require('cmp')
 
@@ -84,7 +124,6 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
     }),
     ["<C-Space>"] = function(args)
         cmp.mapping.complete()
-        vim.call("<Plug>(copilot-suggest)")
     end,
 })
 
@@ -126,5 +165,50 @@ lsp.on_attach(function(client, bufnr)
 end)
 
 lsp.skip_server_setup({ 'jdtls' })
-
 lsp.setup()
+
+--#region For formatting with external tools we need to itnerface a plugin
+local filtetypes_from_lsp_for_prettier = {
+    'eslint',
+    'tsserver',
+    'html',
+    'cssls',
+    'jsonls'
+    -- Add more servers here
+}
+
+local function format_with_prettierd()
+    return {
+        exe = "prettierd",
+        args = { vim.api.nvim_buf_get_name(0) },
+        stdin = true
+    }
+end
+
+-- Function to get the list of filetypes for each LSP server
+local function map_prettierd_to_filetypes(servers)
+    local filetypes = {}
+
+    for _, server in ipairs(servers) do
+        local config = require("lspconfig")[server]
+        if config and config.filetypes then
+            for _, ft in ipairs(config.filetypes) do
+                filetypes[ft] = { format_with_prettierd }
+            end
+        end
+    end
+    return filetypes
+end
+
+local prettierd_filetype_mappings = map_prettierd_to_filetypes(filtetypes_from_lsp_for_prettier)
+
+require('formatter').setup({
+    -- Enable or disable logging
+    logging = true,
+    -- Set the log level
+    log_level = vim.log.levels.DEBUG,
+    filetype = prettierd_filetype_mappings,
+})
+--#endregion
+
+

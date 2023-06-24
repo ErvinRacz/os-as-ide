@@ -42,7 +42,6 @@ vim.keymap.set('n', '<C-t>', '<cmd>lua OpenNewTmuxWindow()<CR>', { noremap = tru
 
 -- Toggle file explorer and restore previous buffer
 local explorer_open = false
-
 function ToggleExplorer()
     if explorer_open then
         vim.cmd('Rex')
@@ -79,14 +78,13 @@ vim.keymap.set("n", "<C-z>", "<nop>")
 vim.keymap.set("n", "<C-q>", "<S-k>")
 
 -- for reformating current word
-vim.keymap.set("n", "<C-a-l>", vim.lsp.buf.format)
+vim.keymap.set("n", "<C-a-l>", "<cmd>FormatWrite<CR>")
+vim.keymap.set("v", "<C-a-l>", "<cmd>FormatWrite<CR>")
 
-
-vim.keymap.set("n", "<leader>j", "<cmd>cnext<CR>zz")
-vim.keymap.set("n", "<leader>k", "<cmd>cprev<CR>zz")
-vim.keymap.set("n", "<leader>J", "<cmd>lnext<CR>zz")
-vim.keymap.set("n", "<leader>K", "<cmd>lprev<CR>zz")
-
+vim.keymap.set("n", "<leader>j", "<cmd>cnext<cr>zz")
+vim.keymap.set("n", "<leader>k", "<cmd>cprev<cr>zz")
+vim.keymap.set("n", "<leader>j", "<cmd>lnext<cr>zz")
+vim.keymap.set("n", "<leader>k", "<cmd>lprev<cr>zz")
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 
