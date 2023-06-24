@@ -204,11 +204,22 @@ local prettierd_filetype_mappings = map_prettierd_to_filetypes(filtetypes_from_l
 
 require('formatter').setup({
     -- Enable or disable logging
-    logging = true,
+    logging = false,
     -- Set the log level
     log_level = vim.log.levels.DEBUG,
-    filetype = prettierd_filetype_mappings,
+    filetype = vim.tbl_extend('force', prettierd_filetype_mappings, {
+        ["*"] = {
+            function()
+                if vim.tbl_contains(vim.tbl_keys(prettierd_filetype_mappings), vim.bo.filetype) then
+                    -- print("filetype was formatter with prettierd")
+                    return nil
+                end
+
+                -- print("formatted with lsp")
+                vim.lsp.buf.format()
+            end,
+        }
+        -- Add more filetypes here
+    }),
 })
 --#endregion
-
-
