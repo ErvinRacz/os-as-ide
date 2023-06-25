@@ -80,7 +80,6 @@ TODO:
 - use :GcLog -S text for looking for something in log
 - Make the fzf work on Ctrl+f that is normally assigned to Ctrl+t by default
 - use grammarely
-- make 'C' work in java files
 - inspiration: https://github.com/soofaloofa/dotfiles/blob/master/.config/nvim/lua/plugins/init.lua
 - make dap use telescope
 - make remote docs in java be fetched
