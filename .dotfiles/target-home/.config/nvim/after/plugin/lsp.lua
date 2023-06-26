@@ -21,8 +21,9 @@ lsp.ensure_installed({
     'lua_ls',
     'tsserver',
     'eslint',
+    'jsonls',
+    'yamlls',
     'tailwindcss',
-    'spectral',
     'html',
     'cssls',
     'jdtls'
@@ -85,14 +86,19 @@ lspconfig.jsonls.setup {
     capabilities = capabilities,
     flags = lsp_flags,
 }
+-- yaml
+lspconfig.yamlls.setup {
+    capabilities = capabilities,
+    flags = lsp_flags,
+}
 -- css+
 lspconfig.tailwindcss.setup {
     flags = lsp_flags,
 }
 -- java
-lspconfig.jdtls.setup {
-    flags = lsp_flags,
-}
+-- lspconfig.jdtls.setup {
+-- flags = lsp_flags,
+-- }
 
 -- rust, requires rust_analyzer
 -- lspconfig.rust_analyzer.setup {
@@ -144,8 +150,8 @@ lsp.setup_nvim_cmp({
     },
     formatting = {
         format = lspkind.cmp_format({
-            mode = 'symbol_text',  -- show only symbol annotations
-            maxwidth = 50,         -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+            mode = 'symbol_text', -- show only symbol annotations
+            maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
             ellipsis_char = '...', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
         })
     }
@@ -173,7 +179,8 @@ local filtetypes_from_lsp_for_prettier = {
     'tsserver',
     'html',
     'cssls',
-    'jsonls'
+    'jsonls',
+    'yamlls'
     -- Add more servers here
 }
 
@@ -186,7 +193,7 @@ local function format_with_prettierd()
 end
 
 -- Function to get the list of filetypes for each LSP server
-local function map_prettierd_to_filetypes(servers)
+local function map_prettierd_to_filetypes(servers, additiona_filetypes)
     local filetypes = {}
 
     for _, server in ipairs(servers) do
@@ -197,10 +204,17 @@ local function map_prettierd_to_filetypes(servers)
             end
         end
     end
+
+    if additiona_filetypes then
+        for _, ft in ipairs(additiona_filetypes) do
+            filetypes[ft] = { format_with_prettierd }
+        end
+    end
+
     return filetypes
 end
 
-local prettierd_filetype_mappings = map_prettierd_to_filetypes(filtetypes_from_lsp_for_prettier)
+local prettierd_filetype_mappings = map_prettierd_to_filetypes(filtetypes_from_lsp_for_prettier, {})
 
 require('formatter').setup({
     -- Enable or disable logging
@@ -211,7 +225,7 @@ require('formatter').setup({
         ["*"] = {
             function()
                 if vim.tbl_contains(vim.tbl_keys(prettierd_filetype_mappings), vim.bo.filetype) then
-                    -- print("filetype was formatter with prettierd")
+                    -- print("filetype was formatted with prettierd")
                     return nil
                 end
 
