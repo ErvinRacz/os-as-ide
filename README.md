@@ -87,6 +87,7 @@ TODO:
 
 ## Troubleshooting
 ### Debug LSP
+- use `showkey -a` to debug key-combos
 - Check the log files. Use :LspLoga or :JdtShowLogs or open the log file manually. :lua print(vim.fn.stdpath('cache')) lists the path, there should be a lsp.log. You may have to increase the log level. See :help vim.lsp.set_log_level().
 - Remove Java Project Cache with :JdtWipeDataAndRestart
 - Debug plugin configuration inserting in the after lua files: `print(vim.inspect(require('formatter.config').values.filetype))`

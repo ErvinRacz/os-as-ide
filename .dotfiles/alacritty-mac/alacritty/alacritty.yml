@@ -124,3 +124,5 @@ key_bindings:
   - { key: Tab, mods: Control|Shift, chars: "\e[27;6;9~" }
   # use Alt + 9 as a Ctrl + Enter combination
   - { key: Return, mods: Control, chars: "\x1b9" }
+  # For commenting use the Control + Forward Slash ascii charachters
+  - { key: Slash, mods: Control, chars: "\x1f" }
