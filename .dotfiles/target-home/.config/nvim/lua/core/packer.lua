@@ -81,6 +81,10 @@ return require('packer').startup(function(use)
             vim.cmd([[ colorscheme rose-pine ]])
         end,
     })
+    use {
+        "rest-nvim/rest.nvim",
+        requires = { "nvim-lua/plenary.nvim" },
+    }
     use('mfussenegger/nvim-jdtls')
     use {
         'VonHeikemen/lsp-zero.nvim',

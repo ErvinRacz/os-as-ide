@@ -11,7 +11,8 @@ require('nvim-treesitter.configs').setup {
         "query",
         "markdown",
         "bash",
-        "json"
+        "json",
+        'http'
     },
 
 
