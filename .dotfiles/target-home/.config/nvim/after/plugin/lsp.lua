@@ -167,7 +167,7 @@ lsp.on_attach(function(client, bufnr)
     vim.keymap.set("n", "<a-e>", function() vim.diagnostic.goto_next() end, opts)
     vim.keymap.set("n", "<a-E>", function() vim.diagnostic.goto_prev() end, opts)
     vim.keymap.set({ "n", "v", "i" }, "<a-cr>", function() vim.lsp.buf.code_action() end, opts)
-    vim.keymap.set("n", "<leader>r", function() vim.lsp.buf.rename() end, opts)
+    vim.keymap.set("n", "<F2>", function() vim.lsp.buf.rename() end, opts)
 end)
 
 lsp.skip_server_setup({ 'jdtls' })

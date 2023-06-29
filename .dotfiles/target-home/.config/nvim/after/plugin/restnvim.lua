@@ -23,8 +23,12 @@ require("rest-nvim").setup({
         -- executables or functions for formatting response body [optional]
         -- set them to false if you want to disable them
         formatters = {
-            json = "prettierd",
-            html = "prettierd"
+            json = function(body)
+                return vim.fn.system({ 'prettierd', 'stdin.json' }, body)
+            end,
+            html = function(body)
+                return vim.fn.system({ 'prettierd', 'stdin.html' }, body)
+            end
         },
     },
     -- Jump to request line on run
@@ -33,8 +37,3 @@ require("rest-nvim").setup({
     custom_dynamic_variables = {},
     yank_dry_run = true,
 })
-
-
-vim.api.nvim_set_keymap("n", "<a-9>", '<Plug>(RestNvim)', { silent = true })
-
-
