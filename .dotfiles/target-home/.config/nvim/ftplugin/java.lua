@@ -17,7 +17,7 @@ local root_files = {
 
 local features = {
     -- change this to `true` to enable codelens
-    codelens = false,
+    codelens = true,
 
     -- TODO: change this to true after installing the beloweae plugins
     -- change this to `true` if you have `nvim-dap`,
@@ -192,7 +192,6 @@ local config = {
     -- See https://github.com/eclipse/eclipse.jdt.ls/wiki/Running-the-JAVA-LS-server-from-the-command-line#initialize-request
     -- for a list of options
     settings = {
-        jdt_uri_timeout_ms = 60000,
         java = {
             format = {
                 settings = {
@@ -248,7 +247,28 @@ local config = {
             configuration = {
                 updateBuildConfiguration = "interactive",
                 runtimes = path.runtimes
-            }
+            },
+            eclipse = {
+                downloadSources = true,
+            },
+            maven = {
+                downloadSources = true,
+                updateSnapshots = true
+            },
+            implementationsCodeLens = {
+                enabled = true,
+            },
+            referencesCodeLens = {
+                enabled = true,
+            },
+            references = {
+                includeDecompiledSources = true,
+            },
+            inlayHints = {
+                parameterNames = {
+                    enabled = "all", -- literals, all, none
+                },
+            },
         }
     },
     -- cmd is the command that starts the language server. Whatever is placed
