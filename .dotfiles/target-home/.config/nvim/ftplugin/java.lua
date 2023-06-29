@@ -120,7 +120,7 @@ local function get_jdtls_paths()
         },
         {
             name = 'JavaSE-11',
-            path = vim.fn.expand('~/.asdf/installs/java/zulu-11.64.19'),
+            path = vim.fn.expand('~/.asdf/installs/java/zulu-20.30.11'),
         },
         {
             name = 'JavaSE-1.8',
@@ -192,6 +192,7 @@ local config = {
     -- See https://github.com/eclipse/eclipse.jdt.ls/wiki/Running-the-JAVA-LS-server-from-the-command-line#initialize-request
     -- for a list of options
     settings = {
+        jdt_uri_timeout_ms = 60000,
         java = {
             format = {
                 settings = {
