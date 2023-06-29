@@ -6,9 +6,9 @@ local jdtls = require('jdtls')
 local root_files = {
     -- Single-module projects
     {
-        'build.xml', -- Ant
-        'pom.xml', -- Maven
-        'settings.gradle', -- Gradle
+        'build.xml',           -- Ant
+        'pom.xml',             -- Maven
+        'settings.gradle',     -- Gradle
         'settings.gradle.kts', -- Gradle
     },
     -- Multi-module projects
@@ -116,11 +116,15 @@ local function get_jdtls_paths()
     path.runtimes = {
         {
             name = 'JavaSE-17',
-            path = vim.fn.expand('~/.asdf/installs/java/zulu-17.42.19'),
+            path = vim.fn.expand('~/.asdf/installs/java/zulu-17.42.21'),
         },
         {
             name = 'JavaSE-11',
             path = vim.fn.expand('~/.asdf/installs/java/zulu-11.64.19'),
+        },
+        {
+            name = 'JavaSE-1.8',
+            path = vim.fn.expand('~/.asdf/installs/java/zulu-8.70.0.23'),
         }
         -- {
         --   name = 'JavaSE-19',
@@ -132,6 +136,23 @@ local function get_jdtls_paths()
 end
 
 local path = get_jdtls_paths()
+
+local function get_java_cmd()
+    -- get java command from the config.path.runtimes table where the name has a JavaSE-<version> format where <version> is higher than 11
+    local javacmd = vim.tbl_filter(function(runtime)
+        return runtime.name:match('JavaSE%-%d%d') and tonumber(runtime.name:match('%d%d')) > 11
+    end, path.runtimes)[1].path .. '/bin/java'
+
+
+    if vim.fn.executable(javacmd) then
+        return javacmd
+    elseif vim.fn.executable(javacmd .. '.exe') then
+        return javacmd .. '.exe'
+    end
+end
+
+local javacmd = get_java_cmd()
+
 local data_dir = path.data_dir .. '/' .. vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
 
 
@@ -194,12 +215,12 @@ local config = {
                     "java.util.Objects.requireNonNullElse",
                     "org.mockito.Mockito.*"
                 },
-                -- filteredTypes = {
-                --     "com.sun.*",
-                --     "io.micrometer.shaded.*",
-                --     "java.awt.*",
-                --     "jdk.*", "sun.*",
-                -- },
+                filteredTypes = {
+                    "com.sun.*",
+                    "io.micrometer.shaded.*",
+                    "java.awt.*",
+                    "jdk.*", "sun.*",
+                },
             },
             -- Specify any options for organizing imports
             sources = {
@@ -224,6 +245,7 @@ local config = {
             -- And search for `interface RuntimeOption`
             -- The `name` is NOT arbitrary, but must match one of the elements from `enum ExecutionEnvironment` in the link above
             configuration = {
+                updateBuildConfiguration = "interactive",
                 runtimes = path.runtimes
             }
         }
@@ -235,7 +257,7 @@ local config = {
     -- for the full list of options
     cmd = {
         -- 💀
-        'java',
+        javacmd,
         '-Declipse.application=org.eclipse.jdt.ls.core.id1',
         '-Dosgi.bundles.defaultStartLevel=4',
         '-Declipse.product=org.eclipse.jdt.ls.core.product',

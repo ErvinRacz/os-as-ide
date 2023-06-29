@@ -62,6 +62,7 @@ asdf global java zulu-17.42.x
 ```
 
 Made Neovim useful for Java based on the following guides:
+- https://medium.com/@chrisatmachine/lunarvim-as-a-java-ide-da65c4a77fb4
 - https://github.com/mfussenegger/nvim-jdtls
 - https://sookocheff.com/post/vim/neovim-java-ide/
 - https://github.com/VonHeikemen/lsp-zero.nvim/blob/v2.x/doc/md/guides/setup-with-nvim-jdtls.md
