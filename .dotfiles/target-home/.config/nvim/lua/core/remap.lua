@@ -25,6 +25,9 @@ end
 function SwitchTabsBackward()
     local current_tab = vim.api.nvim_get_current_tabpage()
 
+    -- enter normal mode if in insert mode
+    vim.cmd("stopinsert")
+
     if current_tab == 1 and os.getenv("TMUX") and GetTmuxWindowCount() > 1 then
         vim.fn.system("tmux select-window -p")
     else
@@ -38,6 +41,8 @@ end
 
 vim.keymap.set('n', '<C-Tab>', '<cmd>lua SwitchTabsForward()<CR>', { noremap = true, silent = true })
 vim.keymap.set('n', '<C-S-Tab>', '<cmd>lua SwitchTabsBackward()<CR>', { noremap = true, silent = true })
+vim.keymap.set('i', '<C-Tab>', '<esc><cmd>lua SwitchTabsForward()<CR>', { noremap = true, silent = true })
+vim.keymap.set('i', '<C-S-Tab>', '<esc><cmd>lua SwitchTabsBackward()<CR>', { noremap = true, silent = true })
 vim.keymap.set('n', '<C-t>', '<cmd>lua OpenNewTmuxWindow()<CR>', { noremap = true, silent = true })
 
 -- Toggle file explorer and restore previous buffer
@@ -89,10 +94,7 @@ vim.keymap.set("n", "<C-W>m", "<cmd>:MaximizerToggle<CR>")
 
 --#region Copilot
 vim.g.copilot_no_tab_map = true
-vim.api.nvim_set_keymap('i', '<C-Tab>', 'copilot#Accept("<CR>")', { expr = true, silent = true })
--- map <C-Enter> aka <C-F11> from alacritty which is <F35> in neovim to accept copilot suggestion
-vim.api.nvim_set_keymap("i", "<a-9>", 'copilot#Accept("<Tab>")', { expr = true, silent = true })
-vim.api.nvim_set_keymap("n", "<leader>r", '<Plug>RestNvim', { silent = true })
+vim.api.nvim_set_keymap("i", "<a-9>", 'copilot#Accept("<Tab>")', { expr = true, silent = true }) -- map <C-Enter> aka <a-9>
 vim.api.nvim_set_keymap("i", "<C-l>", '<Plug>(copilot-next)', { silent = true })
 
 vim.api.nvim_create_user_command("Cop", function(opts)
@@ -101,6 +103,7 @@ end, {})
 
 vim.keymap.set("n", "<leader>cp", "<cmd>Cop<CR>", { silent = true })
 --#endregion
+vim.api.nvim_set_keymap("n", "<leader>r", '<Plug>RestNvim', { silent = true })
 
 function CloseTabOrQuitAll(bang)
     local tab_count = #vim.api.nvim_list_tabpages()
