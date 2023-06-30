@@ -1,9 +1,12 @@
 local builtin = require('telescope.builtin')
 local actions = require("telescope.actions")
+local nvim_tree_api = require("nvim-tree.api")
 
 function SendToQuickFixList(prompt_bufnr)
     local picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
     local num_selections = #picker:get_multi_selection()
+
+    nvim_tree_api.tree.close_in_all_tabs()
 
     if num_selections > 1 then
         -- actions.file_edit throws - context of picker seems to change
@@ -50,11 +53,19 @@ require('telescope').setup {
                 ["<tab>"] = actions.select_default,
                 ["<c-k>"] = actions.move_selection_previous,
                 ["<c-j>"] = actions.move_selection_next,
+                ["<c-t>"] = function(prompt_bufnr)
+                    actions.select_tab(prompt_bufnr)
+                    nvim_tree_api.tree.close_in_all_tabs()
+                end,
             },
             n = {
                 ["<tab>"] = actions.select_default,
                 ["<c-k>"] = actions.move_selection_previous,
-                ["<c-j>"] = actions.move_selection_next,
+                ["<c-t>"] = actions.move_selection_next,
+                ["<c-t>"] = function(prompt_bufnr)
+                    actions.select_tab(prompt_bufnr)
+                    nvim_tree_api.tree.close_in_all_tabs()
+                end,
             }
         },
     },

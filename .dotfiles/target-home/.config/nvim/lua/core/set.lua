@@ -22,7 +22,7 @@ vim.opt.nu = true
 vim.opt.relativenumber = true
 
 -- highlighted cursor line
-vim.opt.cul = false
+vim.opt.cul = true
 
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4

@@ -41,18 +41,14 @@ vim.keymap.set('n', '<C-S-Tab>', '<cmd>lua SwitchTabsBackward()<CR>', { noremap 
 vim.keymap.set('n', '<C-t>', '<cmd>lua OpenNewTmuxWindow()<CR>', { noremap = true, silent = true })
 
 -- Toggle file explorer and restore previous buffer
-local explorer_open = false
-function ToggleExplorer()
-    if explorer_open then
-        vim.cmd('Rex')
-        explorer_open = false
-    else
-        vim.cmd('Ex')
-        explorer_open = true
-    end
-end
-
-vim.keymap.set('n', '<leader>`', '<cmd>lua ToggleExplorer()<CR>', { silent = true })
+vim.keymap.set('n', '<leader>`',
+    function()
+        -- current windows absolute path
+        local current_window = vim.fn.expand("%:p:h")
+        print(current_window)
+        require("nvim-tree.api").tree.toggle { find_file = true, focus = true, path = current_window, update_root = true }
+    end,
+    { silent = true })
 
 -- makes possible to move blocks in visual mode
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
