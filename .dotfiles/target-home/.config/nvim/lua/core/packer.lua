@@ -14,6 +14,7 @@ return require('packer').startup(function(use)
             { 'nvim-lua/plenary.nvim' },
         }
     }
+    use('nvim-tree/nvim-tree.lua')
     use { 'stevearc/dressing.nvim' }
     use('nvim-treesitter/nvim-treesitter', { run = ':TSUpdate' })
     use('windwp/nvim-autopairs')                       -- to auto insert closinng pairs

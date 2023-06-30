@@ -7,6 +7,10 @@ vim.g.loaded_python_provider = 0
 vim.g.loaded_python3_provider = 0
 -- to look for quality neovim plugins, take a look at this awesome collection: https://github.com/rockerBOO/awesome-neovim
 
+-- disable netrw at the very start of your init.lua - needed for nvim-tree
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 -- spell check
 vim.opt.spelllang = en_us
 vim.opt.spell = true
