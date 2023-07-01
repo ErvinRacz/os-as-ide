@@ -6,14 +6,18 @@ function GetTmuxWindowCount()
     local result = handle:read("*a")
     handle:close()
 
-    return tonumber(result)
+    local count = tonumber(result)
+    return count
 end
 
 -- Function to switch tabs forward
 function SwitchTabsForward()
     local current_tab = vim.api.nvim_get_current_tabpage()
-    local last_tab = #vim.api.nvim_list_tabpages()
 
+    local tabs = vim.api.nvim_list_tabpages()
+    local last_tab = tabs[#tabs]
+
+    vim.cmd("stopinsert")
     if current_tab == last_tab and os.getenv("TMUX") and GetTmuxWindowCount() > 1 then
         vim.fn.system("tmux select-window -n")
     else
@@ -25,9 +29,7 @@ end
 function SwitchTabsBackward()
     local current_tab = vim.api.nvim_get_current_tabpage()
 
-    -- enter normal mode if in insert mode
     vim.cmd("stopinsert")
-
     if current_tab == 1 and os.getenv("TMUX") and GetTmuxWindowCount() > 1 then
         vim.fn.system("tmux select-window -p")
     else

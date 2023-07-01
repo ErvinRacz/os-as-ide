@@ -6,8 +6,6 @@ function SendToQuickFixList(prompt_bufnr)
     local picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
     local num_selections = #picker:get_multi_selection()
 
-    nvim_tree_api.tree.close_in_all_tabs()
-
     if num_selections > 1 then
         -- actions.file_edit throws - context of picker seems to change
         --actions.file_edit(prompt_bufnr)
@@ -17,6 +15,8 @@ function SendToQuickFixList(prompt_bufnr)
     else
         actions.file_edit(prompt_bufnr)
     end
+
+    nvim_tree_api.tree.close_in_all_tabs()
 end
 
 local finders_config = {
