@@ -32,6 +32,24 @@ local finders_config = {
         '--smart-case',
         '--hidden',
     },
+    file_ignore_patterns = {
+        ".git/",
+        ".cache",
+        "%.o",
+        "%.a",
+        "%.out",
+        "%.class",
+        "node_modules/",
+        "dist/",
+        "build/",
+        "target/",
+        "tmp/",
+        "temp/",
+        "cache/",
+        "logs/",
+        "coverage/",
+        "public/",
+    },
     -- default configuration for telescope goes here:
     -- config_key = value,
     mappings = {
@@ -61,7 +79,6 @@ require('telescope').setup {
             n = {
                 ["<tab>"] = actions.select_default,
                 ["<c-k>"] = actions.move_selection_previous,
-                ["<c-t>"] = actions.move_selection_next,
                 ["<c-t>"] = function(prompt_bufnr)
                     actions.select_tab(prompt_bufnr)
                     nvim_tree_api.tree.close_in_all_tabs()
