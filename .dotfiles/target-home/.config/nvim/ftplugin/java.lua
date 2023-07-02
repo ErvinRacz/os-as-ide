@@ -348,6 +348,7 @@ function CreateSonarLintLsBin()
     os.execute('chmod +x ' .. bin_file)
 end
 
+-- TODO: Call this user created command after sourcing this resource to create the bin
 -- Create Nvim command to create bin for sonarlint language server
 vim.api.nvim_create_user_command("CreateSonarLintLsBin", function(opts)
     CreateSonarLintLsBin()

@@ -12,7 +12,7 @@ vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
 -- spell check
-vim.opt.spelllang = en_us
+vim.opt.spelllang = 'en_us'
 vim.opt.spell = true
 
 -- for copy and pasting from OS clipboard
