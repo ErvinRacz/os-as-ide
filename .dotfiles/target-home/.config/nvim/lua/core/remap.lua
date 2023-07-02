@@ -82,7 +82,7 @@ vim.keymap.set("n", "<C-q>", "<S-k>")
 
 -- for reformating current word
 vim.keymap.set("n", "<C-a-l>", "<cmd>FormatWrite<CR>")
-vim.keymap.set("v", "<C-a-l>", "<cmd>FormatWrite<CR>")
+vim.keymap.set("v", "<C-a-l>", "=")
 
 vim.keymap.set("n", "<leader>j", "<cmd>cnext<cr>zz")
 vim.keymap.set("n", "<leader>k", "<cmd>cprev<cr>zz")
