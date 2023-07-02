@@ -306,3 +306,50 @@ local config = {
 -- Finally, start jdtls. This will run the language server using the configuration we specified,
 -- setup the keymappings, and attach the LSP client to the current buffer
 jdtls.start_or_attach(config)
+
+--#region Sonarlint
+
+local SONARLINT_BIN_NAME_WITH_CHOSEN_JAVA = 'sonarlint-language-server-with-chosen-java'
+
+require('sonarlint').setup({
+    server = {
+        cmd = {
+            SONARLINT_BIN_NAME_WITH_CHOSEN_JAVA,
+            -- Ensure that sonarlint-language-server uses stdio channel
+            '-stdio',
+            '-analyzers',
+            -- paths to the analyzers you need, using those for python and java in this example
+            -- vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarpython.jar"),
+            -- vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarcfamily.jar"),
+            vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarjava.jar"),
+        }
+    },
+    filetypes = {
+        -- Tested and working
+        -- 'python',
+        -- 'cpp',
+        -- Requires nvim-jdtls, otherwise an error message will be printed
+        'java',
+    }
+})
+
+
+function CreateSonarLintLsBin()
+    local bin_dir = vim.fn.expand("$MASON/bin")
+    local bin_file = bin_dir .. '/' .. SONARLINT_BIN_NAME_WITH_CHOSEN_JAVA
+
+    local sonarlint_ls_jar = vim.fn.expand("$MASON/packages/sonarlint-language-server/extension/server/sonarlint-ls.jar")
+    local bin_file_content = '#!/usr/bin/env bash\nexec ' .. javacmd .. ' -jar "' .. sonarlint_ls_jar .. '" "$@"'
+
+    os.execute('mkdir -p ' .. bin_dir)
+    local file = io.open(bin_file, 'w')
+    file:write(bin_file_content)
+    file:close()
+    os.execute('chmod +x ' .. bin_file)
+end
+
+-- Create Nvim command to create bin for sonarlint language server
+vim.api.nvim_create_user_command("CreateSonarLintLsBin", function(opts)
+    CreateSonarLintLsBin()
+end, {})
+--#endregion
