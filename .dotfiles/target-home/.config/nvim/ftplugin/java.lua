@@ -178,6 +178,10 @@ local function jdtls_on_attach(client, bufnr)
     vim.keymap.set('n', '<c-a-c>', "<cmd>lua require('jdtls').extract_constant()<cr>", opts)
     vim.keymap.set('x', '<c-a-c>', "<esc><cmd>lua require('jdtls').extract_constant(true)<cr>", opts)
     -- vim.keymap.set('n', '<c-a-e>', "<cmd>lua require('jdtls').extract_method(true)<cr>", opts)
+    --
+    vim.api.nvim_create_user_command("CTest", function(opts)
+        require('jdtls').test_nearest_method()
+    end, {})
 end
 
 local config = {
