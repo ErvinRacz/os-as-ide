@@ -1,6 +1,5 @@
 local builtin = require('telescope.builtin')
 local actions = require("telescope.actions")
-local nvim_tree_api = require("nvim-tree.api")
 
 function SendToQuickFixList(prompt_bufnr)
     local picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
@@ -15,8 +14,6 @@ function SendToQuickFixList(prompt_bufnr)
     else
         actions.file_edit(prompt_bufnr)
     end
-
-    nvim_tree_api.tree.close_in_all_tabs()
 end
 
 local finders_config = {
@@ -73,7 +70,6 @@ require('telescope').setup {
                 ["<c-j>"] = actions.move_selection_next,
                 ["<c-t>"] = function(prompt_bufnr)
                     actions.select_tab(prompt_bufnr)
-                    nvim_tree_api.tree.close_in_all_tabs()
                 end,
             },
             n = {
@@ -81,7 +77,6 @@ require('telescope').setup {
                 ["<c-k>"] = actions.move_selection_previous,
                 ["<c-t>"] = function(prompt_bufnr)
                     actions.select_tab(prompt_bufnr)
-                    nvim_tree_api.tree.close_in_all_tabs()
                 end,
             }
         },

@@ -51,9 +51,7 @@ vim.keymap.set('n', '<C-t>', '<cmd>lua OpenNewTmuxWindow()<CR>', { noremap = tru
 vim.keymap.set('n', '<leader>`',
     function()
         -- current windows absolute path
-        local current_window = vim.fn.expand("%:p:h")
-        print(current_window)
-        require("nvim-tree.api").tree.toggle { find_file = true, focus = true, path = current_window, update_root = true }
+        vim.cmd("NeoTreeRevealToggle")
     end,
     { silent = true })
 
