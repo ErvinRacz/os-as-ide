@@ -26,8 +26,8 @@ return require('packer').startup(function(use)
     }
     use { 'stevearc/dressing.nvim' }
     use('nvim-treesitter/nvim-treesitter', { run = ':TSUpdate' })
-    use('windwp/nvim-autopairs')                       -- to auto insert closinng pairs
-    use('windwp/nvim-ts-autotag')                      -- to rename HTML tags
+    use('windwp/nvim-autopairs') -- to auto insert closinng pairs
+    use('windwp/nvim-ts-autotag') -- to rename HTML tags
     use('JoosepAlviste/nvim-ts-context-commentstring') -- special line commenter for JSX, TSX
     use {
         'numToStr/Comment.nvim',
@@ -120,8 +120,8 @@ return require('packer').startup(function(use)
             },
             { 'williamboman/mason-lspconfig.nvim' }, -- Optional
             -- Autocompletion
-            { 'hrsh7th/nvim-cmp' },                  -- Required
-            { 'hrsh7th/cmp-nvim-lsp' },              -- Required
+            { 'hrsh7th/nvim-cmp' }, -- Required
+            { 'hrsh7th/cmp-nvim-lsp' }, -- Required
             { 'hrsh7th/cmp-nvim-lsp-signature-help' },
             { 'hrsh7th/cmp-vsnip' },
             { 'hrsh7th/vim-vsnip' },
