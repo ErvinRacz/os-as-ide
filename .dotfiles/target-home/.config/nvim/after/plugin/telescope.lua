@@ -48,7 +48,6 @@ local finders_config = {
         "cache/",
         "logs/",
         "coverage/",
-        "public/",
     },
     -- default configuration for telescope goes here:
     -- config_key = value,
