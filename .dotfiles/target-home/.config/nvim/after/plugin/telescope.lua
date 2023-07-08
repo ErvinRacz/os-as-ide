@@ -1,9 +1,12 @@
 local builtin = require('telescope.builtin')
 local actions = require("telescope.actions")
+local neotree_manager = require("neo-tree.sources.manager")
 
 function SendToQuickFixList(prompt_bufnr)
     local picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
     local num_selections = #picker:get_multi_selection()
+
+    neotree_manager.close_all()
 
     if num_selections > 1 then
         -- actions.file_edit throws - context of picker seems to change
@@ -70,6 +73,7 @@ require('telescope').setup {
                 ["<c-j>"] = actions.move_selection_next,
                 ["<c-t>"] = function(prompt_bufnr)
                     actions.select_tab(prompt_bufnr)
+                    neotree_manager.close_all()
                 end,
             },
             n = {
@@ -77,6 +81,7 @@ require('telescope').setup {
                 ["<c-k>"] = actions.move_selection_previous,
                 ["<c-t>"] = function(prompt_bufnr)
                     actions.select_tab(prompt_bufnr)
+                    neotree_manager.close_all()
                 end,
             }
         },
