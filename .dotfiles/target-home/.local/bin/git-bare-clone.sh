@@ -9,6 +9,9 @@ Usage: $(basename "${BASH_SOURCE[0]}") [-h] [-v] [-l] repository
 
 Clone a bare git repo and set up environment for working comfortably and exclusively from worktrees.
 
+1. Create a project folder: mkdir project && cd project
+2. git-bare-clone.sh https://gitremoterepo.com/youraccount/yourproject.git
+
 Available options:
 
 -h, --help      Print this help and exit
