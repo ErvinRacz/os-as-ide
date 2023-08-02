@@ -53,51 +53,19 @@ return require('packer').startup(function(use)
     use('mbbill/undotree')
     use('tpope/vim-fugitive')
 
+    use('folke/tokyonight.nvim');
+
     -- install without yarn or npm
-    use({
-        "iamcco/markdown-preview.nvim",
-        run = function() vim.fn["mkdp#util#install"]() end,
-    })
     use({
         "iamcco/markdown-preview.nvim",
         run = "cd app && npm install",
         setup = function() vim.g.mkdp_filetypes = { "markdown" } end,
         ft = { "markdown" },
     })
-
     use {
         'lewis6991/gitsigns.nvim',
         config = function()
             require('gitsigns').setup()
-        end
-    }
-    use {
-        "justinsgithub/oh-my-monokai.nvim",
-        config = function()
-            require("oh-my-monokai").setup({
-                transparent_background = true,
-                devicons = true,
-                background_clear = {
-                    "telescope",
-                    "neo-tree"
-                }, -- "float_win", "toggleterm", "telescope", "which-key", "renamer", "neo-tree"
-                palette = "justinsgithub",
-                override = function()
-                    return {
-                        SpellBad                   = { fg = "NONE", bg = "NONE", style = "undercurl", sp = "#666666" },
-                        SpellCap                   = { fg = "NONE", bg = "NONE", style = "undercurl", sp = "#666666" },
-                        SpellLocal                 = { fg = "NONE", bg = "NONE", style = "undercurl", sp = "#666666" },
-                        SpellRare                  = { fg = "NONE", bg = "NONE", style = "undercurl", sp = "#666666" },
-                        CursorLine                 = { bg = "#0D1A35", blend = 60 },
-                        DiagnosticVirtualTextError = { bg = "NONE" },
-                        DiagnosticVirtualTextWarn  = { bg = "NONE" },
-                        DiagnosticVirtualTextInfo  = { bg = "NONE" },
-                        DiagnosticVirtualTextHint  = { bg = "NONE" },
-                        DiagnosticVirtualTextOk    = { bg = "NONE" },
-                    }
-                end
-            })
-            vim.cmd([[colorscheme oh-my-monokai]])
         end
     }
     use {
