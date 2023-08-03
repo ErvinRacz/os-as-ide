@@ -32,6 +32,9 @@ local finders_config = {
         '--smart-case',
         '--hidden',
     },
+    find_files = {
+        hidden = true,
+    },
     file_ignore_patterns = {
         ".git/",
         ".cache",
