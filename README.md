@@ -76,6 +76,10 @@ asdf install nodejs 18.x.y
 asdf global nodejs 18.x.y
 ```
 
+```
+asdf plugin-add pnpm
+```
+
 TODO:
 - Bind LSP keycombinations like refactoring 
 - use :GcLog -S text for looking for something in log
