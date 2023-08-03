@@ -108,8 +108,18 @@ bindkey -v
 bindkey -rp '^t'
 bindkey -rp '^H'
 
+
 alias :q='exit'
 
 export PATH=$HOME/.local/bin:$PATH
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# Override alt-c from fzf's fzf-cd-widget keybinding
+bindkey -r -M emacs '\ec'
+bindkey -r -M vicmd '\ec'
+bindkey -r -M viins '\ec'
+
+bindkey -M emacs '\ec' fzf-cd-widget
+bindkey -M vicmd '\ef' fzf-cd-widget
+bindkey -M viins '\ef' fzf-cd-widget
