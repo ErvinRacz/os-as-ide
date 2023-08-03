@@ -1,0 +1,3 @@
+[submodule "my-nvim-plugins/nvim-tmux-interface"]
+	path = my-nvim-plugins/nvim-tmux-interface
+	url = https://github.com/ErvinRacz/nvim-tmux-interface
