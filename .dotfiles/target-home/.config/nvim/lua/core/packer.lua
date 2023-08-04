@@ -16,7 +16,7 @@ return require('packer').startup(function(use)
         }
     }
     -- TODO: change to gitrepo
-    use('/home/ervinracz/Workspace/os-as-ide/my-nvim-plugins/nvim-tmux-interface.nvim')
+    use('/home/ervinracz/Workspace/os-as-ide/my-nvim-plugins/tmux-interface.nvim')
     use {
         "nvim-neo-tree/neo-tree.nvim",
         branch = "v2.x",

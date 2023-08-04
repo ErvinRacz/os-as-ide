@@ -119,7 +119,9 @@ key_bindings:
   - { key: B, mods: Control|Shift, mode: ~Search, action: ReceiveChar }
   - { key: B, mods: Command, mode: ~Search, action: ReceiveChar }
   # for navigation
-  - { key: Tab, mods: Control, chars: "\e[27;5;9~" }
-  - { key: Tab, mods: Control|Shift, chars: "\e[27;6;9~" }
+  - { key: Tab, mods: Control, chars: "\e[27;5;9~" } # 5 is Ctrl and 9 is Horizontal Tab
+  - { key: Tab, mods: Control|Shift, chars: "\e[27;6;9~" } # 6 is Ctrl + Shift and 9 is Horizontal Tab
+    # No need for this one, already working: - { key: T, mods: Control, chars: "\e[27;5;116~" } # 5 is Ctrl and 9 is Horizontal Tab
+  - { key: T, mods: Control|Shift, chars: "\e[27;6;116~" } # 6 is Ctrl + Shift and 116 is T
   # use Alt + 9 as a Ctrl + Enter combination
   - { key: Return, mods: Control, chars: "\x1b9" }
