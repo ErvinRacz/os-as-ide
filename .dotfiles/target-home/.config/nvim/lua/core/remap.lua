@@ -37,15 +37,11 @@ function SwitchTabsBackward()
     end
 end
 
-function OpenNewTmuxWindow()
-    vim.fn.system(string.format("tmux new-window -c '#{pane_current_path}'"))
-end
-
 vim.keymap.set('n', '<C-Tab>', '<cmd>lua SwitchTabsForward()<CR>', { noremap = true, silent = true })
 vim.keymap.set('n', '<C-S-Tab>', '<cmd>lua SwitchTabsBackward()<CR>', { noremap = true, silent = true })
 vim.keymap.set('i', '<C-Tab>', '<esc><cmd>lua SwitchTabsForward()<CR>', { noremap = true, silent = true })
 vim.keymap.set('i', '<C-S-Tab>', '<esc><cmd>lua SwitchTabsBackward()<CR>', { noremap = true, silent = true })
-vim.keymap.set('n', '<C-t>', '<cmd>lua OpenNewTmuxWindow()<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<C-t>', '<cmd>TmuxSelectNonNvimWindow<CR>', { noremap = true, silent = true })
 
 -- Toggle file explorer and restore previous buffer
 vim.keymap.set('n', '<leader>`',
