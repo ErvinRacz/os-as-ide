@@ -18,8 +18,8 @@ function SwitchTabsForward()
     local last_tab = tabs[#tabs]
 
     vim.cmd("stopinsert")
-    if current_tab == last_tab and os.getenv("TMUX") and GetTmuxWindowCount() > 1 then
-        vim.fn.system("tmux select-window -n")
+    if current_tab == last_tab and GetTmuxWindowCount() > 1 then
+        vim.cmd("TmuxSelectNextWindow")
     else
         vim.cmd("tabnext")
     end
@@ -30,8 +30,8 @@ function SwitchTabsBackward()
     local current_tab = vim.api.nvim_get_current_tabpage()
 
     vim.cmd("stopinsert")
-    if current_tab == 1 and os.getenv("TMUX") and GetTmuxWindowCount() > 1 then
-        vim.fn.system("tmux select-window -p")
+    if current_tab == 1 and GetTmuxWindowCount() > 1 then
+        vim.cmd("TmuxSelectPreviousWindow")
     else
         vim.cmd("tabprevious")
     end
