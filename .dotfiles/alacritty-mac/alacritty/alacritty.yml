@@ -139,3 +139,4 @@ key_bindings:
   # For commenting use the Control + Forward Slash ascii charachters
   - { key: Slash, mods: Control, chars: "\x1f" }
   - { key: Key6, mods: Control, chars: "\x1e" }
+  - { key: T, mods: Control|Shift, chars: "\e[27;6;116~" } # 6 is Ctrl + Shift and 116 is T
