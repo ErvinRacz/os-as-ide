@@ -2,7 +2,6 @@
 
 -- Only required if you have packer configured as `opt`
 vim.cmd [[packadd packer.nvim]]
-vim.cmd([[ let g:neo_tree_remove_legacy_commands = 1 ]])
 
 return require('packer').startup(function(use)
     -- Packer can manage itself
@@ -22,18 +21,13 @@ return require('packer').startup(function(use)
         end
     }
     use {
-        "nvim-neo-tree/neo-tree.nvim",
-        branch = "v2.x",
-        requires = {
-            "nvim-lua/plenary.nvim",
-            "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
-            "MunifTanjim/nui.nvim",
-        }
+        "nvim-telescope/telescope-file-browser.nvim",
+        requires = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
     }
-    use { 'stevearc/dressing.nvim' }
+    use { 'stevearc/dressing.nvim' } -- to improve renaming
     use('nvim-treesitter/nvim-treesitter', { run = ':TSUpdate' })
-    use('windwp/nvim-autopairs')                       -- to auto insert closinng pairs
-    use('windwp/nvim-ts-autotag')                      -- to rename HTML tags
+    use('windwp/nvim-autopairs') -- to auto insert closinng pairs
+    use('windwp/nvim-ts-autotag') -- to rename HTML tags
     use('JoosepAlviste/nvim-ts-context-commentstring') -- special line commenter for JSX, TSX
     use {
         'numToStr/Comment.nvim',
@@ -94,8 +88,8 @@ return require('packer').startup(function(use)
             },
             { 'williamboman/mason-lspconfig.nvim' }, -- Optional
             -- Autocompletion
-            { 'hrsh7th/nvim-cmp' },                  -- Required
-            { 'hrsh7th/cmp-nvim-lsp' },              -- Required
+            { 'hrsh7th/nvim-cmp' }, -- Required
+            { 'hrsh7th/cmp-nvim-lsp' }, -- Required
             { 'hrsh7th/cmp-nvim-lsp-signature-help' },
             { 'hrsh7th/cmp-vsnip' },
             { 'hrsh7th/vim-vsnip' },

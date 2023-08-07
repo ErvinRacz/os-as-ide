@@ -1,12 +1,10 @@
 local builtin = require('telescope.builtin')
 local actions = require("telescope.actions")
-local neotree_manager = require("neo-tree.sources.manager")
+local fb_actions = require "telescope._extensions.file_browser.actions"
 
 function SendToQuickFixList(prompt_bufnr)
     local picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
     local num_selections = #picker:get_multi_selection()
-
-    neotree_manager.close_all()
 
     if num_selections > 1 then
         -- actions.file_edit throws - context of picker seems to change
@@ -75,7 +73,6 @@ require('telescope').setup {
                 ["<c-j>"] = actions.move_selection_next,
                 ["<c-t>"] = function(prompt_bufnr)
                     actions.select_tab(prompt_bufnr)
-                    neotree_manager.close_all()
                 end,
             },
             n = {
@@ -83,7 +80,6 @@ require('telescope').setup {
                 ["<c-k>"] = actions.move_selection_previous,
                 ["<c-t>"] = function(prompt_bufnr)
                     actions.select_tab(prompt_bufnr)
-                    neotree_manager.close_all()
                 end,
             }
         },
@@ -92,8 +88,56 @@ require('telescope').setup {
         find_files = finders_config,
         git_files = finders_config,
         live_grep = finders_config,
-        grep_string = finders_config
+        grep_string = finders_config,
     },
+    extensions = {
+        file_browser = {
+            theme = "ivy",
+            initial_mode = "normal",
+            -- disables netrw and use telescope-file-browser in its place
+            hijack_netrw = true,
+            hidden = { file_browser = true, folder_browser = true },
+            mappings = {
+                ["i"] = {
+                    ["<C-a>"] = fb_actions.create,
+                    -- ["<C-m>"] = fb_actions.create_from_prompt,
+                    ["<F2>"] = fb_actions.rename,
+                    ["<C-m>"] = fb_actions.move,
+                    ["<C-c>"] = fb_actions.copy,
+                    ["<C-d>"] = fb_actions.remove,
+                    ["<C-o>"] = fb_actions.open,
+                    ["<C-g>"] = fb_actions.goto_parent_dir,
+                    ["<C-r>"] = fb_actions.goto_home_dir,
+                    ["<C-e>"] = fb_actions.goto_cwd,
+                    -- ["<C-t>"] = fb_actions.change_cwd,
+                    -- ["<C-f>"] = fb_actions.toggle_browser,
+                    ["<C-h>"] = fb_actions.toggle_hidden,
+                    ["<C-s>"] = fb_actions.toggle_all,
+                    ["<bs>"] = fb_actions.backspace,
+                    ["<tab>"] = actions.toggle_selection + actions.move_selection_previous,
+                },
+                ["n"] = {
+                    ["/"] = function() vim.cmd("startinsert") end,
+                    -- ["<C-f>"] = function() vim.cmd("startinsert") end,
+                    ["a"] = fb_actions.create,
+                    ["<F2>"] = fb_actions.rename,
+                    ["m"] = fb_actions.move,
+                    ["c"] = fb_actions.copy,
+                    ["d"] = fb_actions.remove,
+                    ["o"] = fb_actions.open,
+                    ["g"] = fb_actions.goto_parent_dir,
+                    ["r"] = fb_actions.goto_home_dir,
+                    ["e"] = fb_actions.goto_cwd,
+                    -- ["t"] = fb_actions.change_cwd,
+                    ["<leader>`"] = fb_actions.toggle_browser,
+                    ["h"] = fb_actions.toggle_hidden,
+                    ["s"] = fb_actions.toggle_all,
+                    ["<bs>"] = fb_actions.backspace,
+                    ["<tab>"] = actions.toggle_selection + actions.move_selection_previous,
+                },
+            },
+        },
+    }
 }
 
 -- Function to execute the command and handle errors
@@ -108,3 +152,13 @@ vim.keymap.set('n', '<C-n>', find_files, {})
 vim.keymap.set('n', '<leader>n', builtin.find_files, {})
 vim.keymap.set('n', '<C-f>', builtin.live_grep, {})
 vim.keymap.set('n', '<leader>f', builtin.grep_string, { silent = true, noremap = true })
+
+-- open file_browser with the path of the current buffer
+vim.keymap.set(
+    "n",
+    "<leader>`",
+    ":Telescope file_browser path=%:p:h select_buffer=true<CR>",
+    { noremap = true }
+)
+
+require("telescope").load_extension "file_browser"
