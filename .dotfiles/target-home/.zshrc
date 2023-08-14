@@ -122,4 +122,8 @@ bindkey -r -M viins '\ec'
 
 bindkey -M emacs '\ec' fzf-cd-widget
 bindkey -M vicmd '\ef' fzf-cd-widget
-bindkey -M viins '\ef' fzf-cd-widget
+bindkey -M vicmd '^F' fzf-cd-widget
+bindkey -M viins '^F' fzf-cd-widget
+
+q() { exit }
+zle -N q

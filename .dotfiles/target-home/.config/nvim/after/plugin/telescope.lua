@@ -115,6 +115,7 @@ require('telescope').setup {
                     ["<C-s>"] = fb_actions.toggle_all,
                     ["<bs>"] = fb_actions.backspace,
                     ["<tab>"] = actions.toggle_selection + actions.move_selection_previous,
+                    ["<cr>"] = actions.file_edit,
                 },
                 ["n"] = {
                     ["/"] = function() vim.cmd("startinsert") end,
