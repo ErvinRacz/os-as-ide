@@ -22,7 +22,7 @@ window:
   #     - transparent: Title bar, transparent background and title bar buttons
   #     - buttonless: Title bar, transparent background, but no title bar buttons
   decorations: none
-  opacity: 0.8
+  opacity: 0.88
   startup_mode: Maximized
 
   # Allow terminal applications to change Alacritty's window title.
@@ -123,5 +123,6 @@ key_bindings:
   - { key: Tab, mods: Control|Shift, chars: "\e[27;6;9~" } # 6 is Ctrl + Shift and 9 is Horizontal Tab
     # No need for this one, already working: - { key: T, mods: Control, chars: "\e[27;5;116~" } # 5 is Ctrl and 9 is Horizontal Tab
   - { key: T, mods: Control|Shift, chars: "\e[27;6;116~" } # 6 is Ctrl + Shift and 116 is T
+  # - { key: F, mods: Control, chars: "\e[27;5;102~" }
   # use Alt + 9 as a Ctrl + Enter combination
   - { key: Return, mods: Control, chars: "\x1b9" }
