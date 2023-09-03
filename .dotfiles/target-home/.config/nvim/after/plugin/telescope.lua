@@ -92,6 +92,7 @@ require('telescope').setup {
         grep_string = finders_config,
     },
     extensions = {
+        live_grep_args = finders_config,
         file_browser = {
             theme = "ivy",
             initial_mode = "normal",
@@ -153,6 +154,7 @@ end
 vim.keymap.set('n', '<C-n>', find_files, {})
 vim.keymap.set('n', '<leader>n', builtin.find_files, {})
 vim.keymap.set('n', '<C-f>', builtin.live_grep, {})
+vim.keymap.set('n', '<C-S-f>', require('telescope').extensions.live_grep_args.live_grep_args, {})
 vim.keymap.set('n', '<leader>f', builtin.grep_string, { silent = true, noremap = true })
 
 -- open file_browser with the path of the current buffer
