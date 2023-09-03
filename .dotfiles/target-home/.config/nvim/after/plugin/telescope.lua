@@ -36,6 +36,7 @@ local finders_config = {
     file_ignore_patterns = {
         ".git/",
         ".cache",
+        "package%-lock%.json",
         "%.o",
         "%.a",
         "%.out",
