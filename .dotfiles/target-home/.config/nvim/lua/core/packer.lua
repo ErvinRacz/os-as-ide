@@ -11,23 +11,23 @@ return require('packer').startup(function(use)
         'nvim-telescope/telescope.nvim', tag = '0.1.2',
         -- or                            , branch = '0.1.x',
         requires = {
-            { 'nvim-lua/plenary.nvim' },
+            { 'nvim-lua/plenary.nvim' }, { "nvim-telescope/telescope-live-grep-args.nvim" },
         }
     }
     -- TODO: change to gitrepo
     use {
         '~/Workspace/os-as-ide/my-nvim-plugins/tmux-interface.nvim', config = function()
-            require('tmux-interface').setup({ last_tmux_window_id_file_path = '/tmp/last_tmux_window_id' })
-        end
+        require('tmux-interface').setup({ last_tmux_window_id_file_path = '/tmp/last_tmux_window_id' })
+    end
     }
     use {
         "nvim-telescope/telescope-file-browser.nvim",
         requires = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
     }
-    use { 'stevearc/dressing.nvim' } -- to improve renaming
+    use { 'stevearc/dressing.nvim' }                   -- to improve renaming
     use('nvim-treesitter/nvim-treesitter', { run = ':TSUpdate' })
-    use('windwp/nvim-autopairs') -- to auto insert closinng pairs
-    use('windwp/nvim-ts-autotag') -- to rename HTML tags
+    use('windwp/nvim-autopairs')                       -- to auto insert closinng pairs
+    use('windwp/nvim-ts-autotag')                      -- to rename HTML tags
     use('JoosepAlviste/nvim-ts-context-commentstring') -- special line commenter for JSX, TSX
     use {
         'numToStr/Comment.nvim',
@@ -88,8 +88,8 @@ return require('packer').startup(function(use)
             },
             { 'williamboman/mason-lspconfig.nvim' }, -- Optional
             -- Autocompletion
-            { 'hrsh7th/nvim-cmp' }, -- Required
-            { 'hrsh7th/cmp-nvim-lsp' }, -- Required
+            { 'hrsh7th/nvim-cmp' },                  -- Required
+            { 'hrsh7th/cmp-nvim-lsp' },              -- Required
             { 'hrsh7th/cmp-nvim-lsp-signature-help' },
             { 'hrsh7th/cmp-vsnip' },
             { 'hrsh7th/vim-vsnip' },
