@@ -37,6 +37,7 @@ local finders_config = {
         ".git/",
         ".cache",
         "package%-lock%.json",
+        "pnpm%-lock%.yaml",
         "%.o",
         "%.a",
         "%.out",
