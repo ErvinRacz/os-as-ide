@@ -130,7 +130,7 @@ require('telescope').setup {
                     ["d"] = fb_actions.remove,
                     ["o"] = fb_actions.open,
                     ["g"] = fb_actions.goto_parent_dir,
-                    ["r"] = fb_actions.goto_home_dir,
+                    ["<C-e>"] = fb_actions.goto_home_dir,
                     ["e"] = fb_actions.goto_cwd,
                     -- ["t"] = fb_actions.change_cwd,
                     ["<leader>`"] = fb_actions.toggle_browser,
