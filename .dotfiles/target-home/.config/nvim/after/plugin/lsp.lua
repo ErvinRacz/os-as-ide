@@ -185,7 +185,6 @@ local filtetypes_from_lsp_for_prettier = {
 }
 
 local function format_with_prettierd()
-    print("formatted with prettierd: ", vim.api.nvim_buf_get_name(0))
     return {
         exe = "prettierd",
         args = { vim.api.nvim_buf_get_name(0) },
