@@ -150,8 +150,8 @@ lsp.setup_nvim_cmp({
     },
     formatting = {
         format = lspkind.cmp_format({
-            mode = 'symbol_text', -- show only symbol annotations
-            maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+            mode = 'symbol_text',  -- show only symbol annotations
+            maxwidth = 50,         -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
             ellipsis_char = '...', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
         })
     }
@@ -185,6 +185,7 @@ local filtetypes_from_lsp_for_prettier = {
 }
 
 local function format_with_prettierd()
+    print("formatted with prettierd: ", vim.api.nvim_buf_get_name(0))
     return {
         exe = "prettierd",
         args = { vim.api.nvim_buf_get_name(0) },
@@ -221,7 +222,7 @@ require('formatter').setup({
     logging = false,
     -- Set the log level
     log_level = vim.log.levels.DEBUG,
-    filetype = vim.tbl_extend('force', prettierd_filetype_mappings, {
+    filetype = vim.tbl_extend('keep', prettierd_filetype_mappings, {
         ["*"] = {
             function()
                 if vim.tbl_contains(vim.tbl_keys(prettierd_filetype_mappings), vim.bo.filetype) then
