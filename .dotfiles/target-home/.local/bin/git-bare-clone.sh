@@ -83,3 +83,24 @@ popd > /dev/null
 msg "${YELLOW}Setting .git file contents...${NOFORMAT}"
 echo "gitdir: ./$location" > .git
 msg "${GREEN}Success.${NOFORMAT}"
+
+# Create a post-checkout git hook in the .git/hooks folder that will run pnpm install if pnpm is installed
+msg "${YELLOW}Creating post-checkout git hook...${NOFORMAT}"
+mkdir -p .bare/hooks
+# Create the post-checkout hook file with the contents below
+cat > .bare/hooks/post-checkout << EOF
+#!/bin/bash
+
+# Check if pnpm is installed and we have a package.json file
+if command -v pnpm &> /dev/null && [ -f package.json ];
+then
+  echo "Running pnpm install..."
+  pnpm install
+  echo "Success."
+else
+  echo "pnpm is not installed. Skipping pnpm install."
+fi
+EOF
+
+
+chmod +x .bare/hooks/post-checkout
