@@ -12,6 +12,17 @@
     dnf:
       state: present
       name: git
+  # create global git ignore file
+  - name: Create global git ignore file
+    become: true
+    become_user: "{{ non_root_user }}"
+    ansible.builtin.copy:
+      content: |
+        # global gitignore
+        .vimrc
+      dest: "~/.gitignore_global"
+  - name: Add global ignore
+    shell: git config --global core.excludesfile ~/.gitignore_global
   - name: Install stow
     dnf:
       state: present
