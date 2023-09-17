@@ -71,7 +71,7 @@ vim.keymap.set("n", "<C-a-l>", "<cmd>FormatWrite<CR>")
 vim.keymap.set("v", "<C-a-l>", "=")
 -- autoformat on save - before writing to file
 local FormatAutogroup = vim.api.nvim_create_augroup("FormatAutogroup", {})
-vim.api.nvim_create_autocmd("BufWritePre", {
+vim.api.nvim_create_autocmd("BufWritePost", {
     group = FormatAutogroup,
     pattern = "*",
     callback = function()
