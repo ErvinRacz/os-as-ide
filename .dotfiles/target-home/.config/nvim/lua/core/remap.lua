@@ -69,6 +69,15 @@ vim.keymap.set("n", "<C-q>", "<S-k>")
 -- for reformating current word
 vim.keymap.set("n", "<C-a-l>", "<cmd>FormatWrite<CR>")
 vim.keymap.set("v", "<C-a-l>", "=")
+-- autoformat on save - before writing to file
+local FormatAutogroup = vim.api.nvim_create_augroup("FormatAutogroup", {})
+vim.api.nvim_create_autocmd("BufWritePre", {
+    group = FormatAutogroup,
+    pattern = "*",
+    callback = function()
+        vim.cmd("FormatWrite")
+    end
+})
 
 vim.keymap.set("n", "<leader>j", "<cmd>cnext<cr>zz")
 vim.keymap.set("n", "<leader>k", "<cmd>cprev<cr>zz")
