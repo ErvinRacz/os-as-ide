@@ -16,6 +16,8 @@
       content: |
         # global gitignore
         .vimrc
+        .editorconfig
+        .dotfiles/target-home/.config/nvim/spell
       dest: "~/.gitignore_global"
   - name: Add global ignore
     shell: git config --global core.excludesfile ~/.gitignore_global
