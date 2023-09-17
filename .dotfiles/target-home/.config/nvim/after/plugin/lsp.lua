@@ -214,8 +214,7 @@ local function map_prettierd_to_filetypes(servers, additiona_filetypes)
     return filetypes
 end
 
-local prettierd_filetype_mappings = map_prettierd_to_filetypes(filtetypes_from_lsp_for_prettier, {})
-
+local prettierd_filetype_mappings = map_prettierd_to_filetypes(filtetypes_from_lsp_for_prettier, { 'markdown', 'mdx' })
 require('formatter').setup({
     -- Enable or disable logging
     logging = false,
