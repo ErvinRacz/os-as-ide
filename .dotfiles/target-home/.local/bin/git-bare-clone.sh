@@ -84,6 +84,8 @@ msg "${YELLOW}Setting .git file contents...${NOFORMAT}"
 echo "gitdir: ./$location" > .git
 msg "${GREEN}Success.${NOFORMAT}"
 
+
+
 # Create a post-checkout git hook in the .git/hooks folder that will run pnpm install if pnpm is installed
 msg "${YELLOW}Creating post-checkout git hook...${NOFORMAT}"
 mkdir -p .bare/hooks
@@ -102,5 +104,31 @@ else
 fi
 EOF
 
-
 chmod +x .bare/hooks/post-checkout
+
+
+
+
+# Create .editorconfig file
+msg "${YELLOW}Creating .editorconfig file...${NOFORMAT}"
+cat > .editorconfig << EOF
+root = true
+
+#   [*]
+#   indent_style = space
+#   indent_size = 2
+#
+#   charset = utf-8
+#   trim_trailing_whitespace = true
+#
+#   end_of_line = lf
+#   insert_final_newline = true
+#
+#   [*.md]
+#   trim_trailing_whitespace = false
+#
+#   Specify multiple file types
+#   [*.{js,py}]
+#   indent_style = space
+#   indent_size = 2
+EOF
