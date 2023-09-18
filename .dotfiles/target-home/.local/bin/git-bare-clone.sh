@@ -93,14 +93,17 @@ mkdir -p .bare/hooks
 cat > .bare/hooks/post-checkout << EOF
 #!/bin/bash
 
-# Check if pnpm is installed and we have a package.json file
-if command -v pnpm &> /dev/null && [ -f package.json ];
+if [ "$3" == "1" ]
 then
-  echo "Running pnpm install..."
-  pnpm install
-  echo "Success."
-else
-  echo "pnpm is not installed. Skipping pnpm install."
+    # Check if pnpm is installed and package.json exists
+    if command -v pnpm &> /dev/null && [ -f "package.json" ]
+    then
+      echo "Running pnpm install..."
+      pnpm install
+      echo "Success."
+    else
+      echo "pnpm is not installed or package.json does not exist. Skipping pnpm install."
+    fi
 fi
 EOF
 
