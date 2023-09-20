@@ -4,43 +4,45 @@
   vars:
     - non_root_user: "{{ lookup('ansible.builtin.env', 'USER') }}"
   tasks:
-  - name: Install git
-    homebrew:
-      state: present
-      name: git
-  # create global git ignore file
-  - name: Create global git ignore file
-    become: true
-    become_user: "{{ non_root_user }}"
-    ansible.builtin.copy:
-      content: |
-        # global gitignore
-        .vimrc
-        .editorconfig
-        .dotfiles/target-home/.config/nvim/spell
-      dest: "~/.gitignore_global"
-  - name: Add global ignore
-    shell: git config --global core.excludesfile ~/.gitignore_global
-  - name: Install stow
-    homebrew:
-      state: present
-      name: stow
-  - name: Install ripgrep
-    homebrew:
-      state: present
-      name: ripgrep
-  # - name: Install Development Tools
-  #   homebrew:
-  #     state: present
-  #     name: g++
-  - name: Install neovim
-    homebrew:
-      state: present
-      name: neovim
-  - name: Install neovim package manager 
-    # become: true
-    # become_user: "{{ non_root_user }}"
-    ansible.builtin.git:
-      repo: "https://github.com/wbthomason/packer.nvim"
-      dest: "~/.local/share/nvim/site/pack/packer/start/packer.nvim"
-      depth: 1
+    - name: Install git
+      homebrew:
+        state: present
+        name: git
+    # create global git ignore file
+    - name: Create global git ignore file
+      become: true
+      become_user: "{{ non_root_user }}"
+      ansible.builtin.copy:
+        content: |
+          # global gitignore
+          .vimrc
+          .editorconfig
+          .dotfiles/target-home/.config/nvim/spell
+        dest: "~/.gitignore_global"
+    - name: Add global ignore
+      shell: git config --global core.excludesfile ~/.gitignore_global
+    - name: Add git editor
+      shell: git config --global core.editor "nvim"
+    - name: Install stow
+      homebrew:
+        state: present
+        name: stow
+    - name: Install ripgrep
+      homebrew:
+        state: present
+        name: ripgrep
+    # - name: Install Development Tools
+    #   homebrew:
+    #     state: present
+    #     name: g++
+    - name: Install neovim
+      homebrew:
+        state: present
+        name: neovim
+    - name: Install neovim package manager
+      # become: true
+      # become_user: "{{ non_root_user }}"
+      ansible.builtin.git:
+        repo: "https://github.com/wbthomason/packer.nvim"
+        dest: "~/.local/share/nvim/site/pack/packer/start/packer.nvim"
+        depth: 1
