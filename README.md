@@ -2,6 +2,12 @@
 Operation System as my Integrated Development Environment
 
 ## Installation of Dev Tools
+
+Git clone recursively
+
+1. `ssh-keygen` to generate an shh key if missing
+2. `git clone --recursive-submodules <repo-SSH-address>`
+
 ### To get started on Fedora
 ```sh
 sudo dnf update -y
@@ -29,6 +35,10 @@ stow -d "{{ playbook_dir }}"/.dotfiles/alacritty-fedora/ -t ~/.config .
 -- OR if you are on MAC
 stow -d "{{ playbook_dir }}"/.dotfiles/alacritty-mac/ -t ~/.config .
 ```
+
+## Copilot
+`:Copilot`
+
 ## MacOs Alt-Tab plugin
 https://alt-tab-macos.netlify.app/
 
