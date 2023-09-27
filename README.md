@@ -101,7 +101,15 @@ make some corrections:
 1. asdf doesn't install the plugins, which is necessary for mason
 2. asdf might need to be installed by running its script manually
 3. alacritty should be installed automatically - but now you have to run its script
-4. stow-ing doesn't work automatically, because .zshrc file must be removed from the root 
+4. stow-ing doesn't work automatically, because .zshrc file must be removed from the root5. FIX THE FOLLOWING:
+
+```
+ ervin@192  ~/Workspace/overcast/front-end  git worktree add feature/PLA-2419-markers-on-timeline-for-selection feature/PLA-2419-markers-on-timeline-for-selection
+Preparing worktree (checking out 'feature/PLA-2419-markers-on-timeline-for-selection')
+HEAD is now at f9e189fc PLA-2499: remove unused imports
+hint: The '/home/ervin/Workspace/overcast/front-end/.bare/hooks/post-checkout' hook was ignored because it's not set as executable.
+hint: You can disable this warning with `git config advice.ignoredHook false`.
+```
 
 - Bind LSP keycombinations like refactoring 
 - use :GcLog -S text for looking for something in log
