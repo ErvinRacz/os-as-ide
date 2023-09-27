@@ -36,6 +36,10 @@ stow -d "{{ playbook_dir }}"/.dotfiles/alacritty-fedora/ -t ~/.config .
 stow -d "{{ playbook_dir }}"/.dotfiles/alacritty-mac/ -t ~/.config .
 ```
 
+## ZSHRC might not work!
+
+In some cases zsh doesn't get set as default shell with the current script, so you might need to set it as default manually
+
 ## Copilot
 `:Copilot`
 
