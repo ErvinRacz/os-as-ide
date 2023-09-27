@@ -81,6 +81,14 @@ asdf plugin-add pnpm
 ```
 
 TODO:
+
+Most important:
+make some corrections:
+1. asdf doesn't install the plugins, which is necessary for mason
+2. asdf might need to be installed by running its script manually
+3. alacritty should be installed automatically - but now you have to run its script
+4. stow-ing doesn't work automatically, because .zshrc file must be removed from the root 
+
 - Bind LSP keycombinations like refactoring 
 - use :GcLog -S text for looking for something in log
 - Make the fzf work on Ctrl+f that is normally assigned to Ctrl+t by default
