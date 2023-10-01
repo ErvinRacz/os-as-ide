@@ -1,4 +1,5 @@
 # os-as-ide
+
 Operation System as my Integrated Development Environment
 
 ## Installation of Dev Tools
@@ -9,25 +10,31 @@ Git clone recursively
 2. `git clone --recursive-submodules <repo-SSH-address>`
 
 ### To get started on Fedora
+
 ```sh
 sudo dnf update -y
 sudo reboot
 sudo dnf install -y ansible
 ansible --version
 ```
+
 ### On MacOS
+
 Install Homebrew: https://brew.sh/
+
 ```sh
 brew install ansible
 ansible --version
 ```
 
 Then install the essentials: zsh, oh-my-zsh, their plugins:
+
 ```sh
 ansible-playbook -K install-essentials.yaml
 ```
 
 Stow .dotfiles
+
 ```shell
 sudo rm -rf ~/.zshrc
 stow -d "{{ playbook_dir }}"/.dotfiles/target-home/ -t ~/ .
@@ -41,15 +48,19 @@ stow -d "{{ playbook_dir }}"/.dotfiles/alacritty-mac/ -t ~/.config .
 In some cases zsh doesn't get set as default shell with the current script, so you might need to set it as default manually
 
 ## Copilot
+
 `:Copilot`
 
 ## MacOs Alt-Tab plugin
+
 https://alt-tab-macos.netlify.app/
 
 ## Vimium browser plugin
+
 https://github.com/philc/vimium/wiki
 
 My setup:
+
 ```
 # In case of Mac
 # map <c-t> createTab
@@ -67,6 +78,7 @@ unmap <c-p>
 ## ASDF package manager
 
 ### Java
+
 ```shell
 asdf plugin-add java
 asdf list-all java
@@ -76,6 +88,7 @@ asdf global java zulu-17.42.x
 ```
 
 Made Neovim useful for Java based on the following guides:
+
 - https://medium.com/@chrisatmachine/lunarvim-as-a-java-ide-da65c4a77fb4
 - https://github.com/mfussenegger/nvim-jdtls
 - https://sookocheff.com/post/vim/neovim-java-ide/
@@ -98,6 +111,7 @@ TODO:
 
 Most important:
 make some corrections:
+
 1. asdf doesn't install the plugins, which is necessary for mason
 2. asdf might need to be installed by running its script manually
 3. alacritty should be installed automatically - but now you have to run its script
@@ -111,7 +125,7 @@ hint: The '/home/ervin/Workspace/overcast/front-end/.bare/hooks/post-checkout' h
 hint: You can disable this warning with `git config advice.ignoredHook false`.
 ```
 
-- Bind LSP keycombinations like refactoring 
+- Bind LSP keycombinations like refactoring
 - use :GcLog -S text for looking for something in log
 - Make the fzf work on Ctrl+f that is normally assigned to Ctrl+t by default
 - use grammarely
@@ -120,8 +134,37 @@ hint: You can disable this warning with `git config advice.ignoredHook false`.
 - make remote docs in java be fetched
 
 ## Troubleshooting
+
 ### Debug LSP
+
 - use `showkey -a` to debug key-combos
 - Check the log files. Use :LspLoga or :JdtShowLogs or open the log file manually. :lua print(vim.fn.stdpath('cache')) lists the path, there should be a lsp.log. You may have to increase the log level. See :help vim.lsp.set_log_level().
 - Remove Java Project Cache with :JdtWipeDataAndRestart
 - Debug plugin configuration inserting in the after lua files: `print(vim.inspect(require('formatter.config').values.filetype))`
+
+## For go, install the packages
+
+```
+asdf plugin-add golang
+asdf list-all golnag
+asdf install .....
+asdf global golang ....
+
+
+go install mvdan.cc/gofumpt@latest
+go install golang.org/x/tools/cmd/goimports@latest
+go install github.com/segmentio/golines@latest
+```
+
+## My Git workflow:
+
+### Use worktrees
+
+- use worktrees so that when you need to checkout, do a code-review for a colleague, you don't have to put away / stash you current work. You just change the directory!
+- use worktrees so that you can have a current feature branch that you are working on, and then another one, let's say, for reference
+
+Name the worktree directories for example as: `reference`, `review` and `work`.
+
+### Use stacked branches with the git --update-refs option:
+
+https://andrewlock.net/working-with-stacked-branches-in-git-is-easier-with-update-refs/
