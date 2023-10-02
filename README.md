@@ -163,6 +163,9 @@ go install github.com/segmentio/golines@latest
 - use worktrees so that when you need to checkout, do a code-review for a colleague, you don't have to put away / stash you current work. You just change the directory!
 - use worktrees so that you can have a current feature branch that you are working on, and then another one, let's say, for reference
 
+`git worktree add reference devel`
+`git worktree add -f work devel`
+
 Name the worktree directories for example as: `reference`, `review` and `work`.
 
 ### Use stacked branches with the git --update-refs option:
