@@ -27,6 +27,8 @@
       shell: git config --global core.editor "nvim"
     - name: Add global ignore
       shell: git config --global core.excludesfile ~/.gitignore_global
+    - name: Configure git to use the stack workflow
+      shell: git config --global --add --bool rebase.updateRefs true
     - name: Install stow
       dnf:
         state: present

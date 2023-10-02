@@ -21,6 +21,8 @@
         dest: "~/.gitignore_global"
     - name: Add global ignore
       shell: git config --global core.excludesfile ~/.gitignore_global
+    - name: Configure git to use the stack workflow
+      shell: git config --global --add --bool rebase.updateRefs true
     - name: Add git editor
       shell: git config --global core.editor "nvim"
     - name: Install stow

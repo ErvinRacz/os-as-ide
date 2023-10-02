@@ -168,3 +168,5 @@ Name the worktree directories for example as: `reference`, `review` and `work`.
 ### Use stacked branches with the git --update-refs option:
 
 https://andrewlock.net/working-with-stacked-branches-in-git-is-easier-with-update-refs/
+
+Use `git rebase dev -i --update-refs` to move a change down the stack
