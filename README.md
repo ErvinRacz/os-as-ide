@@ -173,3 +173,8 @@ Name the worktree directories for example as: `reference`, `review` and `work`.
 https://andrewlock.net/working-with-stacked-branches-in-git-is-easier-with-update-refs/
 
 Use `git rebase dev -i --update-refs` to move a change down the stack
+
+### For Ocaml:
+
+consider https://github.com/jpalardy/vim-slime
+for learning it is especially great! see: https://www.youtube.com/watch?v=WjhcmpimzSQ

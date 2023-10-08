@@ -12,7 +12,8 @@ require('nvim-treesitter.configs').setup {
         "markdown",
         "bash",
         "json",
-        'http'
+        'http',
+        'ocaml'
     },
 
     -- Install parsers synchronously (only applied to `ensure_installed`)
@@ -30,5 +31,11 @@ require('nvim-treesitter.configs').setup {
         -- Using this option may slow down your editor, and you may see some duplicate highlights.
         -- Instead of true it can also be a list of languages
         additional_vim_regex_highlighting = false,
+    },
+    autopairs = {
+        enable = true
+    },
+    autotag = {
+        enable = true
     },
 }

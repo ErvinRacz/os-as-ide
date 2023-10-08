@@ -18,6 +18,7 @@ vim.filetype.add({
 lsp.preset('recommended')
 
 lsp.ensure_installed({
+    'bashls',
     'lua_ls',
     'tsserver',
     'eslint',
@@ -26,12 +27,19 @@ lsp.ensure_installed({
     'tailwindcss',
     'html',
     'cssls',
-    'jdtls'
+    'jdtls',
+    'ocaml-lsp',
 })
 
 local lsp_flags = {
     -- This is the default in Nvim 0.7+
     debounce_text_changes = 150,
+}
+
+lspconfig.ocamllsp.setup {
+    cmd = { "ocamllsp" },
+    filetypes = { "ocaml", "ocaml.menhir", "ocaml.interface", "ocaml.ocamllex", "reason", "dune" },
+    root_dir = lspconfig.util.root_pattern("*.opam", "esy.json", "package.json", ".git", "dune-project", "dune-workspace"),
 }
 
 -- bash, requires bash-language-server
@@ -163,7 +171,8 @@ lsp.on_attach(function(client, bufnr)
     vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
     vim.keymap.set("n", "gr", function() vim.lsp.buf.references() end, opts)
     vim.keymap.set("n", "<C-q>", function() vim.lsp.buf.hover() end, opts)
-    vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
+    vim.keymap.set("n", "<space>td", function() vim.lsp.buf.type_definition() end, opts)
+    vim.keymap.set("i", "<C-q>", function() vim.lsp.buf.signature_help() end, opts)
     vim.keymap.set("n", "<a-e>", function() vim.diagnostic.goto_next() end, opts)
     vim.keymap.set("n", "<a-E>", function() vim.diagnostic.goto_prev() end, opts)
     vim.keymap.set({ "n", "v", "i" }, "<a-cr>", function() vim.lsp.buf.code_action() end, opts)

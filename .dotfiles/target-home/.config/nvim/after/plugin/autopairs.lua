@@ -10,7 +10,12 @@ require('nvim-autopairs').setup({
     enable_bracket_in_quote = true,   --
     enable_abbr = false,              -- trigger abbreviation
     break_undo = true,                -- switch for basic rule break undo sequence
-    check_ts = false,
+    check_ts = true,
+    ts_config = {
+        lua = { "string", "source" },
+        javascript = { "string", "template_string" },
+        java = false,
+    },
     map_cr = true,
     map_bs = true,   -- map the <BS> key
     map_c_h = false, -- Map the <C-h> key to delete a pair
