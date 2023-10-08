@@ -221,6 +221,9 @@ require('formatter').setup({
     -- Set the log level
     -- log_level = vim.log.levels.DEBUG,
     filetype = vim.tbl_extend('keep', prettierd_filetype_mappings, {
+        sh = {
+            require("formatter.filetypes.sh").shfmt,
+        },
         ["*"] = {
             require("formatter.filetypes.any").remove_trailing_whitespace,
             function()
