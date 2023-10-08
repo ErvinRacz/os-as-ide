@@ -176,5 +176,25 @@ Use `git rebase dev -i --update-refs` to move a change down the stack
 
 ### For Ocaml:
 
+#### Installation
+
+We don't use `asdf` for this because opam is the official package manager for Ocaml!
+
+```
+fedora: sudo dnf install -y opam
+ubuntu: sudo apt install opam
+mac: brew isntall opam
+```
+
+```
+opam init
+eval $(opam env)
+ocaml -version
+```
+
+```
+opam install dune merlin ocaml-lsp-server odoc ocamlformat utop dune-release
+```
+
 consider https://github.com/jpalardy/vim-slime
 for learning it is especially great! see: https://www.youtube.com/watch?v=WjhcmpimzSQ

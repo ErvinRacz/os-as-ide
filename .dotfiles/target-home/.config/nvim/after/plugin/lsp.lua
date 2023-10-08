@@ -28,7 +28,6 @@ lsp.ensure_installed({
     'html',
     'cssls',
     'jdtls',
-    'ocaml-lsp',
 })
 
 local lsp_flags = {
@@ -36,10 +35,22 @@ local lsp_flags = {
     debounce_text_changes = 150,
 }
 
+--Enable (broadcasting) snippet capability for completion
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+capabilities.textDocument.completion.completionItem.resolveSupport = {
+    properties = {
+        'documentation',
+        'detail',
+        'additionalTextEdits',
+    },
+}
+
 lspconfig.ocamllsp.setup {
     cmd = { "ocamllsp" },
     filetypes = { "ocaml", "ocaml.menhir", "ocaml.interface", "ocaml.ocamllex", "reason", "dune" },
     root_dir = lspconfig.util.root_pattern("*.opam", "esy.json", "package.json", ".git", "dune-project", "dune-workspace"),
+    capabilities = capabilities,
 }
 
 -- bash, requires bash-language-server
@@ -76,11 +87,6 @@ lspconfig.lua_ls.setup {
 
 lspconfig.tsserver.setup({})
 
--- css, html
--- requires vscode-langservers-extracted npm package
---Enable (broadcasting) snippet capability for completion
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
 lspconfig.cssls.setup {
     capabilities = capabilities,
     flags = lsp_flags,
@@ -130,11 +136,11 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
     ['<C-j>'] = cmp.mapping.select_next_item(cmp_select),
     ['<Tab>'] = cmp.mapping.confirm({
         behavior = cmp.ConfirmBehavior.Replace,
-        select = true
+        select = false
     }),
     ['<cr>'] = cmp.mapping.confirm({
         behavior = cmp.ConfirmBehavior.Replace,
-        select = true
+        select = false
     }),
     ["<C-Space>"] = function(args)
         cmp.mapping.complete()
@@ -144,6 +150,7 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
 cmp_mappings['<S-Tab>'] = nil
 
 lsp.setup_nvim_cmp({
+    preselect = 'none',
     mapping = cmp_mappings,
     sources = {
         { name = 'nvim_lsp' },
@@ -159,7 +166,7 @@ lsp.setup_nvim_cmp({
     formatting = {
         format = lspkind.cmp_format({
             mode = 'symbol_text',  -- show only symbol annotations
-            maxwidth = 50,         -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+            maxwidth = 70,         -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
             ellipsis_char = '...', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
         })
     }
@@ -230,6 +237,19 @@ require('formatter').setup({
     -- Set the log level
     -- log_level = vim.log.levels.DEBUG,
     filetype = vim.tbl_extend('keep', prettierd_filetype_mappings, {
+        ocaml = {
+            function()
+                local util = require "formatter.util"
+                return {
+                    exe = "ocamlformat",
+                    args = {
+                        "--enable-outside-detected-project",
+                        util.escape_path(util.get_current_buffer_file_path()),
+                    },
+                    stdin = true,
+                }
+            end
+        },
         sh = {
             require("formatter.filetypes.sh").shfmt,
         },
