@@ -26,12 +26,28 @@ lsp.ensure_installed({
     'tailwindcss',
     'html',
     'cssls',
-    'jdtls'
+    'jdtls',
+    'gopls'
 })
 
 local lsp_flags = {
     -- This is the default in Nvim 0.7+
     debounce_text_changes = 150,
+}
+
+lspconfig.gopls.setup {
+    cmd = { "gopls" },
+    filetypes = { "go", "gomod", "gowork", "gotmpl" },
+    root_dir = lspconfig.util.root_pattern("go.work", "go.mod", ".git"),
+    settings = {
+        gopls = {
+            completeUnimported = true,
+            usePlaceholders = true,
+            analyses = {
+                unusedparams = true,
+            },
+        },
+    },
 }
 
 -- bash, requires bash-language-server
@@ -219,19 +235,19 @@ require('formatter').setup({
     -- Enable or disable logging
     logging = false,
     -- Set the log level
-    log_level = vim.log.levels.DEBUG,
+    -- log_level = vim.log.levels.DEBUG,
     filetype = vim.tbl_extend('keep', prettierd_filetype_mappings, {
         ["*"] = {
+            require("formatter.filetypes.any").remove_trailing_whitespace,
             function()
-                if vim.tbl_contains(vim.tbl_keys(prettierd_filetype_mappings), vim.bo.filetype) then
-                    -- print("filetype was formatted with prettierd")
+                -- Ignore already configured types.
+                local defined_types = require("formatter.config").values.filetype
+                if defined_types[vim.bo.filetype] ~= nil then
                     return nil
                 end
-
-                -- print("formatted with lsp")
-                vim.lsp.buf.format()
+                vim.lsp.buf.format({ async = true })
             end,
-        }
+        },
         -- Add more filetypes here
     }),
 })
