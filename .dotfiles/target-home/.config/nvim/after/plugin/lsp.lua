@@ -26,28 +26,12 @@ lsp.ensure_installed({
     'tailwindcss',
     'html',
     'cssls',
-    'jdtls',
-    'gopls'
+    'jdtls'
 })
 
 local lsp_flags = {
     -- This is the default in Nvim 0.7+
     debounce_text_changes = 150,
-}
-
-lspconfig.gopls.setup {
-    cmd = { "gopls" },
-    filetypes = { "go", "gomod", "gowork", "gotmpl" },
-    root_dir = lspconfig.util.root_pattern("go.work", "go.mod", ".git"),
-    settings = {
-        gopls = {
-            completeUnimported = true,
-            usePlaceholders = true,
-            analyses = {
-                unusedparams = true,
-            },
-        },
-    },
 }
 
 -- bash, requires bash-language-server
