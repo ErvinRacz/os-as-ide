@@ -100,7 +100,11 @@ end, {})
 
 vim.keymap.set("n", "<leader>cp", "<cmd>Cop<CR>", { silent = true })
 --#endregion
-vim.api.nvim_set_keymap("n", "<leader>r", '<Plug>RestNvim', { silent = true })
+
+-- vim.api.nvim_set_keymap("n", "<leader>r", '<Plug>RestNvim', { silent = true })
+
+vim.api.nvim_set_keymap("x", "<leader>r", '<Plug>SlimeRegionSend', { silent = true })
+vim.api.nvim_set_keymap("n", "<leader>r", '<Plug>SlimeParagraphSend', { silent = true })
 
 function CloseTabOrQuitAll(bang)
     local tab_count = #vim.api.nvim_list_tabpages()

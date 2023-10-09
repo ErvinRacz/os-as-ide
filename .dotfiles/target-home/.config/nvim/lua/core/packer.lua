@@ -103,4 +103,5 @@ return require('packer').startup(function(use)
     }
     use('mhartington/formatter.nvim')
     use('github/copilot.vim')
+    use('jpalardy/vim-slime')
 end)

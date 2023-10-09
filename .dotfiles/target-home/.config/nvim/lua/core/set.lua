@@ -62,3 +62,12 @@ vim.opt.winminwidth = 4
 
 -- vim.opt.colorcolumn = "80"
 vim.opt.fillchars = { eob = ' ' }
+
+-- vim-slime
+vim.g.slime_target = "tmux"
+vim.g.slime_no_mappings = 1
+vim.g.slime_paste_file = os.getenv("HOME") .. "/tmp/slime_paste"
+vim.g.slime_default_config = {
+    socket_name = "default",
+    target_pane = "{last}"
+}
