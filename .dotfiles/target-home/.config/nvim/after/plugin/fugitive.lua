@@ -64,7 +64,7 @@ autocmd("FileType", {
             "revert",
         }
         -- get task number read from current branch if any with the regular expression
-        local task = vim.fn.systemlist("git branch --show-current")[1]:match("([A-Z]+-[0-9]+).*$")
+        local task = vim.fn.systemlist("git branch --show-current")[1]:match("([a-zA-Z]+-[0-9]+).*$")
 
         -- add the two tables together
         local items = vim.tbl_flatten({ words, task })
