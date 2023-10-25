@@ -110,6 +110,7 @@ bindkey -rp '^H'
 
 
 alias :q='exit'
+alias k=kubectl
 alias pn=pnpm
 
 export PATH=$HOME/.local/bin:$PATH
