@@ -63,6 +63,10 @@ return require('packer').startup(function(use)
         ft = { "markdown" },
     })
     use {
+        "vinnymeller/swagger-preview.nvim",
+        run = "npm install -g swagger-ui-watcher",
+    }
+    use {
         'lewis6991/gitsigns.nvim',
         config = function()
             require('gitsigns').setup()
