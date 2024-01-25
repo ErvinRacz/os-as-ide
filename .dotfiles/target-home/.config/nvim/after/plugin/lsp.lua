@@ -133,7 +133,7 @@ lspconfig.yamlls.setup {
                 "!Join sequence"
             },
             schemas = {
-                ["https://raw.githubusercontent.com/awslabs/goformation/master/schema/cloudformation.schema.json"] = "*template*.{yaml,yml}",
+                ["https://raw.githubusercontent.com/aws/serverless-application-model/main/samtranslator/schema/schema.json"] = "*template*.{yaml,yml}",
                 -- ["https://gitlab.com/gitlab-org/gitlab/-/raw/master/app/assets/javascripts/editor/schema/ci.json"] = {
                 --     "ci/*.yml", ".gitlab-ci.yml" },
             },
