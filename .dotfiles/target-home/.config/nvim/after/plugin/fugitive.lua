@@ -32,8 +32,21 @@ autocmd("BufWinEnter", {
     end,
 })
 
-local cmpRegistered = false
+function uniqueList(inputList)
+    local seen = {}
+    local uniqueList = {}
 
+    for _, value in ipairs(inputList) do
+        if not seen[value] then
+            table.insert(uniqueList, value)
+            seen[value] = true
+        end
+    end
+
+    return uniqueList
+end
+
+local cmpRegistered = false
 autocmd("FileType", {
     group = Core_Fugitive,
     pattern = { "gitcommit" },
@@ -66,8 +79,20 @@ autocmd("FileType", {
         -- get task number read from current branch if any with the regular expression
         local task = vim.fn.systemlist("git branch --show-current")[1]:match("([a-zA-Z]+-[0-9]+).*$")
 
+
+        local logOutput = vim.fn.systemlist("git log -n 20 --pretty=format:%s")
+        local taskNumbersFromLog = {}
+        if type(logOutput) == "table" and #logOutput > 0 then
+            for _, line in ipairs(logOutput) do
+                local taskNumber = line:match("([a-zA-Z]+-[0-9]+).*$")
+                if taskNumber then
+                    table.insert(taskNumbersFromLog, taskNumber)
+                end
+            end
+        end
+
         -- add the two tables together
-        local items = vim.tbl_flatten({ words, task })
+        local items = vim.tbl_flatten({ uniqueList(vim.tbl_flatten({ task, taskNumbersFromLog })), words })
 
         local source = {}
 
