@@ -194,7 +194,23 @@ require('lazy').setup({
   --    require('Comment').setup({})
 
   -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim', opts = {} },
+  {
+    'numToStr/Comment.nvim',
+    opts = {
+      toggler = {
+        ---Line-comment toggle keymap
+        line = '<c-_>',
+        ---Block-comment toggle keymap
+        block = '<c-\\>',
+      },
+      opleader = {
+        ---Line-comment toggle keymap
+        line = '<c-_>',
+        ---Block-comment toggle keymap
+        block = '<c-\\>',
+      },
+    },
+  },
 
   -- Here is a more advanced example where we pass configuration
   -- options to `gitsigns.nvim`. This is equivalent to the following Lua:
@@ -211,6 +227,40 @@ require('lazy').setup({
         topdelete = { text = '‾' },
         changedelete = { text = '~' },
       },
+      on_attach = function(bufnr)
+        local gitsigns = require 'gitsigns'
+
+        local function map(mode, l, r, opts)
+          opts = opts or {}
+          opts.buffer = bufnr
+          vim.keymap.set(mode, l, r, opts)
+        end
+        -- Actions
+        map('n', '<leader>hs', gitsigns.stage_hunk, { desc = 'Stage the current hunk' })
+        map('n', '<C-a-z>', gitsigns.reset_hunk, { desc = 'Reset the current hunk' })
+        map('v', '<leader>hs', function()
+          gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' }
+        end, { desc = 'Stage the selected hunk' })
+        map('v', '<C-a-z>', function()
+          gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
+        end, { desc = 'Reset the selected hunk' })
+        map('n', '<leader>hS', gitsigns.stage_buffer, { desc = 'Stage the entire buffer' })
+        map('n', '<leader>hu', gitsigns.undo_stage_hunk, { desc = 'Undo staging of the current hunk' })
+        map('n', '<leader>hR', gitsigns.reset_buffer, { desc = 'Reset the entire buffer' })
+        map('n', '<leader>hp', gitsigns.preview_hunk, { desc = 'Preview the current hunk' })
+        map('n', '<leader>hb', function()
+          gitsigns.blame_line { full = true }
+        end, { desc = 'Blame the current line' })
+        map('n', '<leader>tb', gitsigns.toggle_current_line_blame, { desc = 'Toggle displaying blame information for the current line' })
+        map('n', '<leader>hd', gitsigns.diffthis, { desc = 'Diff the current hunk against the index' })
+        map('n', '<leader>hD', function()
+          gitsigns.diffthis '~'
+        end, { desc = 'Diff the current hunk against the work tree' })
+        map('n', '<leader>td', gitsigns.toggle_deleted, { desc = 'Toggle displaying deleted lines' })
+
+        -- Text object
+        map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>', { desc = 'Select a hunk' })
+      end,
     },
   },
 
