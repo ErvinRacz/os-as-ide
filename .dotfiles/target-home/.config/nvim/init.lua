@@ -36,6 +36,9 @@
     These are hints about where to find more information about the relevant settings,
     plugins or Neovim features used in Kickstart.
 
+    Troubleshooting tips:
+    - use `:verb set formatoptions` to debug which file set an option for the last time
+
 If you experience any errors while trying to install kickstart, run `:checkhealth` for more info.
 
 --]]
@@ -210,6 +213,37 @@ require('lazy').setup({
         block = '<c-\\>',
       },
     },
+  },
+
+  {
+    'stevearc/oil.nvim',
+    opts = {
+      skip_confirm_for_simple_edits = true,
+      use_default_keymaps = false,
+      keymaps = {
+        ['g?'] = 'actions.show_help',
+        ['<CR>'] = 'actions.select',
+        ['<C-v>'] = 'actions.select_vsplit',
+        ['<C-s>'] = 'actions.select_split',
+        ['<C-t>'] = 'actions.select_tab',
+        ['<C-p>'] = 'actions.preview',
+        ['<C-c>'] = 'actions.close',
+        ['<C-r>'] = 'actions.refresh',
+        ['<BS>'] = 'actions.parent',
+        ['_'] = 'actions.open_cwd',
+        ['`'] = 'actions.cd',
+        ['~'] = 'actions.tcd',
+        ['gs'] = 'actions.change_sort',
+        ['gx'] = 'actions.open_external',
+        ['g.'] = 'actions.toggle_hidden',
+        ['g\\'] = 'actions.toggle_trash',
+      },
+      view_options = {
+        show_hidden = true,
+      },
+    },
+    -- Optional dependencies
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
   },
 
   -- Here is a more advanced example where we pass configuration
@@ -554,8 +588,7 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
-        -- tsserver = {},
-        --
+        tsserver = {},
 
         lua_ls = {
           -- cmd = {...},
