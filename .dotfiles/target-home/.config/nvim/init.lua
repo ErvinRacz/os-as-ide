@@ -149,9 +149,6 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
--- Allow to open Oil with a keymap
-vim.keymap.set('n', '<leader>`', '<cmd>:Oil<cr>', { desc = 'Opens Oil' })
-
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -191,7 +188,13 @@ require('lazy').setup({
     'm4xshen/hardtime.nvim',
     dependencies = { 'MunifTanjim/nui.nvim', 'nvim-lua/plenary.nvim' },
     opts = {
-      disabled_filetypes = { 'lazy', 'mason', 'oil' },
+      disabled_filetypes = { 'lazy', 'mason', 'oil', 'NeogitStatus' },
+      disable_mouse = false,
+      max_count = 3,
+      disabled_keys = {
+        ['<Left>'] = {},
+        ['<Right>'] = {},
+      },
     },
   },
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
@@ -254,6 +257,12 @@ require('lazy').setup({
     },
     -- Optional dependencies
     dependencies = { 'nvim-tree/nvim-web-devicons' },
+    config = function()
+      local oil = require 'oil'
+      oil.setup {}
+      -- Allow to open Oil with a keymap
+      vim.keymap.set('n', '<leader>`', '<cmd>:Oil<cr>', { desc = 'Opens Oil' })
+    end,
   },
 
   -- Here is a more advanced example where we pass configuration
@@ -307,6 +316,21 @@ require('lazy').setup({
       end,
     },
   },
+  {
+    'NeogitOrg/neogit',
+    dependencies = {
+      'nvim-lua/plenary.nvim', -- required
+      'sindrets/diffview.nvim', -- optional - Diff integration
+
+      -- Only one of these is needed, not both.
+      'nvim-telescope/telescope.nvim', -- optional
+    },
+    config = function()
+      local neogit = require 'neogit'
+      neogit.setup {}
+      vim.keymap.set('n', '<C-g>', neogit.open, { desc = '[C]trl [G]it' })
+    end,
+  },
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
   --
@@ -336,6 +360,7 @@ require('lazy').setup({
         ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
         ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
         ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
+        ['<C>'] = { name = '[C]trl', _ = 'which_key_ignore' },
       }
     end,
   },
@@ -393,15 +418,47 @@ require('lazy').setup({
 
       -- [[ Configure Telescope ]]
       -- See `:help telescope` and `:help telescope.setup()`
+
+      -- navigation in telescope UI
+      local actions = require 'telescope.actions'
+      local function SendToQuickFixList(prompt_bufnr)
+        local picker = require('telescope.actions.state').get_current_picker(prompt_bufnr)
+        local num_selections = #picker:get_multi_selection()
+
+        if num_selections > 1 then
+          -- actions.file_edit throws - context of picker seems to change
+          --actions.file_edit(prompt_bufnr)
+          actions.send_selected_to_qflist(prompt_bufnr)
+          -- actions.open_qflist() / becaouse it would open the qflist to the right
+          vim.cmd [[botright copen]]
+        else
+          actions.file_edit(prompt_bufnr)
+        end
+      end
       require('telescope').setup {
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
-        --
-        -- defaults = {
-        --   mappings = {
-        --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-        --   },
-        -- },
+        defaults = {
+          mappings = {
+            i = {
+              ['<tab>'] = actions.toggle_selection + actions.move_selection_previous,
+              ['<cr>'] = SendToQuickFixList,
+              ['<c-k>'] = actions.move_selection_previous,
+              ['<c-j>'] = actions.move_selection_next,
+              ['<c-t>'] = function(prompt_bufnr)
+                actions.select_tab(prompt_bufnr)
+              end,
+            },
+            n = {
+              ['<tab>'] = actions.toggle_selection + actions.move_selection_previous,
+              ['<cr>'] = SendToQuickFixList,
+              ['<c-k>'] = actions.move_selection_previous,
+              ['<c-t>'] = function(prompt_bufnr)
+                actions.select_tab(prompt_bufnr)
+              end,
+            },
+          },
+        },
         -- pickers = {}
         extensions = {
           ['ui-select'] = {
@@ -607,6 +664,7 @@ require('lazy').setup({
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
         tsserver = {},
+        bashls = {},
 
         lua_ls = {
           -- cmd = {...},
