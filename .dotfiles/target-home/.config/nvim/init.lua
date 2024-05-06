@@ -38,6 +38,7 @@
 
     Troubleshooting tips:
     - use `:verb set formatoptions` to debug which file set an option for the last time
+    - use `:nmap` or `:imap` to find out about the mapping
 
 If you experience any errors while trying to install kickstart, run `:checkhealth` for more info.
 
@@ -149,6 +150,10 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
+-- Quickfix list mappings
+vim.keymap.set('n', '<leader>j', '<cmd>cnext<cr>zz')
+vim.keymap.set('n', '<leader>k', '<cmd>cprev<cr>zz')
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -188,7 +193,7 @@ require('lazy').setup({
     'm4xshen/hardtime.nvim',
     dependencies = { 'MunifTanjim/nui.nvim', 'nvim-lua/plenary.nvim' },
     opts = {
-      disabled_filetypes = { 'lazy', 'mason', 'oil', 'NeogitStatus' },
+      disabled_filetypes = { 'lazy', 'mason', 'oil', 'NeogitStatus', 'NeogitCommitView' },
       disable_mouse = false,
       max_count = 3,
       disabled_keys = {
@@ -242,7 +247,7 @@ require('lazy').setup({
         ['<C-p>'] = 'actions.preview',
         ['<C-c>'] = 'actions.close',
         ['<C-r>'] = 'actions.refresh',
-        ['<BS>'] = 'actions.parent',
+        ['-'] = 'actions.parent',
         ['_'] = 'actions.open_cwd',
         ['`'] = 'actions.cd',
         ['~'] = 'actions.tcd',
@@ -264,6 +269,45 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>`', '<cmd>:Oil<cr>', { desc = 'Opens Oil' })
     end,
   },
+
+  -- TODO: nice to have in big projects!
+  -- {
+  --   'folke/trouble.nvim',
+  --   branch = 'dev', -- IMPORTANT!
+  --   keys = {
+  --     {
+  --       '<leader>xx',
+  --       '<cmd>Trouble diagnostics toggle<cr>',
+  --       desc = 'Diagnostics (Trouble)',
+  --     },
+  --     {
+  --       '<leader>xX',
+  --       '<cmd>Trouble diagnostics toggle filter.buf=0<cr>',
+  --       desc = 'Buffer Diagnostics (Trouble)',
+  --     },
+  --     {
+  --       '<leader>cs',
+  --       '<cmd>Trouble symbols toggle focus=false<cr>',
+  --       desc = 'Symbols (Trouble)',
+  --     },
+  --     {
+  --       '<leader>cl',
+  --       '<cmd>Trouble lsp toggle focus=false win.position=right<cr>',
+  --       desc = 'LSP Definitions / references / ... (Trouble)',
+  --     },
+  --     {
+  --       '<leader>xL',
+  --       '<cmd>Trouble loclist toggle<cr>',
+  --       desc = 'Location List (Trouble)',
+  --     },
+  --     {
+  --       '<leader>xQ',
+  --       '<cmd>Trouble qflist toggle<cr>',
+  --       desc = 'Quickfix List (Trouble)',
+  --     },
+  --   },
+  --   opts = {}, -- for default options, refer to the configuration section for custom setup.
+  -- },
 
   -- Here is a more advanced example where we pass configuration
   -- options to `gitsigns.nvim`. This is equivalent to the following Lua:
@@ -513,7 +557,9 @@ require('lazy').setup({
   {
     'karb94/neoscroll.nvim',
     config = function()
-      require('neoscroll').setup {}
+      require('neoscroll').setup {
+        mappings = { '<C-d>', '<C-u>' },
+      }
     end,
   },
 
@@ -858,17 +904,52 @@ require('lazy').setup({
   },
 
   { -- You can easily change to a different colorscheme.
-    -- Change the name of the colorscheme plugin below, and then
-    -- change the command in the config to whatever the name of that colorscheme is.
-    --
-    -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'folke/tokyonight.nvim',
+    'rebelot/kanagawa.nvim',
     priority = 1000, -- Make sure to load this before all the other start plugins.
-    init = function()
-      -- Load the colorscheme here.
-      -- Like many other themes, this one has different styles, and you could load
-      -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-night'
+    config = function()
+      require('kanagawa').setup {
+        transparent = true, -- do not set background color
+        theme = 'wave', -- Load "wave" theme when 'background' option is not set
+        overrides = function(colors)
+          local theme = colors.theme
+          -- diff = {
+          --   add = "#2B3328",
+          --   change = "#252535",
+          --   delete = "#43242B",
+          --   text = "#49443C"
+          -- },
+          return {
+            TelescopeTitle = { fg = theme.ui.special, bold = true },
+            TelescopePromptNormal = { bg = theme.ui.bg_p1 },
+            TelescopePromptBorder = { fg = theme.ui.bg_p1, bg = theme.ui.bg_p1 },
+            TelescopeResultsNormal = { fg = theme.ui.fg_dim, bg = theme.ui.bg_m1 },
+            TelescopeResultsBorder = { fg = theme.ui.bg_m1, bg = theme.ui.bg_m1 },
+            TelescopePreviewNormal = { bg = theme.ui.bg_dim },
+            TelescopePreviewBorder = { bg = theme.ui.bg_dim, fg = theme.ui.bg_dim },
+
+            -- Neogit highlight groups
+            NeogitHunkHeader = { fg = 'red', bg = 'none' },
+            NeogitDiffContext = { fg = theme.diff.text, bg = 'none' },
+            NeogitDiffAdd = { fg = theme.vcs.added, bg = 'none' },
+            NeogitDiffDelete = { fg = theme.vcs.removed, bg = 'none' },
+            NeogitDiffHeader = { fg = 'red', bg = 'none' },
+
+            -- SIGNS FOR LINE HIGHLIGHTING CURRENT CONTEXT
+            -- These are essentially an accented version of the above highlight groups. Only
+            -- applies to the current context the cursor is within.
+            NeogitHunkHeaderHighlight = { fg = 'red', bg = theme.ui.bg_m1 },
+            NeogitDiffContextHighlight = { fg = theme.diff.text, bg = theme.ui.bg_m1 },
+            NeogitDiffAddHighlight = { fg = theme.vcs.added, bg = theme.ui.bg_m1 },
+            NeogitDiffDeleteHighlight = { fg = theme.vcs.removed, bg = theme.ui.bg_m1 },
+            NeogitDiffHeaderHighlight = { fg = 'red', bg = theme.ui.bg_m1 },
+          }
+        end,
+        background = { -- map the value of 'background' option to a theme
+          dark = 'dragon', -- try "dragon" !
+          light = 'lotus',
+        },
+      }
+      vim.cmd.colorscheme 'kanagawa'
 
       -- You can configure highlights by doing something like:
       vim.cmd.hi 'Comment gui=none'
