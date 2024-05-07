@@ -199,6 +199,8 @@ require('lazy').setup({
       disabled_keys = {
         ['<Left>'] = {},
         ['<Right>'] = {},
+        ['<Up>'] = {},
+        ['<Down>'] = {},
       },
     },
   },
@@ -369,10 +371,26 @@ require('lazy').setup({
       -- Only one of these is needed, not both.
       'nvim-telescope/telescope.nvim', -- optional
     },
+    -- open neogit or jump to the window where it is alraedy opened
     config = function()
       local neogit = require 'neogit'
       neogit.setup {}
-      vim.keymap.set('n', '<C-g>', neogit.open, { desc = '[C]trl [G]it' })
+      vim.keymap.set('n', '<C-g>', function()
+        local buf_info_list = vim.fn.getbufinfo()
+
+        local win_id = nil
+        for index, buf_info in ipairs(buf_info_list) do
+          if next(buf_info.windows) ~= nil and string.find(string.lower(buf_info.name), 'neogit') then
+            win_id = buf_info.windows[1]
+          end
+        end
+
+        if win_id == nil then
+          neogit.open()
+        else
+          vim.api.nvim_set_current_win(win_id)
+        end
+      end, { desc = '[C]trl [G]it' })
     end,
   },
 
