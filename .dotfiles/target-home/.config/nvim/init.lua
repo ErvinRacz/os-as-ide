@@ -151,8 +151,69 @@ vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower win
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
 -- Quickfix list mappings
+vim.cmd [[packadd cfilter]]
 vim.keymap.set('n', '<leader>j', '<cmd>cnext<cr>zz')
 vim.keymap.set('n', '<leader>k', '<cmd>cprev<cr>zz')
+
+function OpenQuickfixListWithoutFocus()
+  local current_win = vim.api.nvim_get_current_win()
+  vim.cmd.copen()
+  vim.api.nvim_set_current_win(current_win)
+end
+
+function DeleteQuickFixItems()
+  ---@return boolean
+  local function is_visual_mode()
+    local mode = vim.api.nvim_get_mode().mode
+    return mode:match '^[vV]' ~= nil
+  end
+
+  ---Get the current visual selection range. If not in visual mode, return nil.
+  ---@return {start_lnum: integer, end_lnum: integer}?
+  local function get_visual_range()
+    if not is_visual_mode() then
+      return
+    end
+    -- This is the best way to get the visual selection at the moment
+    -- https://github.com/neovim/neovim/pull/13896
+    local _, start_lnum, _, _ = unpack(vim.fn.getpos 'v')
+    local _, end_lnum, _, _, _ = unpack(vim.fn.getcurpos())
+    if start_lnum > end_lnum then
+      start_lnum, end_lnum = end_lnum, start_lnum
+    end
+    return { start_lnum = start_lnum, end_lnum = end_lnum }
+  end
+
+  local range = get_visual_range()
+  local matching_pattern = '.\\{-}\\ze|'
+  if not range then
+    vim.api.nvim_exec2('Cfilter! ' .. '"' .. vim.fn.matchstr(vim.fn.getline '.', matching_pattern .. '$"'), {})
+  else
+    local patterns = {}
+    for i = range.start_lnum, range.end_lnum do
+      table.insert(patterns, vim.fn.matchstr(vim.fn.getline(i), matching_pattern))
+    end
+    -- separete for because we want to correctly parse the lines first for the pattenrs,
+    -- if we modify the list in the mean time, the subsequent lines can be wrongfully avoided
+    for _, pattern in ipairs(patterns) do
+      if pattern ~= nil and pattern ~= '' then
+        vim.api.nvim_exec2('Cfilter! ' .. '"' .. pattern .. '$"', {})
+      end
+    end
+    -- exit visual mode as if in case of yank from visual mode
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Esc>', false, true, true), 'nx', false)
+  end
+end
+
+vim.api.nvim_create_autocmd({ 'FileType' }, {
+  pattern = { 'qf' },
+  callback = function(bufnr)
+    -- Define mappings for deleting individual items from a quickfix list
+    vim.api.nvim_buf_set_keymap(vim.fn.bufnr(), 'n', 'dd', '<cmd>lua DeleteQuickFixItems()<cr>', { noremap = true, silent = true })
+    vim.api.nvim_buf_set_keymap(vim.fn.bufnr(), 'v', 'd', '<cmd>lua DeleteQuickFixItems()<cr>', { noremap = true, silent = true })
+  end,
+  group = vim.api.nvim_create_augroup('quickfix Autogroup', { clear = true }),
+})
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -193,7 +254,7 @@ require('lazy').setup({
     'm4xshen/hardtime.nvim',
     dependencies = { 'MunifTanjim/nui.nvim', 'nvim-lua/plenary.nvim' },
     opts = {
-      disabled_filetypes = { 'lazy', 'mason', 'oil', 'NeogitStatus', 'NeogitCommitView' },
+      disabled_filetypes = { 'lazy', 'mason', 'oil', 'qf', 'NeogitStatus', 'NeogitCommitView' },
       disable_mouse = false,
       max_count = 3,
       disabled_keys = {
@@ -266,7 +327,19 @@ require('lazy').setup({
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
       local oil = require 'oil'
+      local actions = require 'oil.actions'
       oil.setup {}
+
+      -- Send selection in Oil buffer to Quickfix list
+      local function SendToQuickFixList()
+        actions.add_to_qflist.callback()
+        actions.close.callback()
+        OpenQuickfixListWithoutFocus()
+      end
+
+      -- Map the Quickfix functionality to the same as in telescope!
+      vim.api.nvim_create_user_command('SendToQuickFixList', SendToQuickFixList, { range = '%', addr = 'lines' })
+      vim.keymap.set('v', '<C-q>', '<cmd>SendToQuickFixList<cr>', { desc = 'Send entries to Quickfix list' })
       -- Allow to open Oil with a keymap
       vim.keymap.set('n', '<leader>`', '<cmd>:Oil<cr>', { desc = 'Opens Oil' })
     end,
@@ -379,7 +452,7 @@ require('lazy').setup({
         local buf_info_list = vim.fn.getbufinfo()
 
         local win_id = nil
-        for index, buf_info in ipairs(buf_info_list) do
+        for _, buf_info in ipairs(buf_info_list) do
           if next(buf_info.windows) ~= nil and string.find(string.lower(buf_info.name), 'neogit') then
             win_id = buf_info.windows[1]
           end
@@ -492,7 +565,7 @@ require('lazy').setup({
           --actions.file_edit(prompt_bufnr)
           actions.send_selected_to_qflist(prompt_bufnr)
           -- actions.open_qflist() / becaouse it would open the qflist to the right
-          vim.cmd [[botright copen]]
+          OpenQuickfixListWithoutFocus()
         else
           actions.file_edit(prompt_bufnr)
         end
