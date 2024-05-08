@@ -118,6 +118,8 @@ program = "/bin/zsh"
 [window]
 decorations = "none"
 dynamic_title = true
+dynamic_padding = true
+blur = true
 opacity = 0.88
 startup_mode = "Maximized"
 
