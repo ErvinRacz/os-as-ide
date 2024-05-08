@@ -187,7 +187,7 @@ function DeleteQuickFixItems()
   local range = get_visual_range()
   local matching_pattern = '.\\{-}\\ze|'
   if not range then
-    vim.api.nvim_exec2('Cfilter! ' .. '"' .. vim.fn.matchstr(vim.fn.getline '.', matching_pattern .. '$"'), {})
+    vim.api.nvim_exec2('Cfilter! ' .. '"' .. vim.fn.matchstr(vim.fn.getline '.', matching_pattern) .. '$"', {})
   else
     local patterns = {}
     for i = range.start_lnum, range.end_lnum do
@@ -207,7 +207,7 @@ end
 
 vim.api.nvim_create_autocmd({ 'FileType' }, {
   pattern = { 'qf' },
-  callback = function(bufnr)
+  callback = function()
     -- Define mappings for deleting individual items from a quickfix list
     vim.api.nvim_buf_set_keymap(vim.fn.bufnr(), 'n', 'dd', '<cmd>lua DeleteQuickFixItems()<cr>', { noremap = true, silent = true })
     vim.api.nvim_buf_set_keymap(vim.fn.bufnr(), 'v', 'd', '<cmd>lua DeleteQuickFixItems()<cr>', { noremap = true, silent = true })
@@ -538,27 +538,45 @@ require('lazy').setup({
           actions.file_edit(prompt_bufnr)
         end
       end
+
+      local file_selection_mapping = {
+        mappings = {
+          i = {
+            ['<tab>'] = actions.toggle_selection + actions.move_selection_previous,
+            ['<cr>'] = SendToQuickFixList,
+            ['<c-t>'] = function(prompt_bufnr)
+              actions.select_tab(prompt_bufnr)
+            end,
+          },
+          n = {
+            ['<tab>'] = actions.toggle_selection + actions.move_selection_previous,
+            ['<cr>'] = SendToQuickFixList,
+            ['<c-t>'] = function(prompt_bufnr)
+              actions.select_tab(prompt_bufnr)
+            end,
+          },
+        },
+      }
+
       require('telescope').setup {
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
         defaults = {
+          pickers = {
+            find_files = file_selection_mapping,
+            git_files = file_selection_mapping,
+            live_grep = file_selection_mapping,
+            grep_string = file_selection_mapping,
+          },
+          -- add tab, ct and c-t maps only to file selectors
           mappings = {
             i = {
-              ['<tab>'] = actions.toggle_selection + actions.move_selection_previous,
-              ['<cr>'] = SendToQuickFixList,
               ['<c-k>'] = actions.move_selection_previous,
               ['<c-j>'] = actions.move_selection_next,
-              ['<c-t>'] = function(prompt_bufnr)
-                actions.select_tab(prompt_bufnr)
-              end,
             },
             n = {
-              ['<tab>'] = actions.toggle_selection + actions.move_selection_previous,
-              ['<cr>'] = SendToQuickFixList,
               ['<c-k>'] = actions.move_selection_previous,
-              ['<c-t>'] = function(prompt_bufnr)
-                actions.select_tab(prompt_bufnr)
-              end,
+              ['<c-j>'] = actions.move_selection_next,
             },
           },
         },
@@ -711,7 +729,7 @@ require('lazy').setup({
 
           -- Execute a code action, usually your cursor needs to be on top of an error
           -- or a suggestion from your LSP for this to activate.
-          map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+          vim.keymap.set({ 'n', 'v', 'i' }, '<a-cr>', vim.lsp.buf.code_action, { buffer = event.buf, desc = 'LSP: ' .. '[C]ode [A]ction' })
 
           -- Opens a popup that displays documentation about the word under your cursor
           --  See `:help K` for why this keymap.
@@ -924,7 +942,7 @@ require('lazy').setup({
           -- Accept ([y]es) the completion.
           --  This will auto-import if your LSP supports it.
           --  This will expand snippets if the LSP sent a snippet.
-          ['<CR>'] = cmp.mapping.confirm { select = true },
+          ['<CR>'] = cmp.mapping.confirm { select = true, behavior = cmp.ConfirmBehavior.Replace },
 
           -- Manually trigger a completion from nvim-cmp.
           --  Generally you don't need this, because nvim-cmp will display
