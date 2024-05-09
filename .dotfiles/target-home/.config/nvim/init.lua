@@ -543,14 +543,14 @@ require('lazy').setup({
         mappings = {
           i = {
             ['<tab>'] = actions.toggle_selection + actions.move_selection_previous,
-            ['<cr>'] = SendToQuickFixList,
+            ['<CR>'] = SendToQuickFixList,
             ['<c-t>'] = function(prompt_bufnr)
               actions.select_tab(prompt_bufnr)
             end,
           },
           n = {
             ['<tab>'] = actions.toggle_selection + actions.move_selection_previous,
-            ['<cr>'] = SendToQuickFixList,
+            ['<CR>'] = SendToQuickFixList,
             ['<c-t>'] = function(prompt_bufnr)
               actions.select_tab(prompt_bufnr)
             end,
@@ -561,13 +561,13 @@ require('lazy').setup({
       require('telescope').setup {
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
+        pickers = {
+          find_files = file_selection_mapping,
+          git_files = file_selection_mapping,
+          live_grep = file_selection_mapping,
+          grep_string = file_selection_mapping,
+        },
         defaults = {
-          pickers = {
-            find_files = file_selection_mapping,
-            git_files = file_selection_mapping,
-            live_grep = file_selection_mapping,
-            grep_string = file_selection_mapping,
-          },
           -- add tab, ct and c-t maps only to file selectors
           mappings = {
             i = {
@@ -942,7 +942,7 @@ require('lazy').setup({
           -- Accept ([y]es) the completion.
           --  This will auto-import if your LSP supports it.
           --  This will expand snippets if the LSP sent a snippet.
-          ['<CR>'] = cmp.mapping.confirm { select = true, behavior = cmp.ConfirmBehavior.Replace },
+          ['<tab>'] = cmp.mapping.confirm { select = true, behavior = cmp.ConfirmBehavior.Replace },
 
           -- Manually trigger a completion from nvim-cmp.
           --  Generally you don't need this, because nvim-cmp will display
@@ -1039,6 +1039,19 @@ require('lazy').setup({
     event = 'VimEnter',
     dependencies = { 'nvim-lua/plenary.nvim' },
     opts = { signs = false },
+  },
+
+  {
+    'windwp/nvim-ts-autotag',
+    opts = {},
+  },
+
+  {
+    'windwp/nvim-autopairs',
+    event = 'InsertEnter',
+    config = true,
+    -- use opts = {} for passing setup options
+    -- this is equalent to setup({}) function
   },
 
   { -- Collection of various small independent plugins/modules
