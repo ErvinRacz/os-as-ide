@@ -297,6 +297,17 @@ require('lazy').setup({
   },
 
   {
+    'github/copilot.vim',
+    init = function()
+      vim.g.copilot_no_tab_map = true
+    end,
+    config = function()
+      vim.keymap.set('i', '<C-q>', 'copilot#Accept("<Tab>")', { desc = '[A]ccept Copilot Suggestion', silent = true, expr = true , script = true, replace_keycodes = false})
+      -- Use the :Copilot panel command to ask for specific suggestions
+    end,
+  },
+
+  {
     'stevearc/oil.nvim',
     opts = {
       skip_confirm_for_simple_edits = true,
