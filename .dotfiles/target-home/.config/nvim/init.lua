@@ -150,6 +150,46 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
+function GetTmuxWindowCount()
+  local command = 'tmux list-windows | wc -l'
+  local handle = io.popen(command)
+  if not handle then
+    return 0
+  end
+  local result = handle:read '*a'
+  handle:close()
+
+  local count = tonumber(result)
+  return count
+end
+
+-- Function to switch tabs forward
+function SwitchTabsForward()
+  local current_tab = vim.api.nvim_get_current_tabpage()
+
+  local tabs = vim.api.nvim_list_tabpages()
+  local last_tab = tabs[#tabs]
+
+  vim.cmd 'stopinsert'
+  if current_tab == last_tab and GetTmuxWindowCount() > 1 then
+    vim.cmd 'TmuxSelectNextWindow'
+  else
+    vim.cmd 'tabnext'
+  end
+end
+
+-- Function to switch tabs backward
+function SwitchTabsBackward()
+  local current_tab = vim.api.nvim_get_current_tabpage()
+
+  vim.cmd 'stopinsert'
+  if current_tab == 1 and GetTmuxWindowCount() > 1 then
+    vim.cmd 'TmuxSelectPreviousWindow'
+  else
+    vim.cmd 'tabprevious'
+  end
+end
+
 -- Quickfix list mappings
 vim.cmd [[packadd cfilter]]
 vim.keymap.set('n', '<leader>j', '<cmd>cnext<cr>zz')
@@ -302,8 +342,25 @@ require('lazy').setup({
       vim.g.copilot_no_tab_map = true
     end,
     config = function()
-      vim.keymap.set('i', '<C-q>', 'copilot#Accept("<Tab>")', { desc = '[A]ccept Copilot Suggestion', silent = true, expr = true , script = true, replace_keycodes = false})
+      vim.keymap.set(
+        'i',
+        '<C-q>',
+        'copilot#Accept("<Tab>")',
+        { desc = '[A]ccept Copilot Suggestion', silent = true, expr = true, script = true, replace_keycodes = false }
+      )
       -- Use the :Copilot panel command to ask for specific suggestions
+    end,
+  },
+
+  {
+    'ErvinRacz/tmux-interface.nvim',
+    config = function()
+      require('tmux-interface').setup { last_tmux_window_id_file_path = '/tmp/last_tmux_window_id' }
+      vim.keymap.set('n', '<C-Tab>', '<cmd>lua SwitchTabsForward()<CR>', { noremap = true, silent = true })
+      vim.keymap.set('n', '<C-S-Tab>', '<cmd>lua SwitchTabsBackward()<CR>', { noremap = true, silent = true })
+      vim.keymap.set('i', '<C-Tab>', '<esc><cmd>lua SwitchTabsForward()<CR>', { noremap = true, silent = true })
+      vim.keymap.set('i', '<C-S-Tab>', '<esc><cmd>lua SwitchTabsBackward()<CR>', { noremap = true, silent = true })
+      vim.keymap.set('n', '<C-t>', '<cmd>TmuxSelectNonNvimWindow<CR>', { noremap = true, silent = true })
     end,
   },
 
