@@ -70,7 +70,7 @@ ZSH_THEME="agnoster"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git asdf zsh-system-clipboard zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(git asdf direnv zsh-system-clipboard zsh-autosuggestions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -108,12 +108,15 @@ bindkey -v
 bindkey -rp '^t'
 bindkey -rp '^H'
 
-
 alias :q='exit'
 alias k=kubectl
 alias pn=pnpm
+alias cops='gh copilot suggest'
+alias cope='gh copilot explain'
 
 export PATH=$HOME/.local/bin:$PATH
+# I would happen to use DIRENV, disable its logging here
+export DIRENV_LOG_FORMAT=
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 

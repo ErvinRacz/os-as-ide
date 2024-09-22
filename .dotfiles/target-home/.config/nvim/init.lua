@@ -336,21 +336,21 @@ require('lazy').setup({
     },
   },
 
-  {
-    'github/copilot.vim',
-    init = function()
-      vim.g.copilot_no_tab_map = true
-    end,
-    config = function()
-      vim.keymap.set(
-        'i',
-        '<C-q>',
-        'copilot#Accept("<Tab>")',
-        { desc = '[A]ccept Copilot Suggestion', silent = true, expr = true, script = true, replace_keycodes = false }
-      )
-      -- Use the :Copilot panel command to ask for specific suggestions
-    end,
-  },
+  -- {
+  --   'github/copilot.vim',
+  --   init = function()
+  --     vim.g.copilot_no_tab_map = true
+  --   end,
+  --   config = function()
+  --     vim.keymap.set(
+  --       'i',
+  --       '<C-q>',
+  --       'copilot#Accept("<Tab>")',
+  --       { desc = '[A]ccept Copilot Suggestion', silent = true, expr = true, script = true, replace_keycodes = false }
+  --     )
+  --     -- Use the :Copilot panel command to ask for specific suggestions
+  --   end,
+  -- },
 
   {
     'ErvinRacz/tmux-interface.nvim',
@@ -835,6 +835,8 @@ require('lazy').setup({
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
+      local lspconfig_util = require("lspconfig.util")
+
       -- Enable the following language servers
       --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
       --
@@ -855,7 +857,13 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
-        tsserver = {},
+        tsserver = {
+          root_dir = lspconfig_util.root_pattern("package.json"),
+          single_file_support = false
+        },
+        denols = {
+          root_dir = lspconfig_util.root_pattern("deno.json", "deno,jsonc"),
+        },
         bashls = {},
         nil_ls = {
           settings = {
